@@ -32,6 +32,42 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 - API 문서: http://localhost:8000/docs
 - Health Check: http://localhost:8000/health
 
+### Cloudflare Tunnel 설정
+
+프로덕션 환경에서 외부 접근을 위해 Cloudflare Tunnel을 설정할 수 있습니다.
+
+**사전 준비**:
+1. `.env` 파일에 `TUNNEL_TOKEN` 설정
+   ```bash
+   # .env_example을 참고하여 .env 파일 생성
+   TUNNEL_TOKEN=<your-tunnel-token>
+   ```
+
+**설정 스크립트 실행**:
+```bash
+# Cloudflare Tunnel 설정 및 실행
+source ./scripts/cloudflare_setting.sh
+```
+
+이 스크립트는 다음 작업을 수행합니다:
+- `.env` 파일에서 `TUNNEL_TOKEN` 로드 및 검증
+- 필수 패키지 설치 (`curl`, `sudo`, `tmux`)
+- `cloudflared` 설치 (미설치 시)
+- `tmux` 세션(`cf-tunnel`)에서 Cloudflare Tunnel 실행
+
+**Tunnel 로그 확인**:
+```bash
+# tmux 세션에 연결하여 로그 확인
+tmux attach -t cf-tunnel
+
+# 세션에서 나오려면: Ctrl+B, D
+```
+
+**참고사항**:
+- Tunnel은 백그라운드(`tmux`)에서 실행됩니다
+- 기존 `cf-tunnel` 세션이 있으면 자동으로 종료 후 재시작합니다
+- 클라우드 플레어 서버를 재시작하려면 `./scripts/cloudflare_setting.sh`를 다시 실행하세요
+
 ## API 엔드포인트
 
 ### 1. 키워드 추출 (API-CURR-KWORD-01)
