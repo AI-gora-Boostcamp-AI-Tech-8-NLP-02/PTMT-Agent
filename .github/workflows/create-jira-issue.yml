@@ -22,6 +22,11 @@ jobs:
           --user "${JIRA_USER_EMAIL}:${JIRA_API_TOKEN}" \
           --header "Accept: application/json"
         
+      - name: Checkout main code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      
       - name: Issue Parser
         uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
