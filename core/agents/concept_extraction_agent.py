@@ -18,7 +18,8 @@ class ConceptExtractionAgent:
                 "paper_content": paper["paper_content"],
             },
             config={
-                "max_tokens": 512
+                "max_tokens": 512,
+                "tags": ["concept-extraction"]
             }
         )
 
