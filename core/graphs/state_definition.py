@@ -1,14 +1,5 @@
 from typing import Any, Dict, List, TypedDict
 
-# Concept Extraction Agent State
-class ConceptExtractionInput(TypedDict):
-	paper_name: str       # 논문 이름
-	paper_content: str    # 구조화 된 full 입력 논문
-
-class ConceptExtractionOutput(TypedDict):
-	paper_meta_data: Dict[str, Any]    # 목표 논문 요약 (논문 제목, 요약, 1차 키워드)
-
-
 # Create Curriculm Graph State
 class CreateCurriculumInputState(TypedDict):
     paper_name: str                 # 논문 이름

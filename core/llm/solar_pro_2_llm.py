@@ -12,4 +12,3 @@ def get_solar_model(model_name: str = "solar-pro2", temperature: float = 0.7):
         temperature=temperature,
         upstage_api_key=api_key
     )
-
