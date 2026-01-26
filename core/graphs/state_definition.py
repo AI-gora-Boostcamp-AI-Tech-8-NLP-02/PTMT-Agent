@@ -1,13 +1,6 @@
 from typing import Any, Dict, List, TypedDict
 
-# Concept Extraction Agent State
-class ConceptExtractionInput(TypedDict):
-	paper_name: str       # 논문 이름
-	paper_content: str    # 구조화 된 full 입력 논문
-
-class ConceptExtractionOutput(TypedDict):
-	paper_meta_data: Dict[str, Any]    # 목표 논문 요약 (논문 제목, 요약, 1차 키워드)
-
+from core.contracts.curriculum import CurriculumGraph
 
 # Create Curriculm Graph State
 class CreateCurriculumInputState(TypedDict):
@@ -25,7 +18,7 @@ class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOu
     keyword_subgraph: Dict[str, Any]
     
     # 커리큘럼 그래프
-    curriculum: Dict[str, Any]
+    curriculum: CurriculumGraph
     
     # Resource Discovery: 키워드별 학습 자료 리스트
     discovered_resources: List[Dict[str, Any]]
@@ -34,3 +27,4 @@ class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOu
     is_keyword_sufficient: bool               # 키워드 충분성 플래그
     is_resource_sufficient: bool              # 자료 충분성 플래그
     current_iteration_count: int              # Expansion 루프 횟수
+    keyword_expand_reason: str                # 키워드 추가 판단 이유
