@@ -43,19 +43,23 @@ class CurriculumComposeAgent:
         if not all_resources:
             return {"curriculum": curriculum}
 
-        formatted_resources, total_load = self._format_resources(all_resources)
-
+        formatted_resources, current_total_load = self._format_resources(all_resources)
+        curriculum_structure = self._format_curriculum_structure(curriculum)
+        
         # 2. LLM 호출
         try:
-            response = await self.chain.ainvoke({
-                "user_purpose": user_info.get("purpose", ""),
-                "user_level": user_info.get("level", ""),
-                "user_known_concepts": ", ".join(user_info.get("known_concept", [])),
-                "user_total_hours": user_info.get("budgeted_time", {}).get("total_hours", ""),
-                "current_total_load": f"{total_load:.1f}",
+            payload = {
+                "user_purpose": user_info["purpose"],
+                "user_level": user_info["level"],
+                "user_known_concepts": ", ".join(user_info["known_concept"]),
+                "user_total_hours": user_info["budgeted_time"]["total_hours"],
+                "current_total_load": f"{current_total_load:.1f}",
                 "paper_title": curriculum["graph_meta"].get("title", ""),
+                "curriculum_structure": curriculum_structure,
                 "formatted_resources": formatted_resources
-            },
+            }
+            
+            response = await self.chain.ainvoke(payload,
             config={
                 "tags": ["curriculum-compose"]
             })
@@ -100,6 +104,25 @@ class CurriculumComposeAgent:
         new_curriculum["nodes"] = new_nodes
         
         return {"curriculum": new_curriculum}
+
+    def _format_curriculum_structure(self, curriculum: Dict[str, Any]) -> str:
+        """커리큘럼의 노드 및 엣지 구조를 텍스트로 변환"""
+        lines = []
+        
+        # Nodes
+        lines.append("\n[Nodes]")
+        node_map = {n["keyword_id"]: n["keyword"] for n in curriculum["nodes"]}
+        for node in curriculum["nodes"]:
+            lines.append(f"- {node['keyword']} (ID: {node['keyword_id']}) : {node.get('description', 'No description')}")
+            
+        # Edges
+        lines.append("\n[Edges (Prerequisites)]")
+        for edge in curriculum["edges"]:
+            start_name = node_map.get(edge["start"], edge["start"])
+            end_name = node_map.get(edge["end"], edge["end"])
+            lines.append(f"- {start_name} -> {end_name}")
+            
+        return "\n".join(lines)
 
     def _format_resources(self, resources: List[Dict[str, Any]]) -> Tuple[str, float]:
         lines = []

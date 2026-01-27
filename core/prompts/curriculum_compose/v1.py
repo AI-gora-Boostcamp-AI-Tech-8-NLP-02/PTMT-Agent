@@ -52,6 +52,9 @@ CURRICULUM_COMPOSE_PROMPT_V1 = ChatPromptTemplate.from_messages([
 - 현재 총 예상 소요 시간: {current_total_load}시간
 - 목표 논문: {paper_title}
 
+[커리큘럼 구조 (Graph)]
+{curriculum_structure}
+
 [분류 대상 자료 목록]
 {formatted_resources}
 
