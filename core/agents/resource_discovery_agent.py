@@ -65,7 +65,7 @@ class ResourceDiscoveryAgent:
             response = await self.query_chain.ainvoke({
                 "keyword": node["keyword"],
                 "description": node["description"]
-            })
+            },config={"tags": ["rs-discovery"]})
             
             raw_queries = response.content.strip().split('\n')
 

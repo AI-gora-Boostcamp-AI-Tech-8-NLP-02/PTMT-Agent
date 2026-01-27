@@ -52,13 +52,14 @@ async def main():
     # 상세 결과 확인
     for i, res in enumerate(resources):
         print(f"\n[{i+1}] {res['keyword']} - {res['resource_name']}")
+        print(f"    Description:{res['resource_description']}")
         print(f"    Query: {res['query']}")
         print(f"    URL: {res['url']}")
         print(f"    Content (100자): {res['raw_content'][:100]}...")
         print(f"    difficulty: {res['difficulty']}")
         print(f"    importance: {res['importance']}")
         print(f"    study_load: {res['study_load']}")
-        print(f"    resource_type: {res['resource_type']}")   
+        print(f"    type: {res['type']}")   
 
     print("=======result=========")
     print(result)

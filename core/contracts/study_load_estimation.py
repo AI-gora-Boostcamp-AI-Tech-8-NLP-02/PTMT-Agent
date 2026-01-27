@@ -9,7 +9,7 @@ class ResourceData(TypedDict):
     difficulty: str
     importance: str
     study_load: str
-    resource_type: str
+    type: str
 
 class StudyLoadEstimationInput(TypedDict):
     resources: List[ResourceData]

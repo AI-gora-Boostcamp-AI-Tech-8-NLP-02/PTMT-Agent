@@ -37,7 +37,7 @@ class StudyLoadEstimationAgent:
                     "content": resource.get("raw_content", "")[:800],
                     "user_level": user_level,
                     "purpose": purpose
-                })
+                }, config={"tags": ["load-estmination"]})
                 
                 parsed_data = self._parse_response(response.content)
                 
@@ -46,7 +46,8 @@ class StudyLoadEstimationAgent:
                     "difficulty": str(parsed_data.get("difficulty", "3")),
                     "importance": str(parsed_data.get("importance", "3")),
                     "study_load": str(parsed_data.get("study_load", "0.5")),
-                    "resource_type": parsed_data.get("resource_type", "web_doc")
+                    "type": parsed_data.get("type", "web_doc"),
+                    "resource_description": parsed_data.get("resource_description", "자료에 대한 설명이 없습니다.")
                 })
                 # 디버깅용 프린트
                 print(f"✅ [Estimated] {resource.get('resource_name')}")
@@ -55,12 +56,12 @@ class StudyLoadEstimationAgent:
             except Exception as e:
                 print(f"⚠️ [Estimation Error] {resource.get('resource_name')}: {e}")
                 # 에러 발생 시 기본값
-                resource.update({"difficulty": "3", "importance": "3", "study_load": "0.5", "resource_type": "web_doc"})
+                resource.update({"difficulty": "3", "importance": "3", "study_load": "0.5", "type": "web_doc"})
 
             return resource
 
     def _parse_response(self, text: str) -> Dict[str, Any]:
-        """JSON 추출 및 파싱 헬퍼"""
+        """JSON 추출 및 파싱"""
         try:
             match = re.search(r'\{.*\}', text, re.DOTALL)
             clean_json = match.group() if match else text
