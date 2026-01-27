@@ -20,7 +20,8 @@ STUDY_LOAD_ESTIMATION_PROMPT_V1 = ChatPromptTemplate.from_messages([
         1. difficulty: 1(매우 쉬움) ~ 10(매우 어려움)
         2. importance: 0(선택 학습) ~ 10(필수 학습)
         3. study_load: 예상 소요 시간 (1시간 단위 소수점, 예: 1.5)
-        4. resource_type: 'web_doc', 'video', 'paper' 중 하나
+        4. type: 'web_doc', 'video', 'paper' 중 하나
+        5. resource_description: 학습자를 위해 이 자료가 왜 유용한지 설명하는 한 문장 요약 (한글로 작성)
 
         [평가 가이드]
         - {user_level} 수준의 학습자 입장에서 난이도와 중요도를 판단하세요.
@@ -31,7 +32,8 @@ STUDY_LOAD_ESTIMATION_PROMPT_V1 = ChatPromptTemplate.from_messages([
             "difficulty": number,
             "importance": number,
             "study_load": number,
-            "resource_type": string
+            "type": string,
+            "resource_description": string
         }}
         """
     )
