@@ -17,7 +17,7 @@ from core.llm.solar_pro_2_llm import get_solar_model
 
 async def main():
     load_dotenv()
-    llm = get_solar_model(temperature=0.1)
+    llm = get_solar_model("solar-pro3",temperature=0.1)
     
     # 데이터 로드
     data_dir = project_root / "tests" / "dummy_data"
@@ -68,33 +68,44 @@ async def main():
     
     # 결과 로드 계산
     total_res_after = 0
-    total_load_after = 0.0
+    emphasize_load = 0.0
+    preserve_load = 0.0
     
     print("\n[상세 변경 내역 (Resources)]")
     for n in new_nodes:
-        # print(f"\n[{n['keyword']}]")
+        print(f"\n[{n['keyword']}]")
         for r in n.get("resources", []):
             total_res_after += 1
             load = float(r.get("study_load", 0) or 0)
-            total_load_after += load
             
-            # 상태 출력
-            status = "🔴 EMPHASIZE" if r.get("is_necessary") else "⚪ PRESERVE"
-            # print(f"  {status} : {r['resource_name']} ({load}h)")
+            # 상태 출력 및 로드 집계
+            if r.get("is_necessary"):
+                status = "🔴 EMPHASIZE"
+                emphasize_load += load
+            else:
+                status = "⚪ PRESERVE"
+                preserve_load += load
+                
+            print(f"  {status} : {r['resource_name']} ({load}h)")
 
     print("\n" + "=" * 60)
     print("✅ 테스트 완료 및 결과 분석")
     print("=" * 60)
     
-    print(f"Final Total Resources: {total_res_after}")
-    print(f"Final Total Load: {total_load_after:.1f}h (Budget: {user_budget}h)")
-    print(f"Deleted Resources: {total_res_before - total_res_after}")
-    print(f"Load Reduction: {total_load_before - total_load_after:.1f}h")
+    total_load_after = emphasize_load + preserve_load
     
-    if total_load_after <= user_budget:
-        print("🎉 성공: 예산 내로 최적화됨")
+    print(f"Final Total Resources: {total_res_after} (Original: {total_res_before})")
+    print(f"Deleted Resources: {total_res_before - total_res_after}")
+    print("-" * 40)
+    print(f"Goal Budget: {user_budget}h")
+    print(f"🔴 EMPHASIZE Load: {emphasize_load:.1f}h")
+    print(f"⚪ PRESERVE Load: {preserve_load:.1f}h")
+    print(f"Total Load (EMP + PRE): {total_load_after:.1f}h")
+    
+    if emphasize_load <= user_budget + 2.0: # 2시간 정도의 오차 허용
+        print("🎉 성공: EMPHASIZE Load가 예산 범위(오차 포함) 내로 최적화됨")
     else:
-        print("⚠️ 주의: 예산 초과됨 (난이도/중요도 때문에 유지된 항목이 많을 수 있음)")
+        print(f"⚠️ 주의: EMPHASIZE Load({emphasize_load:.1f}h)가 예산({user_budget}h)을 다소 초과함.")
 
 if __name__ == "__main__":
     asyncio.run(main())

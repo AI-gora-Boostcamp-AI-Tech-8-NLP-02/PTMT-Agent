@@ -8,24 +8,24 @@ CURRICULUM_COMPOSE_PROMPT_V1 = ChatPromptTemplate.from_messages([
 
 [전역 최적화 목표]
 1. **학습 분량 조절 (Volume Control)**:
-   - 사용자의 가용 시간(Budgeted Time)을 고려하되, **학습의 질과 완결성이 우선**입니다.
-   - 예산을 초과하더라도 중요도가 높은 핵심 자료는 삭제하지 말고 유지하세요.
-   - 중요도가 낮거나(6 이하) 지엽적인 자료 위주로 삭제하여 시간을 조절하세요.
+   - 사용자의 가용 시간(Budgeted Time)은 **필수 학습 자료(EMPHASIZE)**들의 합계에 적용되는 기준입니다.
+   - 예산을 초과하면, 정말 중요한 자료만 **EMPHASIZE**로 남기고 나머지는 **PRESERVE(보존)**로 변경하세요.
+   - 즉, "필수 코스(EMPHASIZE)는 예산 내로 맞추고, 나머지는 선택 학습(PRESERVE)으로 돌린다"는 전략을 사용하세요.
    
-2. **난이도 조정 (Difficulty Matching)**:
-   - 사용자의 수준(Level)에 맞지 않는 너무 어려운 자료는 삭제하거나 보존(PRESERVE)으로 낮추십시오.
-   - 단, 해당 자료가 필수 불가결한 핵심 자료라면 유지해야 합니다.
+2. **삭제 최소화 (Minimize Delete)**:
+   - 자료 삭제(DELETE)는 최소한으로 하세요. 
+   - 예산 초과를 이유로 삭제하지 말고 PRESERVE로 전환하세요.
+   - 삭제는 정말 퀄리티가 낮거나, 중복되거나, 주제와 완전히 무관한 경우에만 수행하세요.
 
 [자료 분류 기준]
 1. **DELETE (삭제)**: 
-   - 예산 시간 초과 시 우선 삭제 대상.
-   - 수준에 맞지 않거나 지엽적인 자료.
+   - **(최소화)** 품질이 매우 낮거나 완전히 불필요한 경우에만 사용.
 2. **PRESERVE (보존)**: 
-   - 필수는 아니지만 시간 남으면 볼만한 자료 (is_necessary = False).
-   - 핵심 경로에서 벗어난 자료.
+   - 필수는 아니지만 학습 가치가 있는 모든 자료.
+   - 예산 부족으로 EMPHASIZE에서 탈락한 자료.
 3. **EMPHASIZE (강조)**: 
-   - 반드시 학습해야 하는 핵심 (is_necessary = True).
-   - 예산 내에서 가장 가치 있는 자료들.
+   - 예산 범위 내에서 우선적으로 학습해야 할 핵심 자료.
+   - 중요도(Importance)가 높은 순서대로 예산을 채우세요.
 
 [출력 형식]
 반드시 아래 JSON 형식으로만 출력하세요.
@@ -55,6 +55,6 @@ CURRICULUM_COMPOSE_PROMPT_V1 = ChatPromptTemplate.from_messages([
 [분류 대상 자료 목록]
 {formatted_resources}
 
-위 정보를 바탕으로 Total Load가 Budget({user_total_hours}시간) 이내가 되도록 자료를 선별 및 분류하세요."""
+위 정보를 바탕으로 **필수 학습 자료(EMPHASIZE)의 합계**가 Budget({user_total_hours}시간) 이내가 되도록 자료를 선별 및 분류하세요. 나머지 유용한 자료는 PRESERVE로 유지하세요."""
     )
 ])
