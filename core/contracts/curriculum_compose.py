@@ -2,8 +2,8 @@ from typing import TypedDict, Literal
 from core.contracts.types.user_info import UserInfo
 from core.contracts.types.curriculum import (
     CurriculumGraph as CurriculumData,
-    KeywordNode as CurriculumNode,
-    KeywordEdge as CurriculumEdge
+    KeywordNode,
+    KeywordEdge
 )
 
 class CurriculumComposeInput(TypedDict):

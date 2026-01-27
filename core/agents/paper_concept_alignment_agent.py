@@ -3,11 +3,10 @@ import re
 from typing import Dict, Any, List
 from core.contracts.paper_concept_alignment import (
     PaperConceptAlignmentInput,
-    PaperConceptAlignmentOutput,
-    CurriculumNode,
-    CurriculumEdge,
-    PaperInfo
+    PaperConceptAlignmentOutput
 )
+from core.contracts.types.curriculum import KeywordNode, KeywordEdge
+from core.contracts.types.paper_info import PaperInfo
 from core.prompts.paper_concept_alignment.v1 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V1
 
 
@@ -84,7 +83,7 @@ class PaperConceptAlignmentAgent:
             print(f"❌ LLM 호출 중 오류 발생: {e}")
             return {"descriptions": {}}
 
-    def _filter_nodes_without_description(self, nodes: List[CurriculumNode]) -> List[CurriculumNode]:
+    def _filter_nodes_without_description(self, nodes: List[KeywordNode]) -> List[KeywordNode]:
         """description이 없거나 빈 노드 필터링"""
         return [
             node for node in nodes
@@ -118,7 +117,7 @@ class PaperConceptAlignmentAgent:
 
         return "\n\n".join(body_parts)
 
-    def _format_all_nodes(self, nodes: List[CurriculumNode]) -> str:
+    def _format_all_nodes(self, nodes: List[KeywordNode]) -> str:
         """전체 노드 목록 포맷팅"""
         formatted = []
         for node in nodes:
@@ -130,7 +129,7 @@ class PaperConceptAlignmentAgent:
         
         return "\n".join(formatted)
 
-    def _format_edges(self, edges: List[CurriculumEdge]) -> str:
+    def _format_edges(self, edges: List[KeywordEdge]) -> str:
         """엣지(학습 순서) 포맷팅"""
         if not edges:
             return "엣지 정보가 없습니다."
@@ -143,7 +142,7 @@ class PaperConceptAlignmentAgent:
         
         return "\n".join(formatted)
 
-    def _format_keywords_to_describe(self, nodes: List[CurriculumNode]) -> str:
+    def _format_keywords_to_describe(self, nodes: List[KeywordNode]) -> str:
         """설명이 필요한 키워드 목록 포맷팅"""
         formatted = []
         for node in nodes:
