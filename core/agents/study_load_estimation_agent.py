@@ -2,7 +2,8 @@ import json
 import re
 import asyncio
 from typing import List, Dict, Any
-from core.contracts.study_load_estimation import StudyLoadEstimationInput, StudyLoadEstimationOutput, ResourceData
+from core.contracts.study_load_estimation import StudyLoadEstimationInput, StudyLoadEstimationOutput
+from core.contracts.types.curriculum import Resource
 from core.prompts.study_load_estimation.v1 import STUDY_LOAD_ESTIMATION_PROMPT_V1
 
 class StudyLoadEstimationAgent:
@@ -28,7 +29,7 @@ class StudyLoadEstimationAgent:
         evaluated_resources = await asyncio.gather(*tasks)
         return {"evaluated_resources": evaluated_resources}
 
-    async def _estimate_single(self, resource: ResourceData, user_level: str, purpose: str) -> ResourceData:
+    async def _estimate_single(self, resource: Resource, user_level: str, purpose: str) -> Resource:
         async with self.sem:
             try:
                 response = await self.chain.ainvoke({
