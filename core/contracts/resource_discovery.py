@@ -1,10 +1,12 @@
-from typing import List, Dict, Any, TypedDict, Set
+from typing import List, TypedDict
+from core.contracts.types.curriculum import KeywordNode, Resource
 
 class ResourceDiscoveryAgentInput(TypedDict):
-    nodes: List[Dict[str, Any]]
+    nodes: List[KeywordNode]    
     user_level: str
     purpose: str
     pref_types: List[str]
 
 class ResourceDiscoveryAgentOutput(TypedDict):
-    evaluated_resources: List[Dict[str, Any]]
+    # 최종적으로 Estimation을 거쳐 완성된 Resource 목록을 반환
+    evaluated_resources: List[Resource]  
