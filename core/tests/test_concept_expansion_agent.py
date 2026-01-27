@@ -15,7 +15,7 @@ def main():
 
     # 2. LLM 생성
     llm = get_solar_model(
-        model_name="solar-pro3",
+        model_name="solar-pro2",
         temperature=0.5
     )
 
@@ -27,19 +27,10 @@ def main():
         curriculum = json.load(f)
 
     curriculum_graph: CurriculumGraph = cast(CurriculumGraph, curriculum)
-    reason = "The curriculum omits essential components such as multi‑head attention, residual connections, ReLU activation, embedding scaling, Adam optimizer, label smoothing, and BLEU evaluation, so the listed keywords cannot fully convey the paper’s concepts to a bachelor‑level learner."
+    reason = "논문 이해에 필요한 'layer normalization' 개념이 커리큘럼에 존재하지만, bachelor 수준 학습자가 이해하기 위해 필요한 선수 지식(예: 배치 정규화와의 차이점)이 명시적으로 포함되지 않음"
     missing_concepts = [
-    "key-001",
-    "key-002",
-    "key-003",
-    "key-004",
-    "key-006",
-    "key-007",
-    "key-008",
-    "key-010",
-    "key-011",
-    "123456"
-  ]
+        "key-007",
+    ]
     
     dummy_state: CreateCurriculumOverallState = {
         # ===== Input State =====

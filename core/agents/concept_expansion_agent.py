@@ -52,11 +52,16 @@ class ConceptExpansionAgent:
                 ],
             }
         )
-        print(response)
+        
         ai_message = get_last_ai_message(response)
         parsed_response = self._parse_response(ai_message.content)
         
-        result = self._merge_graph(keyword_graph, parsed_response["expanded_graph"])
+        expanded_graph = parsed_response.get("expanded_graph")
+        
+        if not self._is_valid_expanded_graph(expanded_graph):
+            result = keyword_graph
+        else:
+            result = self._merge_graph(keyword_graph, expanded_graph)
 
         return result
 
@@ -149,3 +154,43 @@ class ConceptExpansionAgent:
             "edges": merged_edges
         }
 
+    def _is_valid_expanded_graph(self, expanded_graph: Dict[str, Any]) -> bool:
+        """
+        expanded_graph가 기대한 구조를 만족하는지 검증한다.
+        """
+
+        if not isinstance(expanded_graph, dict):
+            return False
+
+        nodes = expanded_graph.get("nodes")
+        edges = expanded_graph.get("edges")
+
+        if not isinstance(nodes, list) or not isinstance(edges, list):
+            return False
+
+        # ---- node 검증 ----
+        for node in nodes:
+            if not isinstance(node, dict):
+                return False
+            if "keyword_id" not in node or "keyword" not in node:
+                return False
+            if not isinstance(node["keyword_id"], str):
+                return False
+            if not isinstance(node["keyword"], str):
+                return False
+
+        # ---- edge 검증 ----
+        for edge in edges:
+            if not isinstance(edge, dict):
+                return False
+            if "start" not in edge or "end" not in edge:
+                return False
+            if not isinstance(edge["start"], str):
+                return False
+            if not isinstance(edge["end"], str):
+                return False
+            # reason은 optional이지만, 있으면 string이어야 함
+            if "reason" in edge and not isinstance(edge["reason"], str):
+                return False
+
+        return True
