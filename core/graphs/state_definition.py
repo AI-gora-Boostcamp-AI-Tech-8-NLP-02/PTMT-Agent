@@ -28,3 +28,4 @@ class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOu
     is_resource_sufficient: bool              # 자료 충분성 플래그
     current_iteration_count: int              # Expansion 루프 횟수
     keyword_expand_reason: str                # 키워드 추가 판단 이유
+    missing_concepts: List[str]               # 부족한 키워드 리스트

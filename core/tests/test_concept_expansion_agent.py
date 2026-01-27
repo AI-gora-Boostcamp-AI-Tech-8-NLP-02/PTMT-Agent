@@ -27,7 +27,8 @@ def main():
         curriculum = json.load(f)
 
     curriculum_graph: CurriculumGraph = cast(CurriculumGraph, curriculum)
-    reason = "비전공자인 사용자 수준에 비해 세부 학습 키워드가 부족함."
+    reason = "논문 이해에 필요한 'layer normalization' 개념이 커리큘럼에 존재하지만, bachelor 수준 학습자가 이해하기 위해 필요한 선수 지식(예: 배치 정규화와의 차이점)이 명시적으로 포함되지 않음"
+    missing_concepts = ["key-007"]
     
     dummy_state: CreateCurriculumOverallState = {
         # ===== Input State =====
@@ -45,7 +46,8 @@ def main():
         "is_keyword_sufficient": False,
         "is_resource_sufficient": False,
         "current_iteration_count": 0,
-        "keyword_expand_reason": reason
+        "keyword_expand_reason": reason,
+        "missing_concepts": missing_concepts
     }
     
     # 5. Agent 실행

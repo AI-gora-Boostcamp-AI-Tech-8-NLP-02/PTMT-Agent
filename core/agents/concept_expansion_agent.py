@@ -34,6 +34,7 @@ class ConceptExpansionAgent:
                 keyword_graph, ensure_ascii=False
             ),
             reason=state["keyword_expand_reason"],
+            keyword_ids = state["missing_concepts"]
         )
         
         print(messages)
