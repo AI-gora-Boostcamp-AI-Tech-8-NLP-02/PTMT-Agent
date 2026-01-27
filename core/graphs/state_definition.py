@@ -1,5 +1,7 @@
 from typing import Any, Dict, List, TypedDict
 
+from core.contracts.curriculum import CurriculumGraph
+
 # Create Curriculm Graph State
 class CreateCurriculumInputState(TypedDict):
     paper_name: str                 # 논문 이름
@@ -16,12 +18,15 @@ class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOu
     keyword_subgraph: Dict[str, Any]
     
     # 커리큘럼 그래프
-    curriculum: Dict[str, Any]
+    curriculum: CurriculumGraph
     
     # --- 제어 및 프로세스 데이터 ---
     is_keyword_sufficient: bool               # 키워드 충분성 플래그
     is_resource_sufficient: bool              # 자료 충분성 플래그
     current_iteration_count: int              # Expansion 루프 횟수
+    
+    # concept expansion 추가 state
+    keyword_expand_reason: str                # 키워드 추가 판단 이유
 
     tasks: List[str]                          # orchestrator가 출력하는 task list
     needs_description_ids: List[str]    
