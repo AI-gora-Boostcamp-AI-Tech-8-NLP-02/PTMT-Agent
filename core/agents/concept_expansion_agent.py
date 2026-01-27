@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_tavily import TavilySearch
 
-from core.contracts.curriculum import CurriculumGraph
+from core.contracts.types.curriculum import CurriculumGraph
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.prompts.concept_expansion.v1 import CONCEPT_EXPANSION_PROMPT_V1
 from core.utils.get_message import get_last_ai_message

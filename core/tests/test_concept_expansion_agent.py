@@ -5,7 +5,7 @@ from typing import cast
 from dotenv import load_dotenv
 
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
-from core.contracts.curriculum import CurriculumGraph
+from core.contracts.types.curriculum import CurriculumGraph
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 

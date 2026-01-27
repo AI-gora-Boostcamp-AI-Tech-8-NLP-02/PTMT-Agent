@@ -6,10 +6,15 @@ class Resource(TypedDict):
     url: str
     type: str  # "paper" | "web_doc" | "video"
     resource_description: str
-    difficulty: int
-    importance: int
-    study_load: float
+    difficulty: int | str
+    importance: int | str
+    study_load: float | str
     is_necessary: Optional[bool]
+    
+    # Optional fields from ResourceData merger
+    keyword_id: Optional[str]
+    keyword: Optional[str]
+    raw_content: Optional[str]
 
 class KeywordNode(TypedDict):
     keyword_id: str
@@ -17,6 +22,7 @@ class KeywordNode(TypedDict):
     description: str
     keyword_importance: int
     is_resource_sufficient: bool
+    is_necessary: Optional[bool]
     resources: List[Resource]
 
 class KeywordEdge(TypedDict):
