@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_tavily import TavilySearch
 
-from core.contracts.types.curriculum import CurriculumGraph
+from core.contracts.types.curriculum import CurriculumGraph, KeywordNode
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.prompts.concept_expansion.v1 import CONCEPT_EXPANSION_PROMPT_V1
 from core.utils.get_message import get_last_ai_message
@@ -24,10 +24,12 @@ class ConceptExpansionAgent:
             tools=self.tools
         )
     
-    def run(self, state: CreateCurriculumOverallState) -> CreateCurriculumOverallState:
+    def run(self, state: CreateCurriculumOverallState) -> CurriculumGraph:
+        # state에서 필요한 Input 추출
         keyword_graph = self._extract_keyword_graph(state["curriculum"])
         paper_info = state["curriculum"]["graph_meta"]
         
+        # 프롬프트 적용
         messages = CONCEPT_EXPANSION_PROMPT_V1.format_messages(
             paper_info = paper_info,
             keyword_graph=json.dumps(
@@ -36,9 +38,8 @@ class ConceptExpansionAgent:
             reason=state["keyword_expand_reason"],
             keyword_ids = state["missing_concepts"]
         )
-        
-        print(messages)
 
+        # agent 실행
         response = self.agent.invoke(
             {
                 "messages": messages
@@ -53,15 +54,20 @@ class ConceptExpansionAgent:
             }
         )
         
+        # llm 결과 parsing
         ai_message = get_last_ai_message(response)
         parsed_response = self._parse_response(ai_message.content)
         
+        # 기존 그래프와 병합
         expanded_graph = parsed_response.get("expanded_graph")
         
         if not self._is_valid_expanded_graph(expanded_graph):
-            result = keyword_graph
+            expanded_graph = keyword_graph
         else:
-            result = self._merge_graph(keyword_graph, expanded_graph)
+            expanded_graph = self._merge_graph(keyword_graph, expanded_graph)
+        
+        # 기존 커리큘럼과 병합
+        result = self._merge_expansion_into_curriculum(state["curriculum"], expanded_graph)
 
         return result
 
@@ -194,3 +200,63 @@ class ConceptExpansionAgent:
                 return False
 
         return True
+
+    def _merge_expansion_into_curriculum(
+        self,
+        curriculum: CurriculumGraph,
+        expansion_result: Dict[str, Any]
+    ) -> CurriculumGraph:
+        """
+        CurriculumGraph 업데이트
+        """
+
+        expanded_nodes = expansion_result.get("nodes", [])
+        expanded_edges = expansion_result.get("edges", [])
+
+        # ---- 기존 노드 맵 (절대 신뢰) ----
+        node_map: Dict[str, KeywordNode] = {
+            node["keyword_id"]: node
+            for node in curriculum["nodes"]
+        }
+
+        # ---- 새 노드만 추가 ----
+        for raw_node in expanded_nodes:
+            kid = raw_node.get("keyword_id")
+            if not kid:
+                continue
+
+            if kid not in node_map:
+                node_map[kid] = {
+                    "keyword_id": kid,
+                    "keyword": raw_node.get("keyword", ""),
+                    "description": "",
+                    "keyword_importance": None,
+                    "is_resource_sufficient": False,
+                    "is_necessary": None,
+                    "resources": []
+                }
+
+        merged_nodes = list(node_map.values())
+
+        # ---- Edge 병합 ----
+        edge_set: set[Tuple[str, str]] = {
+            (edge["start"], edge["end"])
+            for edge in curriculum["edges"]
+        }
+
+        for edge in expanded_edges:
+            start, end = edge.get("start"), edge.get("end")
+            if not start or not end:
+                continue
+            edge_set.add((start, end))
+
+        merged_edges = [
+            {"start": start, "end": end}
+            for start, end in edge_set
+        ]
+
+        return {
+            "graph_meta": curriculum["graph_meta"],
+            "nodes": merged_nodes,
+            "edges": merged_edges
+        }
