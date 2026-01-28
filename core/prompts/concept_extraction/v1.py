@@ -11,17 +11,25 @@ CONCEPT_EXTRACTION_PROMPT_V1 = ChatPromptTemplate.from_messages([
         """
         아래는 구조화된 논문 전체 내용이다.
         논문의 핵심 기여와 목적이 잘 드러나도록 요약하고,
-        논문을 대표하는 핵심 개념(Concept) 3~5개를 추출하라.
+        논문을 대표하는 핵심 개념(Concept) 단어를 3~5개 추출하라.
+        paper_summary는 한글로, paper_concepts는 영어로 추출하라.
+        
+        ### 논문 제목
+        {paper_name}
 
         ### 논문 내용
-        {paper_content}
+        #### Abstract
+        {paper_abstract}
+        
+        #### Body
+        {paper_body}
 
         반드시 아래 JSON 형식으로만 출력하라.
         설명, 주석, 마크다운, 코드블록(```)은 절대 포함하지 마라.
 
         {{
-        "paper_summary": string,
-        "paper_concepts": string[]
+            "paper_summary": string,
+            "paper_concepts": string[]
         }}
         """
     )
