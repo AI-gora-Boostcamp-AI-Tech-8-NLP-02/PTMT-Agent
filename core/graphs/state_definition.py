@@ -1,8 +1,8 @@
 from typing import Any, Dict, List, TypedDict
 
 from core.contracts.types.curriculum import CurriculumGraph
-from core.contracts.types.user_info import UserInfo
 from core.contracts.types.paper_info import PaperInfo
+from core.contracts.types.user_info import UserInfo
 
 # Create Curriculm Graph State
 class CreateCurriculumInputState(TypedDict):
