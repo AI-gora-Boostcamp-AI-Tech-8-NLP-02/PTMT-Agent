@@ -33,7 +33,7 @@ def orchestrator_router(state: CreateCurriculumOverallState) -> List[str]:
         print("⚠️ [Router] 반복 횟수 초과. 강제 종료합니다.")
         return ["curriculum_compose"]
 
-    # 2. 병렬 실행할 노드 리스트 
+    # 병렬 실행할 노드 리스트 
     next_nodes = []
     
     # tasks 리스트에 있는 키워드를 보고 실행할 노드를 결정
