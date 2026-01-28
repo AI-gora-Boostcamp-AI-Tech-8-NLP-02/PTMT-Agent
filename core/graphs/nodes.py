@@ -1,5 +1,6 @@
 import json
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
+from core.contracts.concept_expansion import ConceptExpansionInput
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 from core.graphs.state_definition import CreateCurriculumOverallState
@@ -143,8 +144,14 @@ async def concept_expansion_node(state: CreateCurriculumOverallState):
     
     agent = ConceptExpansionAgent(llm)
     
-    updated_curriculum = agent.run(state)
+    input: ConceptExpansionInput = {
+        "curriculum": state["curriculum"],
+        "keyword_expand_reason": state["keyword_expand_reason"],
+        "missing_concepts": state["missing_concepts"]
+    }
+    
+    updated_curriculum = agent.run(input)
     
     return {
-        "curriculum": updated_curriculum
+        "curriculum": updated_curriculum["curriculum"]
     }

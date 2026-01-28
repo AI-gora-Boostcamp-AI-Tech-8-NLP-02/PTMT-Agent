@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_tavily import TavilySearch
 
+from core.contracts.concept_expansion import ConceptExpansionInput, ConceptExpansionOutput
 from core.contracts.types.curriculum import CurriculumGraph, KeywordNode
-from core.graphs.state_definition import CreateCurriculumOverallState
 from core.prompts.concept_expansion.v1 import CONCEPT_EXPANSION_PROMPT_V1
 from core.utils.get_message import get_last_ai_message
 
@@ -27,10 +27,10 @@ class ConceptExpansionAgent:
             tools=self.tools
         )
     
-    def run(self, state: CreateCurriculumOverallState) -> CurriculumGraph:
-        # state에서 필요한 Input 추출
-        keyword_graph = self._extract_keyword_graph(state["curriculum"])
-        paper_info = state["curriculum"]["graph_meta"]
+    def run(self, input: ConceptExpansionInput) -> ConceptExpansionOutput:
+        # Input 추출
+        keyword_graph = self._extract_keyword_graph(input["curriculum"])
+        paper_info = input["curriculum"]["graph_meta"]
         
         # 프롬프트 적용
         messages = CONCEPT_EXPANSION_PROMPT_V1.format_messages(
@@ -38,8 +38,8 @@ class ConceptExpansionAgent:
             keyword_graph=json.dumps(
                 keyword_graph, ensure_ascii=False
             ),
-            reason=state["keyword_expand_reason"],
-            keyword_ids = state["missing_concepts"]
+            reason=input["keyword_expand_reason"],
+            keyword_ids = input["missing_concepts"]
         )
 
         # agent 실행
@@ -70,7 +70,11 @@ class ConceptExpansionAgent:
         expanded_graph = self._merge_graph(keyword_graph, expanded_graph)
         
         # 기존 커리큘럼과 병합
-        result = self._merge_expansion_into_curriculum(state["curriculum"], expanded_graph)
+        merged_curriculum = self._merge_expansion_into_curriculum(input["curriculum"], expanded_graph)
+        
+        result: ConceptExpansionOutput = {
+            "curriculum": merged_curriculum
+        }
 
         return result
 
