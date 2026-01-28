@@ -60,7 +60,7 @@ class CurriculumOrchestrator:
         kw_decision = results[0]  # 키워드 체크 결과
         res_decisions = results[1:] # 각 노드별 리소스 체크 결과들
 
-        existing_keywords = {n.get("keyword") for n in nodes if n.get("keyword")}
+        existing_keywords = {n.get("keyword_id") for n in nodes if n.get("keyword_id")}
         
         raw_missing_concepts = kw_decision.get("missing_concepts", [])
         
@@ -69,6 +69,9 @@ class CurriculumOrchestrator:
             concept for concept in raw_missing_concepts 
             if concept in existing_keywords
         ]
+
+        print(f"거르기전:{raw_missing_concepts}")
+        print(f"거른 후:{filtered_missing_concepts}")
 
         insufficient_res_ids = [
             nodes_to_check[i]["keyword_id"] for i, dec in enumerate(res_decisions) 
