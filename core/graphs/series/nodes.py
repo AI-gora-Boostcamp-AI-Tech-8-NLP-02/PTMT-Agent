@@ -1,6 +1,6 @@
 import json
 from core.contracts.concept_expansion import ConceptExpansionInput
-from core.graphs.state_definition import CreateCurriculumOverallState
+from core.graphs.series.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 
 
@@ -18,11 +18,13 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     agent = CurriculumOrchestrator(llm)
 
     # 에이전트 실행 
-    result = await agent.run(
-        paper_content=state["paper_content"],
-        curriculum=state["curriculum"],
-        user_info=state["user_info"]
-    )
+    result = await agent.run({
+        "paper_content": state["paper_content"],
+        "curriculum": state["curriculum"],
+        "user_info": state["user_info"],
+        "is_keyword_sufficient": state.get("is_keyword_sufficient", True),
+        "is_resource_sufficient": state.get("is_resource_sufficient", True)
+    })
 
     insufficient_ids = result.get("insufficient_resource_ids", [])
     current_curriculum = state.get("curriculum", {})
@@ -42,6 +44,8 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "nodes": updated_nodes
     }
 
+    current_count = state.get("current_iteration_count", 0)
+
 
     # state 업데이트
     return {
@@ -58,6 +62,7 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
 
         "keyword_reasoning":result.get('keyword_reasoning',"None"),
         "resource_reasoning":result.get('resource_reasoning',"None"),
+        "current_iteration_count": current_count + 1
     }
 
 async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
@@ -97,15 +102,23 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         
         # 형식에 맞는 리소스 객체 생성
         res_id_num = all_current_res_count + i + 1
+        try:
+            difficulty = int(float(res.get("difficulty", 5)))
+            importance = int(float(res.get("importance", 5)))
+            study_load = float(res.get("study_load", 1)) 
+        except (ValueError, TypeError):
+            difficulty, importance, study_load = 5, 5, 1 # 실패 시 기본값
+
+
         formatted_res = {
             "resource_id": f"res-{res_id_num:03d}", # res-001 형태
             "resource_name": res.get("resource_name"),
             "url": res.get("url"),
             "type": res.get("type", "web_doc"),
             "resource_description": res.get("resource_description"),
-            "difficulty": res.get("difficulty"),  
-            "importance": res.get("importance"),  
-            "study_load": res.get("study_load"),
+            "difficulty": difficulty,  
+            "importance": importance,  
+            "study_load": study_load,
             "is_necessary": None                    
         }
         resource_map[kid].append(formatted_res)
@@ -171,7 +184,7 @@ async def concept_expansion_node(state: CreateCurriculumOverallState):
         "missing_concepts": state["missing_concepts"]
     }
     
-    updated_curriculum = agent.run(input)
+    updated_curriculum = await agent.run(input)
     
     return {
         "curriculum": updated_curriculum["curriculum"],

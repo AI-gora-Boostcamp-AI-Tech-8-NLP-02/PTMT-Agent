@@ -7,14 +7,14 @@ from typing import Literal
 from langgraph.graph import StateGraph, START, END
 
 from core.graphs.subgraph_to_curriculum import transform_subgraph_to_final_curriculum
-from core.graphs.nodes import (
+from core.graphs.series.nodes import (
     curriculum_orchestrator_node, 
     resource_discovery_agent_node,
     curriculum_compose_node,
     concept_expansion_node,
     paper_concept_alignment_node
 )
-from core.graphs.state_definition import CreateCurriculumOverallState
+from core.graphs.series.state_definition import CreateCurriculumOverallState
 
 
 def agent_loop_router(state: CreateCurriculumOverallState) -> Literal["resource_discovery", "concept_expansion", "paper_concept_alignment", "orchestrator"]:
@@ -79,9 +79,9 @@ async def run_langgraph_workflow():
     
     # dummy 데이터 경로 설정
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information.json")
-    paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper_v2.json")
-    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph.json")
+    user_info_path = os.path.join(current_dir, "../../../dummy_data/dummy_user_information.json")
+    paper_content_path = os.path.join(current_dir, "../../../dummy_data/dummy_parsing_paper_v2.json")
+    subgraph_path = os.path.join(current_dir, "../../../dummy_data/dummy_subgraph.json")
     
     meta_data_input = {
         "paper_id": "123456",
@@ -206,7 +206,7 @@ async def run_langgraph_workflow():
     for node in final_state['curriculum']['nodes']:
         print(f"  - [{node['keyword_id']}] {node['keyword']}: Sufficient={node['is_resource_sufficient']}, Resources={len(node.get('resources', []))}")
     
-    with open("langgraph_test_result_full.json", "w", encoding="utf-8") as f:
+    with open("langgraph_test_result_series_final.json", "w", encoding="utf-8") as f:
         json.dump(final_state, f, indent=2, ensure_ascii=False)
     print("\n✅ 'langgraph_test_result_full.json' 저장 완료.")
 
