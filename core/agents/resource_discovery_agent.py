@@ -16,7 +16,7 @@ class ResourceDiscoveryAgent:
         # 평가용 LLM
         self.llm_estimation = llm_estimation
         
-        self.sem = asyncio.Semaphore(3)
+        self.sem = asyncio.Semaphore()
 
     async def run(self, input_data: ResourceDiscoveryAgentInput) -> ResourceDiscoveryAgentOutput:
         """에이전트의 메인 실행 로직"""
@@ -26,6 +26,11 @@ class ResourceDiscoveryAgent:
         for node in input_data["nodes"]:
             if node.get("is_resource_sufficient", False):
                 continue
+            
+            # 디버깅
+            is_resource_sufficient=node.get("is_resource_sufficient", False)
+            k_id=node.get("keyword_id")
+            print(f"✅{k_id} -> Searching Resources : 충분 정도 : {is_resource_sufficient}")
 
             # 중복 URL 수집
             existing_urls = {res.get("url") for res in node.get("resources", []) if res.get("url")}
@@ -73,7 +78,7 @@ class ResourceDiscoveryAgent:
             queries = [
                 re.sub(r'^\d+[\.\s\-]+', '', q).strip() 
                 for q in raw_queries if q.strip()
-            ][:2] # 두 개만 사용
+            ][:1] # 두 개만 사용
             keyword_resources = []
             seen_urls = set()
 

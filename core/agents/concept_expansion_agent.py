@@ -316,7 +316,6 @@ class ConceptExpansionAgent:
                     "description": "",
                     "keyword_importance": None,
                     "is_resource_sufficient": False,
-                    "is_necessary": None,
                     "resources": []
                 }
 

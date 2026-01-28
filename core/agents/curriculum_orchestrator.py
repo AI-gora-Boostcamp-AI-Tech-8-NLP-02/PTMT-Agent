@@ -74,6 +74,8 @@ class CurriculumOrchestrator:
         ]
         res_reasoning = " | ".join(res_reasoning_list) if res_reasoning_list else "All resources are sufficient."
 
+        if not final_tasks:
+            final_tasks = ["curriculum_compose"]
 
         return {
             "tasks": final_tasks,
