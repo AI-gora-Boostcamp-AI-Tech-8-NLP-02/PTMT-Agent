@@ -22,14 +22,14 @@ class StudyLoadEstimationAgent:
             return {"evaluated_resources": []}
 
         tasks = [
-            self._estimate_single(res, user_level, purpose)
+            self.estimate_single(res, user_level, purpose)
             for res in resources
         ]
         
         evaluated_resources = await asyncio.gather(*tasks)
         return {"evaluated_resources": evaluated_resources}
 
-    async def _estimate_single(self, resource: Resource, user_level: str, purpose: str) -> Resource:
+    async def estimate_single(self, resource: Resource, user_level: str, purpose: str) -> Resource:
         async with self.sem:
             try:
                 response = await self.chain.ainvoke({
@@ -40,7 +40,7 @@ class StudyLoadEstimationAgent:
                     "purpose": purpose
                 }, config={"tags": ["load-estmination"]})
                 
-                parsed_data = self._parse_response(response.content)
+                parsed_data = self.parse_response(response.content)
                 
                 # 결과 업데이트
                 resource.update({
@@ -51,8 +51,10 @@ class StudyLoadEstimationAgent:
                     "resource_description": parsed_data.get("resource_description", "자료에 대한 설명이 없습니다.")
                 })
                 # 디버깅용 프린트
+                """
                 print(f"✅ [Estimated] {resource.get('resource_name')}")
                 print(response.content)
+                """
 
             except Exception as e:
                 print(f"⚠️ [Estimation Error] {resource.get('resource_name')}: {e}")
@@ -61,7 +63,7 @@ class StudyLoadEstimationAgent:
 
             return resource
 
-    def _parse_response(self, text: str) -> Dict[str, Any]:
+    def parse_response(self, text: str) -> Dict[str, Any]:
         """JSON 추출 및 파싱"""
         try:
             match = re.search(r'\{.*\}', text, re.DOTALL)
