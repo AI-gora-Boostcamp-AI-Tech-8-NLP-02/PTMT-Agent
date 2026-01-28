@@ -4,8 +4,8 @@ from typing import Dict, Any, List, Tuple
 from core.contracts.curriculum_compose import (
     CurriculumComposeInput,
     CurriculumComposeOutput,
-    CurriculumNode,
-    CurriculumEdge
+    KeywordNode,
+    KeywordEdge
 )
 from core.prompts.curriculum_compose.v1 import CURRICULUM_COMPOSE_PROMPT_V1
 

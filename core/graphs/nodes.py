@@ -7,6 +7,8 @@ from core.graphs.state_definition import CreateCurriculumOverallState
 
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
+from core.agents.curriculum_compose_agent import CurriculumComposeAgent
+from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
 
 async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     """
@@ -61,8 +63,6 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "resource_reasoning":result.get('resource_reasoning',"None"),
         "current_iteration_count": current_count + 1
     }
-
-
 
 async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
     """
@@ -147,6 +147,70 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         "tasks": [t for t in state.get("tasks", []) if t != "resource_search"]
     }
 
+async def curriculum_compose_node(state: CreateCurriculumOverallState):
+    """
+    Curriculum Compose Agent를 호출하여 커리큘럼 리소스를 최적화(삭제/보존/강조)
+    """
+    llm = get_solar_model(temperature=0.1)
+    agent = CurriculumComposeAgent(llm)
+
+    curriculum = state.get("curriculum", {})
+    user_info = state.get("user_info", {})
+
+    agent_input = {
+        "user_info": user_info,
+        "curriculum": curriculum
+    }
+
+    result = await agent.run(agent_input)
+    new_curriculum = result.get("curriculum", curriculum)
+
+    return {
+        "curriculum": new_curriculum
+    }
+
+async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
+    """
+    Paper Concept Alignment Agent를 호출하여 노드별 설명(description)을 생성 및 보강
+    """
+    llm = get_solar_model(temperature=0.1)
+    agent = PaperConceptAlignmentAgent(llm)
+
+    curriculum = state.get("curriculum", {})
+    # TODO 이거 한번 확인해야함.. 내일 이야기 해보깅
+    paper_info = state.get("paper_content", {})
+
+    agent_input = {
+        "paper_info": paper_info,
+        "curriculum": curriculum
+    }
+
+    result = await agent.run(agent_input)
+    descriptions = result.get("descriptions", {})
+
+    # 커리큘럼 노드에 설명 업데이트
+    current_nodes = curriculum.get("nodes", [])
+    updated_nodes = []
+    
+    for node in current_nodes:
+        new_node = node.copy()
+        kw_id = new_node.get("keyword_id")
+        
+        # 새로 생성된 설명이 있으면 업데이트
+        if kw_id in descriptions:
+            new_node["description"] = descriptions[kw_id]
+            
+        updated_nodes.append(new_node)
+    
+    updated_curriculum = {
+        **curriculum,
+        "nodes": updated_nodes
+    }
+
+    return {
+        "curriculum": updated_curriculum,
+        # description이 필요한 ID 목록을 비워줍니다 (처리가 완료되었으므로)
+        "needs_description_ids": [] 
 
 async def concept_expansion_node(state: CreateCurriculumOverallState):
     """
