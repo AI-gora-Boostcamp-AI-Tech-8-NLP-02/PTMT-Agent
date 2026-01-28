@@ -1,28 +1,15 @@
-# python -m core.tests.test_concept_expansion_agent
+# python -m core.tests.test_concept_expansion_node
 
+import asyncio
 import json
 from typing import cast
-from dotenv import load_dotenv
 
-from core.agents.concept_expansion_agent import ConceptExpansionAgent
 from core.contracts.types.curriculum import CurriculumGraph
+from core.graphs.nodes import concept_expansion_node
 from core.graphs.state_definition import CreateCurriculumOverallState
-from core.llm.solar_pro_2_llm import get_solar_model
 
 def main():
-    # 1. env 로드
-    load_dotenv()
-
-    # 2. LLM 생성
-    llm = get_solar_model(
-        model_name="solar-pro2",
-        temperature=0.5
-    )
-
-    # 3. Agent 생성
-    agent = ConceptExpansionAgent(llm)
-
-    # 4. 테스트용 JSON 데이터 로드
+    # 테스트용 JSON 데이터 로드
     with open("./dummy_data/dummy_initial_curriculum.json", "r", encoding="utf-8") as f:
         curriculum = json.load(f)
 
@@ -52,8 +39,8 @@ def main():
         "missing_concepts": missing_concepts
     }
     
-    # 5. Agent 실행
-    result = agent.run(dummy_state)
+    # node 실행
+    result = asyncio.run(concept_expansion_node(dummy_state))
 
     # # 6. 결과 출력
     print("===== Concept Expansion Result =====")

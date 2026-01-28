@@ -1,4 +1,6 @@
 import json
+from core.agents.concept_expansion_agent import ConceptExpansionAgent
+from core.contracts.concept_expansion import ConceptExpansionInput
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 from core.graphs.state_definition import CreateCurriculumOverallState
@@ -131,4 +133,25 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         "curriculum": updated_curriculum,
         "insufficient_resource_ids": [], 
         "tasks": [t for t in state.get("tasks", []) if t != "resource_search"]
+    }
+
+
+async def concept_expansion_node(state: CreateCurriculumOverallState):
+    """
+    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
+    """
+    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
+    
+    agent = ConceptExpansionAgent(llm)
+    
+    input: ConceptExpansionInput = {
+        "curriculum": state["curriculum"],
+        "keyword_expand_reason": state["keyword_expand_reason"],
+        "missing_concepts": state["missing_concepts"]
+    }
+    
+    updated_curriculum = agent.run(input)
+    
+    return {
+        "curriculum": updated_curriculum["curriculum"]
     }
