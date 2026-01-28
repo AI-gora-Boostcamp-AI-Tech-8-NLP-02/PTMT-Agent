@@ -1,14 +1,14 @@
 import json
-from core.agents.concept_expansion_agent import ConceptExpansionAgent
 from core.contracts.concept_expansion import ConceptExpansionInput
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
-from core.graphs.state_definition import CreateCurriculumOverallState
+
 
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
 from core.agents.curriculum_compose_agent import CurriculumComposeAgent
 from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
+from core.agents.concept_expansion_agent import ConceptExpansionAgent
 
 async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     """
@@ -169,6 +169,27 @@ async def curriculum_compose_node(state: CreateCurriculumOverallState):
         "curriculum": new_curriculum
     }
 
+async def concept_expansion_node(state: CreateCurriculumOverallState):
+    """
+    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
+    """
+    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
+    
+    agent = ConceptExpansionAgent(llm)
+    
+    input: ConceptExpansionInput = {
+        "curriculum": state["curriculum"],
+        "keyword_expand_reason": state["keyword_expand_reason"],
+        "missing_concepts": state["missing_concepts"]
+    }
+    
+    updated_curriculum = agent.run(input)
+    
+    return {
+        "curriculum": updated_curriculum["curriculum"],
+        "tasks": [t for t in state.get("tasks", []) if t != "keyword_expansion"]
+    }
+
 async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     """
     Paper Concept Alignment Agent를 호출하여 노드별 설명(description)을 생성 및 보강
@@ -177,7 +198,6 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     agent = PaperConceptAlignmentAgent(llm)
 
     curriculum = state.get("curriculum", {})
-    # TODO 이거 한번 확인해야함.. 내일 이야기 해보깅
     paper_info = state.get("paper_content", {})
 
     agent_input = {
@@ -210,24 +230,6 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     return {
         "curriculum": updated_curriculum,
         # description이 필요한 ID 목록을 비워줍니다 (처리가 완료되었으므로)
-        "needs_description_ids": [] 
-
-async def concept_expansion_node(state: CreateCurriculumOverallState):
-    """
-    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
-    """
-    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
-    
-    agent = ConceptExpansionAgent(llm)
-    
-    input: ConceptExpansionInput = {
-        "curriculum": state["curriculum"],
-        "keyword_expand_reason": state["keyword_expand_reason"],
-        "missing_concepts": state["missing_concepts"]
-    }
-    
-    updated_curriculum = agent.run(input)
-    
-    return {
-        "curriculum": updated_curriculum["curriculum"]
+        "needs_description_ids": [],
+        "tasks": [t for t in state.get("tasks", []) if t != "generate_description"]
     }
