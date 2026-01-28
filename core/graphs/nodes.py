@@ -196,5 +196,25 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     return {
         "curriculum": updated_curriculum,
         # description이 필요한 ID 목록을 비워줍니다 (처리가 완료되었으므로)
-        "needs_description_ids": [] 
+        "needs_description_ids": []
+    }
+
+async def concept_expansion_node(state: CreateCurriculumOverallState):
+    """
+    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
+    """
+    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
+    
+    agent = ConceptExpansionAgent(llm)
+    
+    input: ConceptExpansionInput = {
+        "curriculum": state["curriculum"],
+        "keyword_expand_reason": state["keyword_expand_reason"],
+        "missing_concepts": state["missing_concepts"]
+    }
+    
+    updated_curriculum = agent.run(input)
+    
+    return {
+        "curriculum": updated_curriculum["curriculum"]
     }
