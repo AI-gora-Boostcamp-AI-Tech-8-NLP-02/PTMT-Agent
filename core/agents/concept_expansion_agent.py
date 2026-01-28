@@ -62,6 +62,7 @@ class ConceptExpansionAgent:
         
         # normalization
         expanded_graph = self._normalize_expanded_graph(
+            paper_id=input["curriculum"]["graph_meta"]["paper_id"],
             base_graph=keyword_graph,
             expanded_graph=expanded_graph,
         )
@@ -94,6 +95,7 @@ class ConceptExpansionAgent:
 
     def _normalize_expanded_graph(
         self,
+        paper_id: str,
         base_graph: Dict[str, Any],
         expanded_graph: Dict[str, Any],
     ) -> Dict[str, Any]:
@@ -105,6 +107,7 @@ class ConceptExpansionAgent:
             return {"nodes": [], "edges": []}
 
         return self._reassign_keyword_ids(
+            paper_id=paper_id,
             base_graph=base_graph,
             expanded_graph=expanded_graph,
         )
@@ -135,6 +138,7 @@ class ConceptExpansionAgent:
 
     def _reassign_keyword_ids(
         self,
+        paper_id: str,
         base_graph: Dict[str, Any],
         expanded_graph: Dict[str, Any],
     ) -> Dict[str, Any]:
@@ -142,18 +146,21 @@ class ConceptExpansionAgent:
         base_graph의 keyword_id를 기준으로
         expanded_graph의 node들에 새로운 keyword_id를 순차적으로 부여한다.
         """
+        
+        id_mapping: Dict[str, str] = {}
 
         # base_graph에서 마지막 keyword 번호 찾기
         max_index = -1
         for node in base_graph.get("nodes", []):
             match = KEYWORD_ID_PATTERN.match(node.get("keyword_id", ""))
             if match:
+                node_id = node.get("keyword_id")
+                id_mapping[node_id] = node_id
                 max_index = max(max_index, int(match.group(1)))
 
         next_index = max_index + 1
 
         # expanded_graph node에 새 keyword_id 부여
-        id_mapping: Dict[str, str] = {}
         new_nodes: List[Dict[str, Any]] = []
 
         for node in expanded_graph.get("nodes", []):
@@ -175,8 +182,15 @@ class ConceptExpansionAgent:
         for edge in expanded_graph.get("edges", []):
             start = edge.get("start")
             end = edge.get("end")
-
-            if start in id_mapping and end in id_mapping:
+            
+            if end == paper_id and start in id_mapping:
+                new_edges.append(
+                    {
+                        "start": id_mapping[start],
+                        "end": end,
+                    }
+                )
+            elif start in id_mapping and end in id_mapping:
                 new_edges.append(
                     {
                         "start": id_mapping[start],
