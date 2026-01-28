@@ -210,7 +210,8 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     return {
         "curriculum": updated_curriculum,
         # description이 필요한 ID 목록을 비워줍니다 (처리가 완료되었으므로)
-        "needs_description_ids": [] 
+        "needs_description_ids": []
+    }
 
 async def concept_expansion_node(state: CreateCurriculumOverallState):
     """
