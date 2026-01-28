@@ -31,8 +31,9 @@ async def main():
             curriculum_data = json.load(f)
             
             # paper_concept_alignment 테스트를 위해 일부 description 비우기
-            for node in curriculum_data["nodes"][:3]:
+            for node in curriculum_data["nodes"][:1]:
                  node["description"] = ""
+                 node["importance"] = None
         
         with open(paper_path, "r") as f:
             paper_info = json.load(f)
@@ -66,7 +67,7 @@ async def main():
     }
     
     # Target Nodes 확인 (description 비운 노드들)
-    target_node_ids = [n["keyword_id"] for n in curriculum_data["nodes"][:3]]
+    target_node_ids = [n["keyword_id"] for n in curriculum_data["nodes"][:1]]
     print(f"🎯 Target Nodes (Description cleared): {target_node_ids}")
     
     try:
@@ -91,17 +92,20 @@ async def main():
         for node in new_curr_v2.get("nodes", []):
             kid = node.get("keyword_id")
             desc = node.get("description", "")
+            importance = node.get("keyword_importance", None)
             
             # 전체 통계
-            if desc:
+            if desc and importance:
                 filled_desc += 1
             
             # 타겟 노드 확인
             if kid in target_node_ids:
-                status = "✅ FILLED" if desc else "❌ EMPTY"
+                status = "✅ FILLED" if desc and importance else "❌ EMPTY"
                 print(f"  - [{kid}] {node['keyword']}: {status}")
                 if desc:
                     print(f"    -> {desc[:60]}...") # 내용 일부 출력
+                if importance:
+                    print(f"    -> {importance}") # 내용 일부 출력
 
         print(f"\n  - Total Nodes with Description: {filled_desc}/{len(new_curr_v2.get('nodes', []))}")
         
