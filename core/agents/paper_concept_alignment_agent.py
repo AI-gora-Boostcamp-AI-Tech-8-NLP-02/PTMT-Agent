@@ -71,17 +71,18 @@ class PaperConceptAlignmentAgent:
             }   
             )
 
-            descriptions = self._parse_response(response.content)
+            response = self._parse_response(response.content)
             
-            print(f"✅ 생성된 설명 수: {len(descriptions)}")
-            for kw_id, desc in descriptions.items():
-                print(f"  - {kw_id}: {desc[:50]}...")
+            print(f"✅ 생성된 설명 수: {len(response)}")
+            for kw_id, data in response.items():
+                desc = data.get('description', '')[:50]
+                print(f"  - {kw_id}: {desc}...")
 
-            return {"descriptions": descriptions}
+            return {"response": response}
 
         except Exception as e:
             print(f"❌ LLM 호출 중 오류 발생: {e}")
-            return {"descriptions": {}}
+            return {"response": {}}
 
     def _filter_nodes_without_description(self, nodes: List[KeywordNode]) -> List[KeywordNode]:
         """description이 없거나 빈 노드 필터링"""

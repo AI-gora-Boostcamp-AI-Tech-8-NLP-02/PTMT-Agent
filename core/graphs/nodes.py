@@ -1,6 +1,4 @@
 import json
-from core.agents.concept_expansion_agent import ConceptExpansionAgent
-from core.contracts.concept_expansion import ConceptExpansionInput
 from core.graphs.state_definition import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 from core.graphs.state_definition import CreateCurriculumOverallState
@@ -18,13 +16,11 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     agent = CurriculumOrchestrator(llm)
 
     # 에이전트 실행 
-    orchestrator_input = {
-        "paper_content": state["paper_content"],
-        "curriculum": state["curriculum"], 
-        "user_info": state["user_info"]
-    }
-
-    result = await agent.run(orchestrator_input)
+    result = await agent.run(
+        paper_content=state["paper_content"],
+        curriculum=state["curriculum"],
+        user_info=state["user_info"]
+    )
 
     insufficient_ids = result.get("insufficient_resource_ids", [])
     current_curriculum = state.get("curriculum", {})
@@ -44,7 +40,6 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "nodes": updated_nodes
     }
 
-    current_count = state.get("current_iteration_count", 0)
 
     # state 업데이트
     return {
@@ -61,7 +56,6 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
 
         "keyword_reasoning":result.get('keyword_reasoning',"None"),
         "resource_reasoning":result.get('resource_reasoning',"None"),
-        "current_iteration_count": current_count + 1
     }
 
 async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
@@ -101,23 +95,15 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         
         # 형식에 맞는 리소스 객체 생성
         res_id_num = all_current_res_count + i + 1
-        try:
-            difficulty = int(float(res.get("difficulty", 5)))
-            importance = int(float(res.get("importance", 5)))
-            study_load = float(res.get("study_load", 1)) 
-        except (ValueError, TypeError):
-            difficulty, importance, study_load = 5, 5, 1 # 실패 시 기본값
-
-
         formatted_res = {
             "resource_id": f"res-{res_id_num:03d}", # res-001 형태
             "resource_name": res.get("resource_name"),
             "url": res.get("url"),
             "type": res.get("type", "web_doc"),
             "resource_description": res.get("resource_description"),
-            "difficulty": difficulty,  
-            "importance": importance,  
-            "study_load": study_load,
+            "difficulty": res.get("difficulty"),  
+            "importance": res.get("importance"),  
+            "study_load": res.get("study_load"),
             "is_necessary": None                    
         }
         resource_map[kid].append(formatted_res)
@@ -177,7 +163,6 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     agent = PaperConceptAlignmentAgent(llm)
 
     curriculum = state.get("curriculum", {})
-    # TODO 이거 한번 확인해야함.. 내일 이야기 해보깅
     paper_info = state.get("paper_content", {})
 
     agent_input = {
@@ -186,7 +171,7 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     }
 
     result = await agent.run(agent_input)
-    descriptions = result.get("descriptions", {})
+    response = result.get("response", {})
 
     # 커리큘럼 노드에 설명 업데이트
     current_nodes = curriculum.get("nodes", [])
@@ -197,8 +182,9 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
         kw_id = new_node.get("keyword_id")
         
         # 새로 생성된 설명이 있으면 업데이트
-        if kw_id in descriptions:
-            new_node["description"] = descriptions[kw_id]
+        if kw_id in response:
+            new_node["description"] = response[kw_id].get("description", "")
+            new_node["keyword_importance"] = response[kw_id].get("importance")
             
         updated_nodes.append(new_node)
     
