@@ -15,7 +15,8 @@ class ConceptExtractionAgent:
         response = self.chain.invoke(
             {
                 "paper_name": paper["paper_name"],
-                "paper_content": paper["paper_content"],
+                "paper_abstract": paper["paper_content"]["abstract"],
+                "paper_body": paper["paper_content"]["body"],
             },
             config={
                 "max_tokens": 512,
