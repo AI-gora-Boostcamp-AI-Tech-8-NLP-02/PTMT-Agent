@@ -23,10 +23,11 @@ def agent_loop_router(state: CreateCurriculumOverallState) -> Literal["resource_
     # tasks가 남아있으면 다음 agent로 이동
     if tasks:
         next_task = tasks[0] # 혹은 우선순위 로직
-        print(f"🔄 [Agent] ({next_task}) -> 다음 에이전트로 이동")    
+        print(f"🔄 [Agent] ({next_task}) -> 다음 에이전트로 이동")
+        if next_task == "generate_description": return "paper_concept_alignment"    
         if next_task == "resource_search": return "resource_discovery"
         if next_task == "keyword_expansion": return "concept_expansion"
-        if next_task == "generate_description": return "paper_concept_alignment"
+
             
     print("✅ [Agent] 할 일 목록 비어있음 -> Orchestrator로 복귀하여 재진단")
     return "orchestrator"
@@ -53,9 +54,10 @@ def orchestrator_router(state: CreateCurriculumOverallState) -> Literal["resourc
         return "curriculum_compose" 
 
     # agnet 배정
+    print(f"🔄 [Agent] ({next_task}) -> 다음 에이전트로 이동") 
+    if next_task == "generate_description": return "paper_concept_alignment"
     if next_task == "resource_search": return "resource_discovery"
     if next_task == "keyword_expansion": return "concept_expansion"
-    if next_task == "generate_description": return "paper_concept_alignment"
 
     return "curriculum_compose"
 

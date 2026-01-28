@@ -16,7 +16,7 @@ class ResourceDiscoveryAgent:
         # 평가용 LLM
         self.llm_estimation = llm_estimation
         
-        self.sem = asyncio.Semaphore()
+        self.sem = asyncio.Semaphore(5)
 
     async def run(self, input_data: ResourceDiscoveryAgentInput) -> ResourceDiscoveryAgentOutput:
         """에이전트의 메인 실행 로직"""
