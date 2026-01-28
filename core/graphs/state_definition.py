@@ -4,6 +4,7 @@ from core.contracts.types.curriculum import CurriculumGraph
 from core.contracts.types.paper_info import PaperInfo
 from core.contracts.types.user_info import UserInfo
 
+
 # Create Curriculm Graph State
 class CreateCurriculumInputState(TypedDict):
     paper_name: str                 # 논문 이름

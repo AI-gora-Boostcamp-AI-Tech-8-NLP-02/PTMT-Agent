@@ -1,6 +1,7 @@
 import asyncio
 import re
 from typing import List, Dict, Any
+from core.contracts.types.curriculum import KeywordNode, Resource
 from core.contracts.resource_discovery import ResourceDiscoveryAgentInput, ResourceDiscoveryAgentOutput
 from core.prompts.resource_discovery.v1 import QUERY_GEN_PROMPT_V1
 from core.tools.tavily_search import search_web_resources
@@ -30,7 +31,7 @@ class ResourceDiscoveryAgent:
             existing_urls = {res.get("url") for res in node.get("resources", []) if res.get("url")}
             
             # 검색 태스크 생성
-            tasks.append(self._process_single_node(
+            tasks.append(self.process_single_node(
                 node=node,
                 user_level=input_data["user_level"],
                 pref_types=input_data["pref_types"],
@@ -58,7 +59,7 @@ class ResourceDiscoveryAgent:
         # 최종 결과 반환
         return {"evaluated_resources": estimation_result["evaluated_resources"]}
 
-    async def _process_single_node(self, node, user_level, pref_types, excluded_urls):
+    async def process_single_node(self, node, user_level, pref_types, excluded_urls):
         """단일 키워드 자료 검색"""
         async with self.sem:
             # 쿼리 생성
@@ -88,7 +89,7 @@ class ResourceDiscoveryAgent:
                     keyword_resources.append({
                         "keyword_id": node["keyword_id"],
                         "keyword": node["keyword"],
-                        "resource_name": res.get("title"),
+                        "resource_name": res.get("title", "Untitled Resource"),
                         "url": url,
                         "raw_content": (res.get("content") or "")[:1000],
                         "query": query
