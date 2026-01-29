@@ -31,6 +31,8 @@ class KeywordGraphAgent:
 
         # response = await self.chain.ainvoke(input_data)
 
+        target_paper_id = input_data.get("paper_id")
+
         current_dir = os.path.dirname(os.path.abspath(__file__))
         subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph.json")
     
@@ -41,5 +43,17 @@ class KeywordGraphAgent:
         except FileNotFoundError as e:
             print(f" subgraph 더미 데이터 로드 실패: {e}")
             return {"subgraph": None}
+
+        # Paper ID 교체
+        if target_paper_id:
+            original_paper_id = dummy_subgraph.get("paper_id")
+            dummy_subgraph["paper_id"] = target_paper_id
+
+            if original_paper_id and "edges" in dummy_subgraph:
+                for edge in dummy_subgraph["edges"]:
+                    if edge.get("start") == original_paper_id:
+                        edge["start"] = target_paper_id
+                    if edge.get("end") == original_paper_id:
+                        edge["end"] = target_paper_id
 
         return {"subgraph": dummy_subgraph}

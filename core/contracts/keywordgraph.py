@@ -5,6 +5,7 @@ from core.contracts.types.subgraph import Subgraph
 
 class KeywordGraphInput(TypedDict):
     """Keyword Graph Agent 입력"""
+    paper_id: str
     paper_info: PaperInfo
     user_info: UserInfo
     initial_keyword: List[str]

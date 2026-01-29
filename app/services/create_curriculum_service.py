@@ -50,7 +50,6 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
             author_list = author_data # 이미 리스트
 
         paper_info = {
-            "paper_id": request.paper_id,
             "title": request.paper_content.title,
             "author": author_list,
             "abstract": request.paper_content.abstract,
@@ -68,6 +67,7 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
         initial_keywords = request.initial_keyword
         
         keyword_input = {
+            "paper_id": request.paper_id,
             "paper_info": paper_info,
             "user_info": user_info,
             "initial_keyword": initial_keywords
