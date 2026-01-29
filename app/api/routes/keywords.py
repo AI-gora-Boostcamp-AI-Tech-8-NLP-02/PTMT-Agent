@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models.keyword import KeywordExtractRequest, KeywordExtractResponse
-from app.services.keyword_service import extract_keywords
+from app.services.extract_paper_concept_service import extract_keywords
 from app.core.exceptions import (
     MissingSourceDataException,
     InvalidFormatException,
@@ -19,9 +19,9 @@ async def extract_keywords_endpoint(request: KeywordExtractRequest):
     pdf_text, weblink, paper_title 중 적어도 하나는 필수입니다.
     """
     try:
-        # 필수 필드 검증: pdf_text, weblink, paper_title 중 하나는 필수
-        if not request.pdf_text and not request.weblink and not request.paper_title:
-            raise MissingSourceDataException()
+        if not request.paper_content:
+             raise MissingSourceDataException("Paper content is missing")
+
         
         # 서비스 호출
         result = await extract_keywords(request)

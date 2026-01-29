@@ -6,7 +6,10 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
     Subgraph를 최종 Curriculum 포맷으로 변환
     """
     
+    # Subgraph에서 paper_id 확인, 없으면 meta_data에서 fallback
     paper_id = subgraph_data.get("paper_id", "")
+    if not paper_id and meta_data and "paper_id" in meta_data:
+        paper_id = meta_data["paper_id"]
     
     
     # ID 매핑 테이블 생성 & None ID 저장
