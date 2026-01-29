@@ -27,7 +27,7 @@ class ConceptExpansionAgent:
             tools=self.tools
         )
     
-    def run(self, input: ConceptExpansionInput) -> ConceptExpansionOutput:
+    async def run(self, input: ConceptExpansionInput) -> ConceptExpansionOutput:
         # Input 추출
         keyword_graph = self._extract_keyword_graph(input["curriculum"])
         paper_info = input["curriculum"]["graph_meta"]
@@ -43,7 +43,7 @@ class ConceptExpansionAgent:
         )
 
         # agent 실행
-        response = self.agent.invoke(
+        response = await self.agent.ainvoke(
             {
                 "messages": messages
             },
@@ -330,7 +330,6 @@ class ConceptExpansionAgent:
                     "description": "",
                     "keyword_importance": None,
                     "is_resource_sufficient": False,
-                    "is_necessary": None,
                     "resources": []
                 }
 

@@ -22,7 +22,6 @@ class KeywordNode(TypedDict):
     description: str
     keyword_importance: int
     is_resource_sufficient: bool
-    is_necessary: Optional[bool]
     resources: List[Resource]
 
 class KeywordEdge(TypedDict):

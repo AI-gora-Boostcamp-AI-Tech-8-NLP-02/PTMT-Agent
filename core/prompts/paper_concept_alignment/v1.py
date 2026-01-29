@@ -39,7 +39,7 @@ PAPER_CONCEPT_ALIGNMENT_PROMPT_V1 = ChatPromptTemplate.from_messages([
 {keywords_to_describe}
 
 [출력 형식]
-각 키워드에 대해 "이 키워드가 목표 논문 이해에 왜 필요한지"를 설명하세요:
+각 키워드에 대해 "이 키워드가 목표 논문 이해에 왜 필요한지"를 설명과 중요도를 평가하세요(설명에 중요도 점수를 넣지 마세요):
 {{
     "키워드_id_1": {{
         "description": "이 키워드가 논문 이해에 필요한 이유와 역할 설명...",

@@ -32,19 +32,24 @@ class CurriculumOrchestrator:
         if zero_resource_ids: tasks.append("resource_search")
         
         if tasks: 
-            return self.format_rule_base_result(tasks, missing_desc_ids, zero_resource_ids)
+            return self.format_rule_base_result(
+                tasks=tasks, 
+                desc_ids=missing_desc_ids, 
+                res_ids=zero_resource_ids,
+                current_kw_sufficient=input_data.get("is_keyword_sufficient", True),
+                current_res_sufficient=input_data.get("is_resource_sufficient", True)
+            )
 
         # Keyword Check + Resource Checks
-        # 모든 키워드에 대해 리소스 체크 태스크 생성
-        resource_tasks = []
-        for node in nodes:
-            # 병렬 실행을 위한 리스트에 추가
-            task = self.check_single_resource(
+        nodes_to_check = [n for n in nodes if not n.get("is_resource_sufficient", False)]
+        resource_tasks = [
+            self.check_single_resource(
                 node=node, 
                 level=user_level, 
                 purpose=user_purpose
             )
-            resource_tasks.append(task)
+            for node in nodes_to_check
+        ]
 
         # 키워드 충분성 체크 + 각 노드별 리소스 체크를 병렬 실행
         results = await asyncio.gather(
@@ -55,32 +60,48 @@ class CurriculumOrchestrator:
         kw_decision = results[0]  # 키워드 체크 결과
         res_decisions = results[1:] # 각 노드별 리소스 체크 결과들
 
-        # 결과 합치기 
-        final_tasks = []
+        existing_keywords = {n.get("keyword_id") for n in nodes if n.get("keyword_id")}
+        
+        raw_missing_concepts = kw_decision.get("missing_concepts", [])
+        
+        # 기존 키워드에 포함되지 않은 개념만 필터링
+        filtered_missing_concepts = [
+            concept for concept in raw_missing_concepts 
+            if concept in existing_keywords
+        ]
+
+        print(f"거르기전:{raw_missing_concepts}")
+        print(f"거른 후:{filtered_missing_concepts}")
+
         insufficient_res_ids = [
-            nodes[i]["keyword_id"] for i, dec in enumerate(res_decisions) 
+            nodes_to_check[i]["keyword_id"] for i, dec in enumerate(res_decisions) 
             if not dec.get("is_resource_sufficient", True)
         ]
 
-        if not kw_decision.get("is_keyword_sufficient", True):
+        # 결과 합치기 
+        final_tasks = []
+
+        if filtered_missing_concepts:
             final_tasks.append("keyword_expansion")
         if insufficient_res_ids:
             final_tasks.append("resource_search")
 
         res_reasoning_list = [
-            f"[{nodes[i]['keyword']}]: {dec.get('reasoning')}" 
+            f"[{nodes_to_check[i]['keyword']}]: {dec.get('reasoning')}" 
             for i, dec in enumerate(res_decisions) 
             if not dec.get("is_resource_sufficient", True)
         ]
         res_reasoning = " | ".join(res_reasoning_list) if res_reasoning_list else "All resources are sufficient."
 
+        if not final_tasks:
+            final_tasks = ["curriculum_compose"]
 
         return {
             "tasks": final_tasks,
-            "is_keyword_sufficient": kw_decision.get("is_keyword_sufficient", True),
+            "is_keyword_sufficient": len(filtered_missing_concepts) == 0,
             "is_resource_sufficient": len(insufficient_res_ids) == 0,
             "needs_description_ids": [],
-            "missing_concepts": kw_decision.get("missing_concepts", []),
+            "missing_concepts": filtered_missing_concepts,
             "insufficient_resource_ids": insufficient_res_ids,
             "keyword_reasoning": kw_decision.get("reasoning", "No keyword gaps found."),
             "resource_reasoning": res_reasoning,
@@ -118,11 +139,18 @@ class CurriculumOrchestrator:
             except: return {}
         return {}
 
-    def format_rule_base_result(self, tasks: List[str], desc_ids: List[str], res_ids: List[str]) -> CurriculumOrchestratorOutput:
+    def format_rule_base_result(
+        self, 
+        tasks: List[str], 
+        desc_ids: List[str], 
+        res_ids: List[str],
+        current_kw_sufficient: bool, 
+        current_res_sufficient: bool  
+    ) -> CurriculumOrchestratorOutput:
         return {
             "tasks": list(set(tasks)),
-            "is_keyword_sufficient": True,
-            "is_resource_sufficient": False if "resource_search" in tasks else True,
+            "is_keyword_sufficient": current_kw_sufficient,
+            "is_resource_sufficient": False if "resource_search" in tasks else current_res_sufficient,
             "insufficient_resource_ids": res_ids,
             "needs_description_ids": desc_ids,
             "missing_concepts": [],

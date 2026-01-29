@@ -1,12 +1,14 @@
 import json
-from core.graphs.state_definition import CreateCurriculumOverallState
+from core.contracts.concept_expansion import ConceptExpansionInput
+from core.graphs.parallel.state_parallel import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
-from core.graphs.state_definition import CreateCurriculumOverallState
+
 
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
 from core.agents.curriculum_compose_agent import CurriculumComposeAgent
 from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
+from core.agents.concept_expansion_agent import ConceptExpansionAgent
 
 async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     """
@@ -16,11 +18,13 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     agent = CurriculumOrchestrator(llm)
 
     # 에이전트 실행 
-    result = await agent.run(
-        paper_content=state["paper_content"],
-        curriculum=state["curriculum"],
-        user_info=state["user_info"]
-    )
+    result = await agent.run({
+        "paper_content": state["paper_content"],
+        "curriculum": state["curriculum"],
+        "user_info": state["user_info"],
+        "is_keyword_sufficient": state.get("is_keyword_sufficient", True),
+        "is_resource_sufficient": state.get("is_resource_sufficient", True)
+    })
 
     insufficient_ids = result.get("insufficient_resource_ids", [])
     current_curriculum = state.get("curriculum", {})
@@ -40,6 +44,8 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "nodes": updated_nodes
     }
 
+    current_count = state.get("current_iteration_count", 0)
+
 
     # state 업데이트
     return {
@@ -56,6 +62,7 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
 
         "keyword_reasoning":result.get('keyword_reasoning',"None"),
         "resource_reasoning":result.get('resource_reasoning',"None"),
+        "current_iteration_count": current_count + 1
     }
 
 async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
@@ -95,15 +102,23 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         
         # 형식에 맞는 리소스 객체 생성
         res_id_num = all_current_res_count + i + 1
+        try:
+            difficulty = int(float(res.get("difficulty", 5)))
+            importance = int(float(res.get("importance", 5)))
+            study_load = float(res.get("study_load", 1)) 
+        except (ValueError, TypeError):
+            difficulty, importance, study_load = 5, 5, 1 # 실패 시 기본값
+
+
         formatted_res = {
             "resource_id": f"res-{res_id_num:03d}", # res-001 형태
             "resource_name": res.get("resource_name"),
             "url": res.get("url"),
             "type": res.get("type", "web_doc"),
             "resource_description": res.get("resource_description"),
-            "difficulty": res.get("difficulty"),  
-            "importance": res.get("importance"),  
-            "study_load": res.get("study_load"),
+            "difficulty": difficulty,  
+            "importance": importance,  
+            "study_load": study_load,
             "is_necessary": None                    
         }
         resource_map[kid].append(formatted_res)
@@ -120,17 +135,11 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
 
         updated_nodes.append(new_node)
     
-     # 새로운 curriculum 객체 생성
-    updated_curriculum = {
-        **curriculum,
-        "nodes": updated_nodes
-    }
 
     # state 업데이트
     return {
-        "curriculum": updated_curriculum,
-        "insufficient_resource_ids": [], 
-        "tasks": [t for t in state.get("tasks", []) if t != "resource_search"]
+        "curriculum": {"nodes":updated_nodes},
+        "insufficient_resource_ids": []
     }
 
 async def curriculum_compose_node(state: CreateCurriculumOverallState):
@@ -153,6 +162,36 @@ async def curriculum_compose_node(state: CreateCurriculumOverallState):
 
     return {
         "curriculum": new_curriculum
+    }
+
+async def concept_expansion_node(state: CreateCurriculumOverallState):
+    """
+    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
+    """
+    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
+    
+    agent = ConceptExpansionAgent(llm)
+    
+    input: ConceptExpansionInput = {
+        "curriculum": state["curriculum"],
+        "keyword_expand_reason": state["keyword_expand_reason"],
+        "missing_concepts": state["missing_concepts"]
+    }
+    
+    result= await agent.run(input)
+    updated_full_curriculum = result["curriculum"]
+    
+    existing_node_ids = {n["keyword_id"] for n in state["curriculum"].get("nodes", [])}
+    new_nodes = [n for n in updated_full_curriculum.get("nodes", []) 
+                 if n["keyword_id"] not in existing_node_ids]
+    
+    # 엣지도 새로운 연결만 추출 (ID 조합 등으로 체크)
+    existing_edge_keys = {f"{e['start']}->{e['end']}" for e in state["curriculum"].get("edges", [])}
+    new_edges = [e for e in updated_full_curriculum.get("edges", []) 
+                 if f"{e['start']}->{e['end']}" not in existing_edge_keys]
+    
+    return {
+        "curriculum": {"nodes": new_nodes, "edges": new_edges}
     }
 
 async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
@@ -188,33 +227,8 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
             
         updated_nodes.append(new_node)
     
-    updated_curriculum = {
-        **curriculum,
-        "nodes": updated_nodes
-    }
 
     return {
-        "curriculum": updated_curriculum,
-        # description이 필요한 ID 목록을 비워줍니다 (처리가 완료되었으므로)
-        "needs_description_ids": []
-    }
-
-async def concept_expansion_node(state: CreateCurriculumOverallState):
-    """
-    Concept Expansion Agent를 호출하여 추가 키워드를 생성 및 연결
-    """
-    llm = get_solar_model(model_name="solar-pro2", temperature=0.5)
-    
-    agent = ConceptExpansionAgent(llm)
-    
-    input: ConceptExpansionInput = {
-        "curriculum": state["curriculum"],
-        "keyword_expand_reason": state["keyword_expand_reason"],
-        "missing_concepts": state["missing_concepts"]
-    }
-    
-    updated_curriculum = agent.run(input)
-    
-    return {
-        "curriculum": updated_curriculum["curriculum"]
+        "curriculum": {"nodes": updated_nodes},
+        "needs_description_ids": [],
     }
