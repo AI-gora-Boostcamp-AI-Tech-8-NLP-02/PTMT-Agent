@@ -1,5 +1,6 @@
 # python -m core.tests.test_concept_extraction_agent
 
+import asyncio
 import json
 from dotenv import load_dotenv
 
@@ -7,7 +8,7 @@ from core.agents.concept_extraction_agent import ConceptExtractionAgent
 from core.contracts.concept_extraction import ConceptExtractionInput
 from core.llm.solar_pro_2_llm import get_solar_model
 
-def main():
+async def main():
     # 1. env 로드
     load_dotenv()
 
@@ -21,11 +22,11 @@ def main():
     agent = ConceptExtractionAgent(llm)
 
     # 4. 테스트용 JSON 데이터 로드
-    with open("./dummy_data/dummy_parsing_paper_v2.json", "r", encoding="utf-8") as f:
+    with open("./dummy_data/dummy_parsing_paper_BERT.json", "r", encoding="utf-8") as f:
         paper_data = json.load(f)
 
-    paper_id = "paper_1"
-    paper_name = "Attention Is All You Need"
+    paper_id = "paper_2"
+    paper_name = "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
     paper_content = paper_data
 
     paper: ConceptExtractionInput = {
@@ -35,7 +36,7 @@ def main():
     }
     
     # 5. Agent 실행
-    result = agent.run(paper)
+    result = await agent.run(paper)
 
     # # 6. 결과 출력
     print("===== Concept Extraction Result =====")
@@ -43,4 +44,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
