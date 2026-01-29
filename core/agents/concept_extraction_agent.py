@@ -11,8 +11,8 @@ class ConceptExtractionAgent:
         self.llm = llm
         self.chain = CONCEPT_EXTRACTION_PROMPT_V1 | llm
     
-    def run(self, paper: ConceptExtractionInput) -> ConceptExtractionOutput:
-        response = self.chain.invoke(
+    async def arun(self, paper: ConceptExtractionInput) -> ConceptExtractionOutput:
+        response = await self.chain.ainvoke(
             {
                 "paper_name": paper["paper_name"],
                 "paper_abstract": paper["paper_content"]["abstract"],
