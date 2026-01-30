@@ -1,9 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from typing import Annotated
+from app.api.deps import get_token
 from app.models.curriculum import (
     CurriculumGenerateRequest,
     CurriculumGenerateResponse
 )
-from app.services.curriculum_service import generate_curriculum
+from app.services.create_curriculum_service import generate_curriculum
 from app.core.exceptions import (
     MissingTraitsException,
     AnalysisNotFoundException,
@@ -15,7 +17,10 @@ router = APIRouter(prefix="/api/curr/curr", tags=["curriculum"])
 
 
 @router.post("/generate", response_model=CurriculumGenerateResponse)
-async def generate_curriculum_endpoint(request: CurriculumGenerateRequest):
+async def generate_curriculum_endpoint(
+    request: CurriculumGenerateRequest,
+    token: Annotated[str, Depends(get_token)]
+):
     """
     API-CURR-CURR-01: 커리큘럼 생성 엔드포인트
     
@@ -26,11 +31,6 @@ async def generate_curriculum_endpoint(request: CurriculumGenerateRequest):
         # 필수 필드 검증
         if not request.user_traits:
             raise MissingTraitsException()
-        
-        # analysis_id 검증 (실제로는 DB에서 확인해야 함)
-        # TODO: 실제 구현 시 analysis_id로 이전 분석 데이터 조회
-        if not request.analysis_id:
-            raise AnalysisNotFoundException()
         
         # 서비스 호출
         result = await generate_curriculum(request)

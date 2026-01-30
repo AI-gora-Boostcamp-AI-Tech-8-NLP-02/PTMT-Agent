@@ -29,9 +29,9 @@ def create_initial_state(
     
     
     meta_data_input = {
-        "paper_id": "123456", 
+        "paper_id": paper_raw_data.get("paper_id", "Unknown ID"), 
         "title" : paper_raw_data.get("title", "Unknown Title"),
-        "summarize": "이 논문은 기존의 RNN이나 CNN을 완전히 배제하고 오로지 어텐션(Attention) 메커니즘만으로 구성된 트랜스포머(Transformer) 아키텍처를 제시하며 딥러닝 연구의 새로운 패러다임을 열었습니다. 연산의 병렬화를 통해 학습 속도를 비약적으로 높였을 뿐만 아니라, 기존 모델들의 고질적인 문제였던 장거리 의존성 문제를 해결함으로써 현재 GPT와 같은 초거대 언어 모델들이 탄생할 수 있는 결정적인 토대를 마련했습니다."
+        "summarize": paper_raw_data.get("abstract", "") # Use abstract as summary for now
     }
 
     # Subgraph -> Curriculum 변환 (Transform)
