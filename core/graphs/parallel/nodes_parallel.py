@@ -176,7 +176,8 @@ async def concept_expansion_node(state: CreateCurriculumOverallState):
     input: ConceptExpansionInput = {
         "curriculum": state["curriculum"],
         "keyword_expand_reason": state["keyword_expand_reason"],
-        "missing_concepts": state["missing_concepts"]
+        "missing_concepts": state["missing_concepts"],
+        "user_info" : state["user_info"]
     }
     
     result= await agent.run(input)

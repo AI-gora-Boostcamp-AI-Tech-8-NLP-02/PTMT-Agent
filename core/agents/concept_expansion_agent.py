@@ -7,7 +7,7 @@ from langchain_tavily import TavilySearch
 
 from core.contracts.concept_expansion import ConceptExpansionInput, ConceptExpansionOutput
 from core.contracts.types.curriculum import CurriculumGraph, KeywordNode
-from core.prompts.concept_expansion.v1 import CONCEPT_EXPANSION_PROMPT_V1
+from core.prompts.concept_expansion.v2 import CONCEPT_EXPANSION_PROMPT_V2
 from core.utils.get_message import get_last_ai_message
 
 load_dotenv()
@@ -33,13 +33,14 @@ class ConceptExpansionAgent:
         paper_info = input["curriculum"]["graph_meta"]
         
         # 프롬프트 적용
-        messages = CONCEPT_EXPANSION_PROMPT_V1.format_messages(
+        messages = CONCEPT_EXPANSION_PROMPT_V2.format_messages(
             paper_info = paper_info,
             keyword_graph=json.dumps(
                 keyword_graph, ensure_ascii=False
             ),
             reason=input["keyword_expand_reason"],
-            keyword_ids = input["missing_concepts"]
+            keyword_ids = input["missing_concepts"],
+            known_concept=input["user_info"]["known_concept"]
         )
 
         # agent 실행
@@ -51,7 +52,7 @@ class ConceptExpansionAgent:
                 "max_tokens": 1024,
                 "tags": [
                     "agent:concept-expansion",
-                    "prompt:v1",
+                    "prompt:v2",
                     "tool:tavily",
                 ],
             }
@@ -59,6 +60,11 @@ class ConceptExpansionAgent:
         
         # llm 결과 parsing
         expanded_graph = self._parse_response(response)
+
+        expanded_graph = self._filter_known_concepts(
+            expanded_graph=expanded_graph,
+            known_concepts=input["user_info"]["known_concept"]
+        )
         
         # normalization
         expanded_graph = self._normalize_expanded_graph(
@@ -357,4 +363,55 @@ class ConceptExpansionAgent:
             "graph_meta": curriculum["graph_meta"],
             "nodes": merged_nodes,
             "edges": merged_edges
+        }
+
+
+    def _filter_known_concepts(
+        self, 
+        expanded_graph: Dict[str, Any], 
+        known_concepts: List[str]
+    ) -> Dict[str, Any]:
+        """
+        LLM이 생성한 확장 그래프에서
+        known_concept과 일치하는 노드 제거
+        """
+        
+        # 소문자 변환 및 공백 제거 
+        def normalize(text):
+            return text.strip().lower().replace(" ", "") if text else ""
+
+        known_set = {normalize(k) for k in known_concepts}
+        
+        dropped_ids = set()
+        valid_nodes = []
+
+        # Node 필터링
+        for node in expanded_graph.get("nodes", []):
+            raw_keyword = node.get("keyword", "")
+            norm_keyword = normalize(raw_keyword)
+            node_id = node.get("keyword_id")
+
+            # 키워드가 known_set에 있으면 제거
+            if norm_keyword in known_set:
+                # print(f"🚫 Known Concept 필터링됨: {raw_keyword}")
+                dropped_ids.add(node_id)
+                continue
+            
+            valid_nodes.append(node)
+
+        # Edge 필터링
+        valid_edges = []
+        for edge in expanded_graph.get("edges", []):
+            start = edge.get("start")
+            end = edge.get("end")
+
+            # start나 end 중 하나라도 제거된 ID라면 이 엣지는 버림
+            if start in dropped_ids or end in dropped_ids:
+                continue
+            
+            valid_edges.append(edge)
+
+        return {
+            "nodes": valid_nodes,
+            "edges": valid_edges
         }
