@@ -80,7 +80,7 @@ class CurriculumComposeAgent:
             new_node = node.copy()
             original_resources = node.get("resources", [])
             new_resources = []
-            
+            keyword_necessary_flag = False
             for res in original_resources:
                 rid = res.get("resource_id")
                 action = action_map.get(rid, "PRESERVE") # 기본값 PRESERVE
@@ -92,12 +92,18 @@ class CurriculumComposeAgent:
                 new_res = res.copy()
                 if action == "EMPHASIZE":
                     new_res["is_necessary"] = True
+                    keyword_necessary_flag=True
                 else: # PRESERVE
                     new_res["is_necessary"] = False
                 
                 new_resources.append(new_res)
-            
+
             new_node["resources"] = new_resources
+            
+            if keyword_necessary_flag:
+                new_node["is_keyword_necessary"]=True
+            else:
+                new_node["is_keyword_necessary"]=False
             new_nodes.append(new_node)
 
         new_curriculum = curriculum.copy()

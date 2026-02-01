@@ -66,6 +66,7 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
             "keyword": node["keyword"],
             "description": None, 
             "keyword_importance": None,
+            "is_keyword_necessary": None,
             "is_resource_sufficient": False,
             "resources": transformed_resources
         }

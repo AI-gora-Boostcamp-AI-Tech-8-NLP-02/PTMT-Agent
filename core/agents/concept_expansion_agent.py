@@ -329,6 +329,7 @@ class ConceptExpansionAgent:
                     "keyword": raw_node.get("keyword", ""),
                     "description": "",
                     "keyword_importance": None,
+                    "is_keyword_necessary": None,
                     "is_resource_sufficient": False,
                     "resources": []
                 }
