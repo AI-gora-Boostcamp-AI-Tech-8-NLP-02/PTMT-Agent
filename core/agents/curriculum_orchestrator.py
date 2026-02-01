@@ -22,6 +22,8 @@ class CurriculumOrchestrator:
         nodes: List[KeywordNode] = curriculum.get("nodes", [])
         user_level = user_info.get("level", "unknown")
         user_purpose = user_info.get("purpose", "simple_study")
+        current_count= input_data.get("current_iteration_count", 0)
+        MAX_ITERATIONS = 6
         
         # Rule-based 분기 
         tasks = []
@@ -32,6 +34,16 @@ class CurriculumOrchestrator:
         if zero_resource_ids: tasks.append("resource_search")
         
         if tasks: 
+            return self.format_rule_base_result(
+                tasks=tasks, 
+                desc_ids=missing_desc_ids, 
+                res_ids=zero_resource_ids,
+                current_kw_sufficient=input_data.get("is_keyword_sufficient", True),
+                current_res_sufficient=input_data.get("is_resource_sufficient", True)
+            )
+
+        if current_count+1>=MAX_ITERATIONS:
+            print(f"🛑 [Orchestrator] 반복 횟수({current_count+1}) 초과. LLM 미호출.")
             return self.format_rule_base_result(
                 tasks=tasks, 
                 desc_ids=missing_desc_ids, 

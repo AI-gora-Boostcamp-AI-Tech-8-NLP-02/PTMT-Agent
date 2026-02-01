@@ -23,7 +23,8 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "curriculum": state["curriculum"],
         "user_info": state["user_info"],
         "is_keyword_sufficient": state.get("is_keyword_sufficient", True),
-        "is_resource_sufficient": state.get("is_resource_sufficient", True)
+        "is_resource_sufficient": state.get("is_resource_sufficient", True),
+        "current_iteration_count":state.get("current_iteration_count", 0)
     })
 
     insufficient_ids = result.get("insufficient_resource_ids", [])

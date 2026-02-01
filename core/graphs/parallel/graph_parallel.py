@@ -65,33 +65,37 @@ def orchestrator_router(state: CreateCurriculumOverallState) -> List[str]:
     current_count = state.get("current_iteration_count", 0)
     MAX_ITERATIONS = 6
 
-    # 종료 조건: 태스크가 없거나 반복 횟수 초과 시
-    if not tasks: 
-        print("🏁 [Router] 모든 태스크 완료. 최종 단계로 이동합니다.")
-        return ["curriculum_compose"]
-    
-    if current_count >= MAX_ITERATIONS:
-        print("⚠️ [Router] 반복 횟수 초과. 강제 종료합니다.")
-        return ["curriculum_compose"]
-
     # 병렬 실행할 노드 리스트 
     next_nodes = []
-    
-    # tasks 리스트에 있는 키워드를 보고 실행할 노드를 결정
-    if "generate_description" in tasks: 
-        next_nodes.append("paper_concept_alignment")
-    if "resource_search" in tasks: 
-        next_nodes.append("resource_discovery")
-    if "keyword_expansion" in tasks: 
-        next_nodes.append("concept_expansion")
+    is_over_limit = current_count > MAX_ITERATIONS
 
-    # tasks에는 있는데 매핑된 노드가 없는 경우
-    if not next_nodes:
-        return ["curriculum_compose"]
-        
-    print(f"🔀 [Parallel] 다음 에이전트들 동시 실행: {next_nodes} (Loop: {current_count})")
-    
-    return next_nodes
+    has_desc = "generate_description" in tasks
+    has_res = "resource_search" in tasks
+    has_exp = "keyword_expansion" in tasks
+
+    is_critical_cleanup = has_desc and has_res
+
+    if is_over_limit:
+        # 둘 다 동시에 있을 때만 실행
+        if is_critical_cleanup:
+            print(f"⚠️ [Router] 반복 초과({current_count})! 그러나 '설명,자료'가 동시에 누락되어 마지막으로 보충합니다.")
+            next_nodes.append("paper_concept_alignment")
+            next_nodes.append("resource_discovery")
+        else:
+            print(f"🛑 [Router] 반복 초과. (설명,자료 동시 누락 조건 불만족) -> 강제 종료.")
+            return ["curriculum_compose"]
+    else:
+        # 제한 안 넘었으면 있는 태스크 다 담기
+        if has_desc: next_nodes.append("paper_concept_alignment")
+        if has_res: next_nodes.append("resource_discovery")
+        if has_exp: next_nodes.append("concept_expansion")
+
+    if next_nodes:
+        print(f"🔀 [Parallel] 동시 실행: {next_nodes} (Loop: {current_count})")
+        return next_nodes
+
+    print("✅ [Router] 실행 가능한 태스크 없음. 종료.")
+    return ["curriculum_compose"]
 
 
 # Join Node, 결과 병합 후처리
