@@ -67,7 +67,7 @@ def orchestrator_router(state: CreateCurriculumOverallState) -> List[str]:
 
     # 병렬 실행할 노드 리스트 
     next_nodes = []
-    is_over_limit = current_count > MAX_ITERATIONS
+    is_over_limit = current_count >= MAX_ITERATIONS
 
     has_desc = "generate_description" in tasks
     has_res = "resource_search" in tasks
