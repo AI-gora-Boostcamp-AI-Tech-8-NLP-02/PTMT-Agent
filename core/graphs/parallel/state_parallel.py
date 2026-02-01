@@ -51,8 +51,13 @@ def merge_curriculum(existing: CurriculumGraph, delta: CurriculumGraph) -> Curri
             
     preserved_meta = delta.get("graph_meta") or existing.get("graph_meta") or {}
 
+    new_first_node_order = delta.get("first_node_order")
+    if new_first_node_order is None:
+        new_first_node_order = existing.get("first_node_order")
+
     return {
         "graph_meta": preserved_meta,
+        "first_node_order":new_first_node_order,
         "nodes": list(node_map.values()),
         "edges": existing_edges
     }

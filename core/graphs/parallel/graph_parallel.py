@@ -13,7 +13,8 @@ from core.graphs.parallel.nodes_parallel import (
     resource_discovery_agent_node,
     curriculum_compose_node,
     concept_expansion_node,
-    paper_concept_alignment_node
+    paper_concept_alignment_node,
+    first_node_order_node
 )
 from core.graphs.parallel.state_parallel import CreateCurriculumOverallState
 
@@ -121,6 +122,7 @@ def run_langgraph_workflow():
     workflow.add_node("paper_concept_alignment", paper_concept_alignment_node)
     workflow.add_node("concept_expansion", concept_expansion_node)
     workflow.add_node("curriculum_compose", curriculum_compose_node)
+    workflow.add_node("first_node_order",first_node_order_node)
     
     # join 노드 등록
     workflow.add_node("join_results", join_parallel_results_node)
@@ -149,7 +151,8 @@ def run_langgraph_workflow():
     workflow.add_edge("join_results", "orchestrator")
 
     # 종료 처리
-    workflow.add_edge("curriculum_compose", END)
+    workflow.add_edge("curriculum_compose", "first_node_order")
+    workflow.add_edge("first_node_order",END)
 
     # 컴파일
     return workflow.compile()

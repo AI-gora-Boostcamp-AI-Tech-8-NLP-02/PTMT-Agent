@@ -37,6 +37,7 @@ class GraphMeta(TypedDict):
 
 class CurriculumGraph(TypedDict):
     graph_meta: GraphMeta
+    first_node_order:List[str]
     nodes: List[KeywordNode]
     edges: List[KeywordEdge]
 

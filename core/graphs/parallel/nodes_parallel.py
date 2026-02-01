@@ -9,6 +9,7 @@ from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
 from core.agents.curriculum_compose_agent import CurriculumComposeAgent
 from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
+from core.agents.first_node_order_agent import FirstNodeOrderAgent
 
 async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     """
@@ -233,4 +234,33 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
     return {
         "curriculum": {"nodes": updated_nodes},
         "needs_description_ids": [],
+    }
+
+
+async def first_node_order_node(state: CreateCurriculumOverallState):
+    """
+    First Node Order Agent를 호출하여 시작 노드의 순서를 결정
+    """
+    llm = get_solar_model(temperature=0.1)
+    agent = FirstNodeOrderAgent(llm)
+
+    curriculum = state.get("curriculum", {})
+    paper_info = state.get("paper_content", {})
+    user_info = state.get("user_info", {})
+
+    agent_input = {
+        "paper_content": paper_info,
+        "curriculum": curriculum,
+        "user_info":user_info
+    }
+
+    result = await agent.run(agent_input)
+
+    new_order = result["curriculum"].get("first_node_order", [])
+
+    curriculum["first_node_order"] = new_order
+
+
+    return {
+        "curriculum": curriculum
     }

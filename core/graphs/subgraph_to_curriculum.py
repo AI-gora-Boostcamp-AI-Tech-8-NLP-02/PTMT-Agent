@@ -101,6 +101,7 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
 
     curriculum = {
         "graph_meta": meta_data,
+        "first_node_order": [],
         "nodes": transformed_nodes,
         "edges": transformed_edges
     }
