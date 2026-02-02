@@ -100,17 +100,25 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
 
     current_count = state.get("current_iteration_count", 0)
     if current_count <= 2:
-        all_candidates = []
+        resources_to_estimate = []
+        
+        # 노드를 순회하며 'keyword' 정보를 유지한 채로 리소스 검사
         for node in nodes_list:
+            # 현재 노드의 키워드 확보
+            node_keyword = node.get("keyword", "")
+            
             existing_res = node.get("resources", [])
-            all_candidates.extend(existing_res)
-
-        # 평가 대상 수집
-        for res in all_candidates:
-            if (res.get("difficulty") is None or 
-                res.get("importance") is None or 
-                res.get("study_load") is None):
-                resources_to_estimate.append(res)
+            
+            for res in existing_res:
+                # 평가 필요 여부 검사 (None 체크)
+                if (res.get("difficulty") is None or 
+                    res.get("importance") is None or 
+                    res.get("study_load") is None):
+                    
+                    res["keyword"] = node_keyword
+                    res["raw_content"] = res.get("resource_description", "")
+                    res["resource_name"]=res.get("resource_name","")
+                    resources_to_estimate.append(res)
 
         # 에이전트 실행 및 결과 반영
         if resources_to_estimate:
