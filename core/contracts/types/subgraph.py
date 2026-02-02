@@ -4,7 +4,7 @@ class SubgraphResource(TypedDict):
     resource_name: str
     url: str
     type: str # "paper" | "web_doc" | "video"
-    abstract: str
+    description: str
 
 class SubgraphNode(TypedDict):
     keyword_id: str

@@ -21,6 +21,7 @@ class KeywordNode(TypedDict):
     keyword: str
     description: str
     keyword_importance: int
+    is_keyword_necessary: Optional[bool]
     is_resource_sufficient: bool
     resources: List[Resource]
 
@@ -36,6 +37,7 @@ class GraphMeta(TypedDict):
 
 class CurriculumGraph(TypedDict):
     graph_meta: GraphMeta
+    first_node_order:List[str]
     nodes: List[KeywordNode]
     edges: List[KeywordEdge]
 
