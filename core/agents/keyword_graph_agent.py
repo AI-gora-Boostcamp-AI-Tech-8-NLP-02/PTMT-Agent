@@ -115,7 +115,8 @@ class KeywordGraphAgent:
 
 
         # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
-        valid_keywords = set(agent_output['nodes'] + self.init_subgraph['graph']['target_paper']['name'])
+        tp_name = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('name', '')
+        valid_keywords = set(agent_output.get('nodes', []) + ([tp_name] if tp_name else []))
         agent_output['edges'] = [
             edge for edge in agent_output['edges']
             if edge['start'] in valid_keywords and edge['end'] in valid_keywords

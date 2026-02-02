@@ -108,22 +108,35 @@ def flatten_edges(raw_subgraph):
 ## 타겟 paper가 아닌 paper들은 삭제
 def remove_non_target_papers_and_edges(flat_edges, paper_ids, target_paper_id, keyword_id_to_name):
     """
-    - target_paper를 제외한 paper 노드들과 연결된 edge 제거
-    - agent 입력에는 paper를 넣지 않으므로, paper가 source/target인 edge 전부 제거
-    - keyword<->keyword edge만 남긴다.
+    - non-target paper 연결 edge 제거
+    - paper가 끼는 edge는 기본 제거
+      BUT target_paper_id <-> keyword 의 ABOUT/IN edge는 유지
+    - keyword<->keyword + (target<->keyword ABOUT/IN)만 남김
     """
     non_target_paper_ids = {pid for pid in paper_ids if pid and pid != target_paper_id}
     cleaned = []
     for e in flat_edges:
         s = e["source"]
         t = e["target"]
+        et = e["type"]
 
         # target 제외 paper와 연결된 edge 제거
         if s in non_target_paper_ids or t in non_target_paper_ids:
             continue
-        # paper가 끼면 제거 (target paper 포함)
+
+        # target paper <-> keyword 의 ABOUT/IN 은 유지
+        is_target_kw = (
+            (s == target_paper_id and t in keyword_id_to_name) or
+            (t == target_paper_id and s in keyword_id_to_name)
+        )
+        if is_target_kw and et in {"ABOUT", "IN"}:
+            cleaned.append(e)
+            continue
+
+        # 그 외 paper가 끼면 제거 (target 포함)
         if s in paper_ids or t in paper_ids:
             continue
+
         # keyword id가 아닌 노드는 제거
         if s not in keyword_id_to_name or t not in keyword_id_to_name:
             continue
@@ -258,7 +271,7 @@ def break_bidirectional_edges(edges, dist_to_target):
 
 
 ## 에이전트 입력으로 변환
-def build_agent_input(keyword_keyword_edges, keyword_id_to_name, target_paper_id):
+def build_agent_input(keyword_keyword_edges, keyword_id_to_name, target_paper_id, target_paper_title):
     """
     agent 입력 형태로 변환:
     {"target_paper_id": "", 
@@ -268,14 +281,19 @@ def build_agent_input(keyword_keyword_edges, keyword_id_to_name, target_paper_id
 
     nodes는 edges에 등장한 keyword들만 포함하도록 함(불필요 노드 제거).
     """
+    target_node = target_paper_title or "__TARGET_PAPER__"
+
     node_name_set = set()
     out_edges = []
 
+    def id_to_node_name(node_id: str) -> str | None:
+        if node_id == target_paper_id:
+            return target_node
+        return keyword_id_to_name.get(node_id)
+
     for e in keyword_keyword_edges:
-        s_id = e["source"]
-        t_id = e["target"]
-        s_name = keyword_id_to_name.get(s_id)
-        t_name = keyword_id_to_name.get(t_id)
+        s_name = id_to_node_name(e["source"])
+        t_name = id_to_node_name(e["target"])
         if not s_name or not t_name:
             continue
 
@@ -292,13 +310,12 @@ def build_agent_input(keyword_keyword_edges, keyword_id_to_name, target_paper_id
             }
         )
 
-    nodes = sorted(node_name_set)
+    # 타겟 논문 노드를 앞에 오게
+    nodes = sorted(n for n in node_name_set if n != target_node)
+    if target_node in node_name_set:
+        nodes = [target_node] + nodes
 
-    return {
-        "target_paper_id": target_paper_id,
-        "nodes": nodes,
-        "edges": out_edges,
-    }
+    return {"target_paper_id": target_paper_id, "nodes": nodes, "edges": out_edges}
 
 
 ## 전체 preprocess
@@ -322,6 +339,7 @@ def preprocess_graph(raw_subgraph):
     """
     target_paper = extract_target_paper(raw_subgraph)
     target_paper_id = target_paper.get("id", "")
+    target_paper_title = target_paper.get("title", "") 
 
     keyword_id_to_name, _ = build_keyword_maps(raw_subgraph)
     paper_ids = get_paper_id_set(raw_subgraph)
@@ -350,6 +368,7 @@ def preprocess_graph(raw_subgraph):
         keyword_keyword_edges=keyword_keyword_edges,
         keyword_id_to_name=keyword_id_to_name,
         target_paper_id=target_paper_id,
+        target_paper_title=target_paper_title, 
     )
 
     return subgraph
