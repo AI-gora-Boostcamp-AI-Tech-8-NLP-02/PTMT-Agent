@@ -55,7 +55,8 @@ def get_subgraph_1(paper_name, initial_keywords):
 
     q = """
     WITH 1 AS _
-    OPTIONAL MATCH (p:Paper {name:$paper_name})
+    OPTIONAL MATCH (p:Paper)
+    WHERE toLower(trim(p.name)) = toLower(trim($paper_name))
 
     /* 1) target paper와 직접 연결된 kc (ABOUT/IN) */
     OPTIONAL MATCH (p)-[pk:ABOUT|IN]-(k_paper:Keyword)
