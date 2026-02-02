@@ -52,7 +52,7 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
                 "resource_name": res.get("resource_name", ""),
                 "url": res.get("url", ""),
                 "type": res.get("type", "web_doc"),
-                "resource_description": res.get("abstract", res.get("resource_description", "")),
+                "resource_description": res.get("description", res.get("resource_description", "")),
                 "difficulty": 5,
                 "importance": 5,
                 "study_load": 1.0,
