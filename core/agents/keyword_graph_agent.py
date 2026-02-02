@@ -73,7 +73,7 @@ class KeywordGraphAgent:
 
         # 4. LLM 실행 결과 후처리
         subgraph = self._postprocess_graph(
-            paper_id="paper-123",
+            paper_id=target_paper['id'],
             initial_keyword=initial_keyword,
             text=response.content
         )

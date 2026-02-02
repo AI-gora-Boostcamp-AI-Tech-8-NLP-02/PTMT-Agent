@@ -1,0 +1,517 @@
+{
+  "graph": {
+    "nodes": {
+      "keywords": [
+        {
+          "name": "Transformer (deep learning)",
+          "link": "https://en.wikipedia.org/wiki/Transformer_%28deep_learning_architecture%29",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "categories": [
+            "19th-century inventions|British inventions|Electric power conversion|Electric transformers|Electrical engineering|Hungarian inventions",
+            "2017 in artificial intelligence|Google software|Neural network architectures",
+            "Fiction about alien visitations|Fiction about immortality|Fictional extraterrestrial robots|Films about shapeshifting|Hasbro franchises|Mass media franchises|Mass media franchises introduced in 1984|Military fiction|Science fiction franchises|Super robot anime and manga|Takara Tomy franchises|Television series about shapeshifting|Transformers (franchise)"
+          ]
+        },
+        {
+          "name": "Attention (machine learning)",
+          "link": "https://en.wikipedia.org/wiki/Attention_%28machine_learning%29",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "categories": [
+            "Machine learning",
+            "Disambiguation pages"
+          ]
+        },
+        {
+          "name": "attention-only mechanism",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:9544",
+          "categories": []
+        },
+        {
+          "name": "encoder-decoder architecture",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:11362",
+          "categories": []
+        },
+        {
+          "name": "parallelizable training",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:14531",
+          "categories": []
+        },
+        {
+          "name": "single-model state-of-the-art",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:15883",
+          "categories": []
+        },
+        {
+          "name": "Machine translation",
+          "link": "https://en.wikipedia.org/wiki/Machine_Translation",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593",
+          "categories": [
+            "Applications of artificial intelligence|Automation software|Computational linguistics|Computer-assisted translation|Machine translation|Tasks of natural language processing"
+          ]
+        },
+        {
+          "name": "Rnn (software)",
+          "link": "https://en.wikipedia.org/wiki/Rnn_%28software%29",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1838",
+          "categories": [
+            "Deep learning software",
+            "Free R (programming language) software",
+            "Free science software",
+            "Free statistical software",
+            "Open-source artificial intelligence",
+            "R (programming language)",
+            "R scientific libraries"
+          ]
+        },
+        {
+          "name": "Seq2seq",
+          "link": "https://en.wikipedia.org/wiki/Seq2seq",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2124",
+          "categories": [
+            "2014 in artificial intelligence",
+            "Artificial neural networks",
+            "Natural language processing",
+            "2014 in artificial intelligence|Artificial neural networks|Natural language processing"
+          ]
+        },
+        {
+          "name": "Convolutional neural network",
+          "link": "https://en.wikipedia.org/wiki/Convolutional_neural_network",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771",
+          "categories": [
+            "Computational neuroscience",
+            "Computer vision",
+            "Neural network architectures"
+          ]
+        },
+        {
+          "name": "Pretrained Encoder-Decoder Models",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:8397",
+          "categories": []
+        },
+        {
+          "name": "Multi-head Self-Attention",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:8101",
+          "categories": []
+        },
+        {
+          "name": "novel positional encoding scheme",
+          "link": NaN,
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:14291",
+          "categories": []
+        },
+        {
+          "name": "Backpropagation",
+          "link": "https://en.wikipedia.org/wiki/Backpropagation",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "categories": [
+            "Artificial neural networks",
+            "Machine learning algorithms",
+            "Artificial neural networks|Machine learning algorithms",
+            "Hypertension|Medical conditions related to obesity"
+          ]
+        },
+        {
+          "name": "Gradient",
+          "link": "https://en.wikipedia.org/wiki/Gradient",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5908",
+          "categories": [
+            "Differential calculus",
+            "Differential operators",
+            "Generalizations of the derivative",
+            "Linear operators in calculus",
+            "Rates",
+            "Vector calculus",
+            "Differential calculus|Differential operators|Generalizations of the derivative|Linear operators in calculus|Rates|Vector calculus"
+          ]
+        },
+        {
+          "name": "Differentiable function",
+          "link": "https://en.wikipedia.org/wiki/Differentiable_function",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5134",
+          "categories": [
+            "Multivariable calculus",
+            "Smooth functions"
+          ]
+        },
+        {
+          "name": "Chain rule",
+          "link": "https://en.wikipedia.org/wiki/Chain_rule",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4419",
+          "categories": [
+            "Differentiation rules",
+            "Theorems in calculus",
+            "Theorems in mathematical analysis"
+          ]
+        },
+        {
+          "name": "Partial derivative",
+          "link": "https://en.wikipedia.org/wiki/Partial_derivative",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1365",
+          "categories": [
+            "Differential operators",
+            "Multivariable calculus"
+          ]
+        },
+        {
+          "name": "Attention Is All You Need",
+          "link": "https://en.wikipedia.org/wiki/Attention_Is_All_You_Need",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987",
+          "categories": [
+            "2017 documents",
+            "2017 in artificial intelligence",
+            "Artificial intelligence papers",
+            "Google"
+          ]
+        },
+        {
+          "name": "Parallel text",
+          "link": "https://en.wikipedia.org/wiki/Parallel_corpora",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1348",
+          "categories": [
+            "Corpus linguistics|Language acquisition|Translation databases"
+          ]
+        },
+        {
+          "name": "Natural language processing",
+          "link": "https://en.wikipedia.org/wiki/Natural_Language_Processing",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1040",
+          "categories": []
+        },
+        {
+          "name": "Recurrent neural network",
+          "link": "https://en.wikipedia.org/wiki/Recurrent_neural_network",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725",
+          "categories": [
+            "Neural network architectures"
+          ]
+        },
+        {
+          "name": "Backpropagation through time",
+          "link": "https://en.wikipedia.org/wiki/Backpropagation_through_time",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4110",
+          "categories": [
+            "Artificial neural networks"
+          ]
+        },
+        {
+          "name": "Convolution",
+          "link": "https://en.wikipedia.org/wiki/Convolution",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4770",
+          "categories": [
+            "Bilinear maps",
+            "Feature detection (computer vision)",
+            "Fourier analysis",
+            "Functional analysis",
+            "Image processing"
+          ]
+        },
+        {
+          "name": "Neural network (machine learning)",
+          "link": "https://en.wikipedia.org/wiki/Artificial_Neural_Network",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3917",
+          "categories": []
+        },
+        {
+          "name": "Multilayer perceptron",
+          "link": "https://en.wikipedia.org/wiki/Multilayer_perceptron",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:959",
+          "categories": [
+            "Classification algorithms",
+            "Neural network architectures",
+            "Classification algorithms|Neural network architectures"
+          ]
+        },
+        {
+          "name": "Artificial neural network",
+          "link": "https://en.wikipedia.org/wiki/Artificial_neural_network",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3095",
+          "categories": []
+        },
+        {
+          "name": "Neural backpropagation",
+          "link": "https://en.wikipedia.org/wiki/Neural_backpropagation",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1092",
+          "categories": [
+            "Computational neuroscience",
+            "Neural circuitry",
+            "Neuroscience"
+          ]
+        }
+      ],
+      "papers": [
+        {
+          "name": "Transformers in Vision: A Survey",
+          "description": "이 논문은 컴퓨터 비전 분야에서 Transformer 모델의 기초 개념과 응용을 종합적으로 조망하며, 이미지 분류, 객체 검출, 행동 인식, 세그멘테이션 등 다양한 작업에 대한 성능과 한계를 비교 분석한다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17634"
+        },
+        {
+          "name": "A survey of the recent architectures of deep convolutional neural networks",
+          "description": "최근에 보고된 깊은 컨볼루셔널 신경망 아키텍처의 내적 분류를 위해 공간, 깊이, 다중 경로, 폭, 특징맵 활용, 채널 강화 및 주의 메커니즘의 7가지 범주로 분류한 조사 보고서이다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17806"
+        },
+        {
+          "name": "EnlightenGAN: Deep Light Enhancement Without Paired Supervision",
+          "description": "낮은 조명 이미지 강화를 위해 쌍이 없는 학습을 가능하게 한 EnlightenGAN은 입력 이미지 자체의 정보를 활용한 자기 정규화 손실과 전역-국소 판별자 구조를 통해 우수한 성능을 발휘한다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18015"
+        }
+      ]
+    },
+    "edges": {
+      "IN": [
+        {
+          "reason": "The paper explicitly contrasts its attention-only architecture with recurrent models, making knowledge of RNNs essential to understanding the motivation and innovation. Without familiarity with RNNs, the paper's key contribution is difficult to grasp.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1838",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        },
+        {
+          "reason": "The paper builds upon existing seq2seq models with attention mechanisms, making familiarity with the concept essential for understanding the context and motivation behind the proposed architecture.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2124",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        },
+        {
+          "reason": "The paper introduces a new architecture entirely based on attention mechanisms, making it a core component of the model. Without understanding attention, the paper's foundational concept cannot be grasped.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        },
+        {
+          "reason": "The paper contrasts its attention-only architecture with models that use convolutional neural networks, making knowledge of CNNs helpful for understanding the context and motivation. However, the core of the paper does not depend on understanding CNNs.",
+          "strength": 0.7,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        },
+        {
+          "reason": "The paper focuses on machine translation tasks, and the proposed model is evaluated specifically on translation benchmarks. The results and experiments are centered around improving performance in machine translation, making it a core prerequisite for understanding the context and goals of the paper.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        },
+        {
+          "reason": "The paper directly builds upon and contrasts with encoder-decoder models, making them a foundational prerequisite for understanding the proposed architecture's innovation and context.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:8397",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+        }
+      ],
+      "REF_BY": [],
+      "PREREQ": [
+        {
+          "reason": "Machine translation is a core application of natural language processing, requiring understanding of linguistic structures and text generation.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1040",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593"
+        },
+        {
+          "reason": "Neural backpropagation is essential for training artificial neural networks, as it enables gradient computation and weight updates.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1092",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3095"
+        },
+        {
+          "reason": "Machine translation models require parallel text to learn mappings between languages during training.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1348",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593"
+        },
+        {
+          "reason": "Backpropagation depends on partial derivatives to compute gradients with respect to individual parameters in a network.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1365",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Recurrent neural networks are the foundational concept underlying RNN software implementations, which rely on their structure and behavior.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1838"
+        },
+        {
+          "reason": "Seq2seq models rely on recurrent neural networks to process sequential input and generate sequential output.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2124"
+        },
+        {
+          "reason": "The attention mechanism is a core component of the Transformer architecture, and understanding Transformers is essential to grasping how attention functions in practice.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' introduces the Transformer architecture, making knowledge of the Transformer essential to understanding the paper's core contributions.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987"
+        },
+        {
+          "reason": "The Transformer architecture is a foundational model for modern machine translation systems.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593"
+        },
+        {
+          "reason": "Convolutional neural networks are a specialized type of artificial neural network, requiring understanding of basic neural network architecture and function.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3095",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771"
+        },
+        {
+          "reason": "Convolutional neural networks are a specialized type of neural network, requiring understanding of basic neural network architecture and function.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3917",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771"
+        },
+        {
+          "reason": "The Transformer architecture is built entirely around the attention mechanism, which is essential for understanding its operation and design.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' builds directly on the concept of attention mechanisms in machine learning, using them as the core architectural component.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' introduces the Transformer architecture, making it essential for understanding its design and functionality.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "Recurrent neural networks require backpropagation through time, which depends on backpropagation for gradient computation.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725"
+        },
+        {
+          "reason": "Seq2seq models use backpropagation to update parameters during training, making it essential for learning.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2124"
+        },
+        {
+          "reason": "Transformers rely on backpropagation to update parameters during training through gradient descent.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "Convolutional neural networks use backpropagation to adjust weights during training, making it essential for learning.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771"
+        },
+        {
+          "reason": "Backpropagation through time is essential for training recurrent neural networks, as it enables gradient computation across sequential time steps.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4110",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725"
+        },
+        {
+          "reason": "Backpropagation relies on the chain rule to compute gradients through composed functions.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4419",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Convolutional neural networks rely on convolution operations to extract spatial features from input data.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4770",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771"
+        },
+        {
+          "reason": "Backpropagation requires the ability to compute gradients, which depends on functions being differentiable.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5134",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Backpropagation depends on gradients to adjust model parameters during training.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5908",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "A multilayer perceptron is a fundamental type of neural network, and understanding its structure is essential to grasping the broader concept of neural networks in machine learning.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:959",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3917"
+        }
+      ],
+      "ABOUT": [
+        {
+          "reason": "The paper explicitly identifies self-attention as a fundamental concept behind the success of Transformers. It positions self-attention as a core component introduced in the foundational design of the model.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17634",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The concept of attention is presented as a key architectural innovation and is classified as one of the seven main categories of CNN advancements. It is highlighted as a significant and popular approach in recent deep CNN designs.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17806",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The attention mechanism is presented as one of several key innovations in the proposed method, central to its design and performance. It is introduced as a core component of the framework, contributing significantly to the model's effectiveness.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18015",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The paper presents the Transformer architecture with attention mechanisms as a core innovation, emphasizing the replacement of recurrence and convolutions with pure attention. The attention mechanism is central to the model's design and performance, though not explicitly named as a new concept beyond the overall architecture.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:11362"
+        },
+        {
+          "reason": "The paper presents the Transformer as a model that is more parallelizable than previous architectures, highlighting reduced training time as a key advantage. This property is emphasized as a significant benefit of the proposed architecture.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:14531"
+        },
+        {
+          "reason": "The paper explicitly claims to establish a new single-model state-of-the-art BLEU score on the WMT 2014 English-to-French task, positioning it as a key contribution.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:15883"
+        },
+        {
+          "reason": "The paper explicitly introduces the Transformer architecture as a new, simple network design based solely on attention mechanisms. It positions the architecture as a key contribution, replacing recurrent and convolutional components entirely.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "The paper introduces the self-attention mechanism as a core component of the Transformer architecture, presenting it as a fundamental innovation that replaces recurrence and convolution. It is explicitly positioned as the key mechanism enabling the model's performance and parallelization.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The paper introduces the Transformer architecture as a novel model based solely on attention mechanisms, explicitly dispensing with recurrence and convolutions. This establishes the attention-only mechanism as a core, proposed contribution.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:9544"
+        }
+      ]
+    },
+    "target_paper": {
+      "citationCount": 162388,
+      "name": "Attention is All you Need",
+      "description": "Transformer은 순환 및 컨볼루션 구조를 제거하고 순수한 어텐션 메커니즘만을 사용하여 영어-독어 번역과 영어-프랑스어 번역에서 우수한 성능을 달성한 새로운 신경망 아키텍처이다.",
+      "abstract": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.",
+      "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18188"
+    }
+  }
+}
