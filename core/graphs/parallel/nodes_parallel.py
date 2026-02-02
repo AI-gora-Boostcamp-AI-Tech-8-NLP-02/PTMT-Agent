@@ -6,6 +6,7 @@ from core.llm.solar_pro_2_llm import get_solar_model
 
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
+from core.agents.study_load_estimation_agent import StudyLoadEstimationAgent
 from core.agents.curriculum_compose_agent import CurriculumComposeAgent
 from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
@@ -80,6 +81,8 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         llm_estimation=llm_for_eval
     )
 
+    estimation_agent = StudyLoadEstimationAgent(llm=llm_for_eval)
+
     curriculum = state.get("curriculum", {})
     nodes_list = curriculum.get("nodes", [])
     user_info = state.get("user_info", {})
@@ -93,8 +96,68 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
     })
 
     new_resources = result.get("evaluated_resources", [])
-    resource_map = {}
+    resources_to_estimate = []
 
+    current_count = state.get("current_iteration_count", 0)
+    if current_count <= 2:
+        estimation_inputs = []   # Agent에게 보낼 입력용
+        resources_to_update = [] # 실제 업데이트할 원본 객체 참조
+        
+        for node in nodes_list:
+            node_keyword = node.get("keyword", "")
+            existing_res = node.get("resources", [])
+            
+            for res in existing_res:
+                # 평가가 필요한지 검사 
+                if (res.get("difficulty") is None or 
+                    res.get("importance") is None or 
+                    res.get("study_load") is None):
+                    
+                    temp_input = res.copy()
+                    
+                    temp_input["keyword"] = node_keyword
+                    # resource_description을 raw_content로 매핑하여 에이전트가 읽을 수 있게 함
+                    temp_input["raw_content"] = res.get("resource_description", "")
+                    
+                    estimation_inputs.append(temp_input)
+                    resources_to_update.append(res) # 원본은 여기에 따로 저장
+
+        # 에이전트 실행 및 결과 반영
+        if estimation_inputs:
+            print(f"🔄 Re-estimating {len(estimation_inputs)} resources...")
+        
+            estimation_input_data = {
+                "resources": estimation_inputs, # 복사본 전달
+                "user_level": user_info.get("level"),
+                "purpose": user_info.get("purpose")
+            }
+
+            # 에이전트 실행
+            estimation_result = await estimation_agent.run(estimation_input_data)
+            evaluated_updates = estimation_result.get("evaluated_resources", [])
+
+            # 결과 반영 (원본 리스트 + 결과 리스트)
+            if len(resources_to_update) == len(evaluated_updates):
+                for original, updated in zip(resources_to_update, evaluated_updates):
+                    
+                    # Pydantic 모델인 경우 딕셔너리로 변환
+                    if hasattr(updated, 'dict'):
+                        updated_dict = updated.dict()
+                    else:
+                        updated_dict = updated
+
+                    if "difficulty" in updated_dict:
+                        original["difficulty"] = updated_dict["difficulty"]
+                    if "importance" in updated_dict:
+                        original["importance"] = updated_dict["importance"]
+                    if "study_load" in updated_dict:
+                        original["study_load"] = updated_dict["study_load"]
+                    if "type" in updated_dict:
+                        original["type"] = updated_dict["type"]
+            else:
+                print("⚠️ Warning: Estimation count mismatch. Updates might be inaccurate.")
+
+    resource_map = {}
     all_current_res_count = sum(len(n.get("resources", [])) for n in nodes_list)
 
     for i, res in enumerate(new_resources):
@@ -102,14 +165,19 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         if kid not in resource_map:
             resource_map[kid] = []
         
-        # 형식에 맞는 리소스 객체 생성
+        def get_value(data, key, default):
+            val = data.get(key)
+            return val if val is not None else default
+
         res_id_num = all_current_res_count + i + 1
+        
         try:
-            difficulty = int(float(res.get("difficulty", 5)))
-            importance = int(float(res.get("importance", 5)))
-            study_load = float(res.get("study_load", 1)) 
+            # None이 들어오면 바로 기본값(5)으로 치환 후 변환
+            difficulty = int(float(get_value(res, "difficulty", 5)))
+            importance = int(float(get_value(res, "importance", 5)))
+            study_load = float(get_value(res, "study_load", 1)) 
         except (ValueError, TypeError):
-            difficulty, importance, study_load = 5, 5, 1 # 실패 시 기본값
+            difficulty, importance, study_load = 5, 5, 1
 
 
         formatted_res = {

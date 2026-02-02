@@ -53,9 +53,9 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
                 "url": res.get("url", ""),
                 "type": res.get("type", "web_doc"),
                 "resource_description": res.get("description", res.get("resource_description", "")),
-                "difficulty": 5,
-                "importance": 5,
-                "study_load": 1.0,
+                "difficulty": None,
+                "importance": None,
+                "study_load": None,
                 "is_necessary": None
             }
             transformed_resources.append(new_res)
