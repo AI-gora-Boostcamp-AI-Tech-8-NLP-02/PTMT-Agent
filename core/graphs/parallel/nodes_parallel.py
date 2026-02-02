@@ -100,47 +100,60 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
 
     current_count = state.get("current_iteration_count", 0)
     if current_count <= 2:
-        resources_to_estimate = []
+        estimation_inputs = []   # Agent에게 보낼 입력용
+        resources_to_update = [] # 실제 업데이트할 원본 객체 참조
         
-        # 노드를 순회하며 'keyword' 정보를 유지한 채로 리소스 검사
         for node in nodes_list:
-            # 현재 노드의 키워드 확보
             node_keyword = node.get("keyword", "")
-            
             existing_res = node.get("resources", [])
             
             for res in existing_res:
-                # 평가 필요 여부 검사 (None 체크)
+                # 평가가 필요한지 검사 
                 if (res.get("difficulty") is None or 
                     res.get("importance") is None or 
                     res.get("study_load") is None):
                     
-                    res["keyword"] = node_keyword
-                    res["raw_content"] = res.get("resource_description", "")
-                    res["resource_name"]=res.get("resource_name","")
-                    resources_to_estimate.append(res)
+                    temp_input = res.copy()
+                    
+                    temp_input["keyword"] = node_keyword
+                    # resource_description을 raw_content로 매핑하여 에이전트가 읽을 수 있게 함
+                    temp_input["raw_content"] = res.get("resource_description", "")
+                    
+                    estimation_inputs.append(temp_input)
+                    resources_to_update.append(res) # 원본은 여기에 따로 저장
 
         # 에이전트 실행 및 결과 반영
-        if resources_to_estimate:
-            print(f"🔄 Re-estimating {len(resources_to_estimate)} resources...")
+        if estimation_inputs:
+            print(f"🔄 Re-estimating {len(estimation_inputs)} resources...")
         
-            estimation_input = {
-                "resources": resources_to_estimate, 
+            estimation_input_data = {
+                "resources": estimation_inputs, # 복사본 전달
                 "user_level": user_info.get("level"),
                 "purpose": user_info.get("purpose")
             }
 
-            # 리턴값.
-            estimation_result = await estimation_agent.run(estimation_input)
+            # 에이전트 실행
+            estimation_result = await estimation_agent.run(estimation_input_data)
             evaluated_updates = estimation_result.get("evaluated_resources", [])
 
-            # new_resources에 업데이트된 내용을 병합
-            if len(resources_to_estimate) == len(evaluated_updates):
-                for original, updated in zip(resources_to_estimate, evaluated_updates):
+            # 결과 반영 (원본 리스트 + 결과 리스트)
+            if len(resources_to_update) == len(evaluated_updates):
+                for original, updated in zip(resources_to_update, evaluated_updates):
+                    
+                    # Pydantic 모델인 경우 딕셔너리로 변환
                     if hasattr(updated, 'dict'):
-                        original.update(updated.dict())
+                        updated_dict = updated.dict()
                     else:
-                        original.update(updated)
+                        updated_dict = updated
+
+                    if "difficulty" in updated_dict:
+                        original["difficulty"] = updated_dict["difficulty"]
+                    if "importance" in updated_dict:
+                        original["importance"] = updated_dict["importance"]
+                    if "study_load" in updated_dict:
+                        original["study_load"] = updated_dict["study_load"]
+                    if "type" in updated_dict:
+                        original["type"] = updated_dict["type"]
             else:
                 print("⚠️ Warning: Estimation count mismatch. Updates might be inaccurate.")
 
