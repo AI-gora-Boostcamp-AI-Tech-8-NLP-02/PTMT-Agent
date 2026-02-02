@@ -1,3 +1,5 @@
+# core/tests/test_keyword_graph_agent.py
+
 import json
 from typing import cast
 import asyncio
@@ -52,7 +54,14 @@ async def main():
     test_input: KeywordGraphInput = {
         "paper_info": paper_info,
         "user_info": user_info,
-        "initial_keyword": ["test_keyword1", "test_keyword2"] # 일단 임의로 설정
+        "initial_keyword": [
+                            "Self-Attention Mechanism",
+                            "Scaled Dot-Product Attention",
+                            "Multi-Head Attention",
+                            "Position-wise Feed-Forward Networks",
+                            "Positional Encoding",
+                            "Residual Connections and Layer Normalization"
+                            ] # 일단 임의로 설정
     }
     result = await agent.run(test_input)
 
