@@ -73,7 +73,7 @@ class KeywordGraphAgent:
 
         # 4. LLM 실행 결과 후처리
         subgraph = self._postprocess_graph(
-            paper_id="paper-123",
+            paper_id=target_paper['id'],
             initial_keyword=initial_keyword,
             text=response.content
         )
@@ -115,7 +115,7 @@ class KeywordGraphAgent:
 
 
         # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
-        valid_keywords = set(agent_output['nodes'] + self.init_subgraph['graph']['target_paper']['name'])
+        valid_keywords = set(agent_output['nodes'] + [self.init_subgraph['graph']['target_paper']['name']])
         agent_output['edges'] = [
             edge for edge in agent_output['edges']
             if edge['start'] in valid_keywords and edge['end'] in valid_keywords
