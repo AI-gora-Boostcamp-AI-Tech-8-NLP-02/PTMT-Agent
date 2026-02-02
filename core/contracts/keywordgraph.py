@@ -1,3 +1,5 @@
+# core/contracts/keywordgraph.py
+
 from typing import TypedDict, List
 from core.contracts.types.paper_info import PaperInfo
 from core.contracts.types.user_info import UserInfo
