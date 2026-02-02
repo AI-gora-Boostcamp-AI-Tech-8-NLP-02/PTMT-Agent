@@ -6,6 +6,7 @@ from core.llm.solar_pro_2_llm import get_solar_model
 
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.agents.resource_discovery_agent import ResourceDiscoveryAgent
+from core.agents.study_load_estimation_agent import StudyLoadEstimationAgent
 from core.agents.curriculum_compose_agent import CurriculumComposeAgent
 from core.agents.paper_concept_alignment_agent import PaperConceptAlignmentAgent
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
@@ -80,6 +81,8 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         llm_estimation=llm_for_eval
     )
 
+    estimation_agent = StudyLoadEstimationAgent(llm=llm_for_eval)
+
     curriculum = state.get("curriculum", {})
     nodes_list = curriculum.get("nodes", [])
     user_info = state.get("user_info", {})
@@ -93,8 +96,47 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
     })
 
     new_resources = result.get("evaluated_resources", [])
-    resource_map = {}
+    resources_to_estimate = []
 
+    current_count = state.get("current_iteration_count", 0)
+    if current_count <= 2:
+        all_candidates = []
+        for node in nodes_list:
+            existing_res = node.get("resources", [])
+            all_candidates.extend(existing_res)
+
+        # 평가 대상 수집
+        for res in all_candidates:
+            if (res.get("difficulty") is None or 
+                res.get("importance") is None or 
+                res.get("study_load") is None):
+                resources_to_estimate.append(res)
+
+        # 에이전트 실행 및 결과 반영
+        if resources_to_estimate:
+            print(f"🔄 Re-estimating {len(resources_to_estimate)} resources...")
+        
+            estimation_input = {
+                "resources": resources_to_estimate, 
+                "user_level": user_info.get("level"),
+                "purpose": user_info.get("purpose")
+            }
+
+            # 리턴값.
+            estimation_result = await estimation_agent.run(estimation_input)
+            evaluated_updates = estimation_result.get("evaluated_resources", [])
+
+            # new_resources에 업데이트된 내용을 병합
+            if len(resources_to_estimate) == len(evaluated_updates):
+                for original, updated in zip(resources_to_estimate, evaluated_updates):
+                    if hasattr(updated, 'dict'):
+                        original.update(updated.dict())
+                    else:
+                        original.update(updated)
+            else:
+                print("⚠️ Warning: Estimation count mismatch. Updates might be inaccurate.")
+
+    resource_map = {}
     all_current_res_count = sum(len(n.get("resources", [])) for n in nodes_list)
 
     for i, res in enumerate(new_resources):
@@ -102,14 +144,19 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
         if kid not in resource_map:
             resource_map[kid] = []
         
-        # 형식에 맞는 리소스 객체 생성
+        def get_value(data, key, default):
+            val = data.get(key)
+            return val if val is not None else default
+
         res_id_num = all_current_res_count + i + 1
+        
         try:
-            difficulty = int(float(res.get("difficulty", 5)))
-            importance = int(float(res.get("importance", 5)))
-            study_load = float(res.get("study_load", 1)) 
+            # None이 들어오면 바로 기본값(5)으로 치환 후 변환
+            difficulty = int(float(get_value(res, "difficulty", 5)))
+            importance = int(float(get_value(res, "importance", 5)))
+            study_load = float(get_value(res, "study_load", 1)) 
         except (ValueError, TypeError):
-            difficulty, importance, study_load = 5, 5, 1 # 실패 시 기본값
+            difficulty, importance, study_load = 5, 5, 1
 
 
         formatted_res = {
