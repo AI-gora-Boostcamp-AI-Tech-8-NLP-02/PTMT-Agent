@@ -8,7 +8,8 @@ import json
 from core.tools.gdb_search import get_subgraph_1
 from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
-from core.utils.kg_agent_preprocessing import preprocess_graph 
+from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
+from core.utils.kg_agent_postprocessing import transform_graph_data
 
 class KeywordGraphAgent:
     def __init__(self, llm):
@@ -73,6 +74,7 @@ class KeywordGraphAgent:
         # 4. LLM 실행 결과 후처리
         subgraph = self._postprocess_graph(
             paper_id="paper-123",
+            initial_keyword=initial_keyword,
             text=response.content
         )
 
@@ -95,7 +97,7 @@ class KeywordGraphAgent:
         return preprocess_graph(raw_subgraph=raw_subgraph)
 
 
-    def _postprocess_graph(self, paper_id, text):
+    def _postprocess_graph(self, paper_id, initial_keyword, text):
         ## 임시 코드
         try:
             json_pattern = r'```json\s*(.*?)\s*```'
@@ -103,63 +105,37 @@ class KeywordGraphAgent:
 
             if match:
                 json_str = match.group(1)
-                parsed_text = json.loads(json_str)
+                agent_output = json.loads(json_str)
             else:
-                parsed_text = json.loads(text)
+                agent_output = json.loads(text)
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
             raise RuntimeError(f"Unknown Error: {e}")
 
-        return parsed_text
 
+        # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
+        valid_keywords = set(agent_output['nodes'] + self.init_subgraph['graph']['target_paper']['name'])
+        agent_output['edges'] = [
+            edge for edge in agent_output['edges']
+            if edge['start'] in valid_keywords and edge['end'] in valid_keywords
+        ]
 
-        # try:
-        #     json_pattern = r'```json\s*(.*?)\s*```'
-        #     match = re.search(json_pattern, text, re.DOTALL)
+        # 2. 최종 출력 형식 변환
+        keyword_name_to_property = build_keyword_name_to_property(self.init_subgraph)
+        subgraph = transform_graph_data(self.init_subgraph, agent_output, keyword_name_to_property, paper_id)
 
-        #     if match:
-        #         json_str = match.group(1)
-        #         parsed_text = json.loads(json_str)
-        #     else:
-        #         parsed_text = json.loads(text)
-        # except json.JSONDecodeError as e:
-        #     raise ValueError(f"LLM output is not valid JSON: {text}") from e
-        # except Exception as e:
-        #     raise RuntimeError(f"Unknown Error: {e}")
+        # 3. Initial Keyword 중 Graph에 포함된 Keyword와 Target Paper 연결
+        # TODO
 
-        # '''
-        # id -> name 변환
-        # '''
-        # id_to_name = {}
-        # init_subgraph = self.init_subgraph['graph']
-        # for keyword in init_subgraph['nodes']['keywords']:
-        #     id_to_name[keyword['id']] = keyword['name']
-        # for paper in init_subgraph['nodes']['papers']:
-        #     id_to_name[paper['id']] = paper['name']
+        # 4. Agent 생성에 포함되지 않았던 Initial Keyword 추가
+        for keyword in initial_keyword:
+            if keyword in valid_keywords:
+                continue
+            subgraph['nodes'].append({
+                "keyword_id": None,
+                "keyword": keyword,
+                "resources": []
+            })
 
-        # # parsed_text node id -> node name
-        # parsed_text['filtered_graph']['nodes']['keywords'] = [
-        #     id_to_name.get(kid, kid) for kid in parsed_text['filtered_graph']['nodes']['keywords']
-        # ]
-        
-        # parsed_text['filtered_graph']['nodes']['papers'] = [
-        #     id_to_name.get(pid, pid) for pid in parsed_text['filtered_graph']['nodes']['papers']
-        # ]
-
-        # # edges의 source와 target을 이름으로 변환
-        # for edge_type in ['IN', 'REF_BY', 'PREREQ', 'ABOUT']:
-        #     if edge_type in parsed_text['filtered_graph']['edges']:
-        #         for edge in parsed_text['filtered_graph']['edges'][edge_type]:
-        #             edge['source'] = id_to_name.get(edge['source'], edge['source'])
-        #             edge['target'] = id_to_name.get(edge['target'], edge['target'])
-        
-        # # removed_nodes의 ID들도 이름으로 변환
-        # for removal_type in ['by_level', 'by_known_concepts', 'by_priority']:
-        #     if removal_type in parsed_text['removed_nodes']:
-        #         parsed_text['removed_nodes'][removal_type] = [
-        #             id_to_name.get(node_id, node_id) 
-        #             for node_id in parsed_text['removed_nodes'][removal_type]
-        #         ]
-        
-        # return parsed_text
+        return subgraph
