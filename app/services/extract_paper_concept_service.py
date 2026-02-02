@@ -27,8 +27,8 @@ async def extract_keywords(request: KeywordExtractRequest) -> KeywordExtractResp
         }
         
         # 3. Agent 실행
-        # ConceptExtractionAgent.arun 비동기 실행
-        result = await agent.arun(paper_input)
+        # ConceptExtractionAgent.run 비동기 실행
+        result = await agent.run(paper_input)
         
         # analysis_id = f"ext-{uuid.uuid4().hex[:12]}" # Deprecated but might be needed for internal tracking
         analysis_id = f"ext-{uuid.uuid4().hex[:12]}"
