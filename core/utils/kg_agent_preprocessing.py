@@ -353,3 +353,37 @@ def preprocess_graph(raw_subgraph):
     )
 
     return subgraph
+
+
+
+## 키워드 노드에서 name으로 찾을 수 있는 name -> property map 생성
+def build_keyword_name_to_property(raw_subgraph):
+    """
+    keywords를 아래 형태로 변환:
+    {
+        "Keyword_1": {"id": "...", "link": "...", "categories": ["", ...]},
+        "Keyword_2": {"id": "...", "link": "...", "categories": ["", ...]},
+        ...
+    }
+
+    - name이 중복인 경우: 처음 등장한 keyword만 유지 -> 근데 이런 경우 처리해줘서 거의 없음
+    """
+    graph = raw_subgraph.get("graph", raw_subgraph)
+    nodes = graph.get("nodes", {}) or {}
+    keywords = nodes.get("keywords", []) or []
+
+    out = {}
+    for kw in keywords:
+        if not isinstance(kw, dict):
+            continue
+        name = kw.get("name")
+        if not (isinstance(name, str) and name):
+            continue
+        # name 중복이면 처음 꺼 유지
+        if name in out:
+            continue
+        props = dict(kw)
+        props.pop("name", None)  # key로 쓰니까 제거
+        out[name] = props
+
+    return out
