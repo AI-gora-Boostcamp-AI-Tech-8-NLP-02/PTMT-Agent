@@ -19,6 +19,7 @@ import uuid
 from core.agents.keyword_graph_agent import KeywordGraphAgent
 from core.llm.solar_pro_2_llm import get_solar_model
 from core.graphs.parallel.graph_parallel import create_initial_state, run_langgraph_workflow
+from core.contracts.keywordgraph import KeywordGraphInput
 
 async def generate_curriculum(request: CurriculumGenerateRequest) -> CurriculumGenerateResponse:
     """
@@ -72,20 +73,28 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
             "user_info": user_info,
             "initial_keyword": initial_keywords
         }
-        
+
         # Subgraph 생성 (현재는 더미 반환)
-        keyword_result = await keyword_agent.run(keyword_input)
+        keyword_result = await keyword_agent.run(KeywordGraphInput(**keyword_input))
         subgraph = keyword_result.get("subgraph")
         
         if not subgraph:
             print("❌ Subgraph 생성 실패")
             return
 
+        paper_meta_data = {
+            "paper_id": request.paper_id,
+            "title": request.paper_title,
+            "summarize": request.paper_summary
+        }
+
         # 2. LangGraph 워크플로우 실행
         initial_state = create_initial_state(
             subgraph_data=subgraph,
             user_info_data=user_info,
-            paper_raw_data=paper_info 
+            paper_raw_data=paper_info,
+            paper_meta_data=paper_meta_data,
+            initial_keywords=initial_keywords
         )
         
         app_workflow = run_langgraph_workflow()

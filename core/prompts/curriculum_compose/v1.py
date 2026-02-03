@@ -16,6 +16,7 @@ CURRICULUM_COMPOSE_PROMPT_V1 = ChatPromptTemplate.from_messages([
    - 자료 삭제(DELETE)는 최소한으로 하세요. 
    - 예산 초과를 이유로 삭제하지 말고 PRESERVE로 전환하세요.
    - 삭제는 정말 퀄리티가 낮거나, 중복되거나, 주제와 완전히 무관한 경우에만 수행하세요.
+   - 해당 키워드에 유일한 자료일 경우는 삭제하지 말고 PRESERVE로 유지하세요.
 
 [자료 분류 기준]
 1. **DELETE (삭제)**: 
