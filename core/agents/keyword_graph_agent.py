@@ -2,6 +2,7 @@
 
 import os
 import re
+import ast
 import copy
 import json
 
@@ -98,16 +99,17 @@ class KeywordGraphAgent:
 
 
     def _postprocess_graph(self, paper_id, initial_keyword, text):
-        ## 임시 코드
         try:
             json_pattern = r'```json\s*(.*?)\s*```'
             match = re.search(json_pattern, text, re.DOTALL)
 
             if match:
                 json_str = match.group(1)
-                agent_output = json.loads(json_str)
+                parsed_dict = ast.literal_eval(json_str)
+                agent_output = json.loads(parsed_dict)
             else:
-                agent_output = json.loads(text)
+                parsed_dict = ast.literal_eval(text)
+                agent_output = json.loads(parsed_dict)
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
