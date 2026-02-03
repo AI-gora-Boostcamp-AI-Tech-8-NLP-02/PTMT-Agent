@@ -48,7 +48,7 @@ class PaperConceptAlignmentAgent:
         print(f"📊 전체 커리큘럼: 노드 {len(nodes)}개, 엣지 {len(edges)}개")
 
         # 논문 본문 생성
-        paper_body_summary = self._format_paper_body(paper_info)
+        paper_body_summary = curriculum["graph_meta"]["summarize"]
 
         # 전체 커리큘럼 구조 포맷팅
         curriculum_nodes = self._format_all_nodes(nodes)

@@ -23,7 +23,7 @@ PAPER_CONCEPT_ALIGNMENT_PROMPT_V1 = ChatPromptTemplate.from_messages([
 - 제목: {paper_title}
 - 초록: {paper_abstract}
 
-[논문 본문]
+[논문 요약]
 {paper_body_summary}
 
 [학습 커리큘럼 구조]
