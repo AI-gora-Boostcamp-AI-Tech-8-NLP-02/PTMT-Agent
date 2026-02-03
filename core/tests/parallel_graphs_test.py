@@ -11,9 +11,10 @@ async def main():
 
     # dummy 데이터 경로 설정
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information_known.json")
+    user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information.json")
     paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper.json")
-    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph_known.json")
+    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph.json")
+    meta_path = os.path.join(current_dir, "../../dummy_data/dummy_meta_data_attention.json")
     
     
     
@@ -25,6 +26,8 @@ async def main():
             user_info_data = json.load(f)
         with open(paper_content_path, "r", encoding="utf-8") as f:
             paper_raw_data = json.load(f)
+        with open(meta_path, "r", encoding="utf-8") as f:
+            paper_meta_data = json.load(f)
     except FileNotFoundError as e:
         print(f"❌ 파일을 찾을 수 없습니다: {e}")
         return
@@ -33,7 +36,8 @@ async def main():
     initial_state = create_initial_state(
         subgraph_data=dummy_subgraph,
         user_info_data=user_info_data,
-        paper_raw_data=paper_raw_data
+        paper_raw_data=paper_raw_data,
+        paper_meta_data=paper_meta_data
     )
 
     app = run_langgraph_workflow()

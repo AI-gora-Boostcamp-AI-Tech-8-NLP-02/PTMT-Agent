@@ -21,28 +21,21 @@ from core.graphs.parallel.state_parallel import CreateCurriculumOverallState
 def create_initial_state(
     subgraph_data: Dict[str, Any],
     user_info_data: Dict[str, Any],
-    paper_raw_data: Dict[str, Any]
+    paper_raw_data: Dict[str, Any],
+    paper_meta_data: Dict[str,Any]
 ) -> CreateCurriculumOverallState:
     """
     데이터를 입력받아 Transform을 수행
     LangGraph 실행을 위한 Initial State를 생성하여 반환
     """
-    
-    
-    meta_data_input = {
-        "paper_id": paper_raw_data.get("paper_id", "Unknown ID"), 
-        "title" : paper_raw_data.get("title", "Unknown Title"),
-        "summarize": paper_raw_data.get("abstract", "") # Use abstract as summary for now
-    }
-
     # Subgraph -> Curriculum 변환 (Transform)
-    curriculum_data = transform_subgraph_to_final_curriculum(subgraph_data, meta_data_input)
+    curriculum_data = transform_subgraph_to_final_curriculum(subgraph_data, paper_meta_data)
 
     # Initial State 
     initial_state = {
         "paper_name": paper_raw_data.get("title", "Unknown"),
-        "paper_summary": paper_raw_data.get("abstract", ""),
-        "initial_keywords": [n.get("keyword") for n in curriculum_data.get("nodes", [])],
+        "paper_summary": paper_meta_data.get("summarize", ""),
+        "initial_keywords": [n.get("keyword") for n in curriculum_data.get("nodes", [])],  # 여기 지금 initial keywords가 받아온게 들어오고 있지않아서 추가적으로 인자로 받아서 넣어줘야할 것 같습니다
         "paper_content": paper_raw_data,
         "user_info": user_info_data,
         "curriculum": curriculum_data,
