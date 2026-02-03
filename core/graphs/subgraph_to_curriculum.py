@@ -5,20 +5,26 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
     """
     Subgraph를 최종 Curriculum 포맷으로 변환
     """
+
+    # print(f"subgraph_data in transform_subgraph_to_final_curriculum: {subgraph_data}")
+    # print(f"meta_data in transform_subgraph_to_final_curriculum: {meta_data}")
     
-    # Subgraph에서 paper_id 확인, 없으면 meta_data에서 fallback
-    paper_id = subgraph_data.get("paper_id", "")
-    if not paper_id and meta_data and "paper_id" in meta_data:
-        paper_id = meta_data["paper_id"]
+    # meta_data의 paper_id를 canonical(기준)으로 사용
+    rdb_paper_id = meta_data.get("paper_id", "") if meta_data else ""
+    subgraph_paper_id = subgraph_data.get("paper_id", "")
     
     
     # ID 매핑 테이블 생성 & None ID 저장
     id_map = {}
     nodes_with_missing_id = [] 
     
-    # Paper ID는 그대로 유지
-    if paper_id:
-        id_map[paper_id] = paper_id
+    # Canonical paper ID 매핑
+    if rdb_paper_id:
+        id_map[rdb_paper_id] = rdb_paper_id
+    
+    # subgraph의 paper_id가 다르면 canonical로 치환되도록 매핑 추가
+    if subgraph_paper_id and subgraph_paper_id != rdb_paper_id:
+        id_map[subgraph_paper_id] = rdb_paper_id
     
     for idx, node in enumerate(subgraph_data["nodes"]):
         original_id = node.get("keyword_id")
@@ -91,11 +97,11 @@ def transform_subgraph_to_final_curriculum(subgraph_data, meta_data):
         transformed_edges.append(new_edge)
 
     #  ID가 'none'이었던 노드들을 Paper와 연결
-    if paper_id:
+    if rdb_paper_id:
         for missing_node_new_id in nodes_with_missing_id:
             new_edge = {
                 "start": missing_node_new_id,
-                "end": paper_id
+                "end": rdb_paper_id
             }
             transformed_edges.append(new_edge)
 
