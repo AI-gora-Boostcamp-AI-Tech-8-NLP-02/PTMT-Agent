@@ -31,6 +31,7 @@ class CurriculumGenerateRequest(BaseModel):
     curriculum_id: str
     paper_id: str
     initial_keyword: List[str]
+    paper_summary: str
     paper_content: PaperContent
     user_traits: UserTraits = Field(alias="user_info")
     paper_title: Optional[str] = None # Deprecated, keep for compatibility or remove

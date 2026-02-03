@@ -22,7 +22,8 @@ def create_initial_state(
     subgraph_data: Dict[str, Any],
     user_info_data: Dict[str, Any],
     paper_raw_data: Dict[str, Any],
-    paper_meta_data: Dict[str,Any]
+    paper_meta_data: Dict[str,Any],
+    initial_keywords: List[str]
 ) -> CreateCurriculumOverallState:
     """
     데이터를 입력받아 Transform을 수행
@@ -35,7 +36,7 @@ def create_initial_state(
     initial_state = {
         "paper_name": paper_raw_data.get("title", "Unknown"),
         "paper_summary": paper_meta_data.get("summarize", ""),
-        "initial_keywords": [n.get("keyword") for n in curriculum_data.get("nodes", [])],  # 여기 지금 initial keywords가 받아온게 들어오고 있지않아서 추가적으로 인자로 받아서 넣어줘야할 것 같습니다
+        "initial_keywords": initial_keywords,
         "paper_content": paper_raw_data,
         "user_info": user_info_data,
         "curriculum": curriculum_data,
@@ -51,7 +52,7 @@ def create_initial_state(
         "keyword_expand_reason": ""
     }
 
-    return initial_state
+    return CreateCurriculumOverallState(**initial_state)
 
 # Router: 병렬 실행
 def orchestrator_router(state: CreateCurriculumOverallState) -> List[str]:

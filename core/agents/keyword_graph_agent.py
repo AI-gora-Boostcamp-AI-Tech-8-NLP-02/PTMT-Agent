@@ -3,6 +3,7 @@ import json
 
 from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V1
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
+from core.contracts.types.subgraph import Subgraph
 
 
 class KeywordGraphAgent:
@@ -42,7 +43,7 @@ class KeywordGraphAgent:
                 dummy_subgraph = json.load(f)
         except FileNotFoundError as e:
             print(f" subgraph 더미 데이터 로드 실패: {e}")
-            return {"subgraph": None}
+            return {"subgraph": {"paper_id": "dummy_paper", "nodes": [], "edges": []}}
 
         # Paper ID 교체
         if target_paper_id:
