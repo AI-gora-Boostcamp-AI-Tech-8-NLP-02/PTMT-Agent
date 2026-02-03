@@ -106,10 +106,10 @@ class KeywordGraphAgent:
             if match:
                 json_str = match.group(1)
                 parsed_dict = ast.literal_eval(json_str)
-                agent_output = json.loads(parsed_dict)
+                agent_output = json.loads(json.dumps(parsed_dict, ensure_ascii=True))
             else:
                 parsed_dict = ast.literal_eval(text)
-                agent_output = json.loads(parsed_dict)
+                agent_output = json.loads(json.dumps(parsed_dict, ensure_ascii=True))
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
@@ -128,12 +128,16 @@ class KeywordGraphAgent:
         keyword_name_to_property = build_keyword_name_to_property(self.init_subgraph)
         subgraph = transform_graph_data(self.init_subgraph, agent_output, keyword_name_to_property, paper_id)
 
-        # 3. Initial Keyword 중 Graph에 포함된 Keyword와 Target Paper 연결
-        # TODO
+        # 3. Agent의 출력 Keyword의 GraphDB 상 name, alias 뽑기
+        all_keyword_alias = []
+        for db_keyword in self.init_subgraph['graph']['nodes']['keywords']:
+            if db_keyword['name'] in valid_keywords:
+                all_keyword_alias.append(db_keyword['name'].lower())
+                all_keyword_alias.extend(alias.lower() for alias in db_keyword['alias'])
 
         # 4. Agent 생성에 포함되지 않았던 Initial Keyword 추가
         for keyword in initial_keyword:
-            if keyword in valid_keywords:
+            if keyword.lower() in all_keyword_alias:
                 continue
             subgraph['nodes'].append({
                 "keyword_id": None,
