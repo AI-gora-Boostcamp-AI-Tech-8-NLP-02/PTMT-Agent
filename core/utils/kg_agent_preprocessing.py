@@ -395,14 +395,14 @@ def build_keyword_name_to_property(raw_subgraph):
     for kw in keywords:
         if not isinstance(kw, dict):
             continue
-        name = kw.get("name")
+        name = kw.get("name").lower()
         if not (isinstance(name, str) and name):
             continue
         # name 중복이면 처음 꺼 유지
         if name in out:
             continue
         props = dict(kw)
-        props.pop("name", None)  # key로 쓰니까 제거
+        # props.pop("name", None)  # key로 쓰니까 제거
         out[name] = props
 
     return out

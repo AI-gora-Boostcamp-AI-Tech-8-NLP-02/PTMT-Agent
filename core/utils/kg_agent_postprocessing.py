@@ -53,10 +53,10 @@ def transform_graph_data(
     # 2. nodes 생성
     nodes = []
     for keyword_name in selected_keyword_names:
-        if keyword_name not in keyword_name_to_property:
+        if keyword_name.lower() not in keyword_name_to_property:
             raise KeyError(f"{keyword_name} not found in GraphDB data")
         
-        keyword_property = keyword_name_to_property[keyword_name]
+        keyword_property = keyword_name_to_property[keyword_name.lower()]
         keyword_id = keyword_property['id']
 
         # 2-1. 해당 keyword_id와 연결된 paper_id를 찾아 resource로 구성
@@ -86,8 +86,8 @@ def transform_graph_data(
 
         if type == 'PREREQ':
             edges.append({
-                'start': keyword_name_to_property[start_name]['id'],
-                'end': keyword_name_to_property[end_name]['id'],
+                'start': keyword_name_to_property[start_name.lower()]['id'],
+                'end': keyword_name_to_property[end_name.lower()]['id'],
                 'type': type,
                 'reason': agent_edge['reason'],
                 'strength': agent_edge['strength']
@@ -95,14 +95,14 @@ def transform_graph_data(
         elif type == "ABOUT":
             edges.append({
                 'start': target_paper_id,
-                'end': keyword_name_to_property[end_name]['id'],
+                'end': keyword_name_to_property[end_name.lower()]['id'],
                 'type': type,
                 'reason': agent_edge['reason'],
                 'strength': agent_edge['strength']
             })
         elif type == "IN":
             edges.append({
-                'start': keyword_name_to_property[start_name]['id'],
+                'start': keyword_name_to_property[start_name.lower()]['id'],
                 'end': target_paper_id,
                 'type': type,
                 'reason': agent_edge['reason'],
