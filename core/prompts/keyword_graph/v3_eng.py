@@ -1,11 +1,10 @@
 # v3_eng.py
 
 from langchain_core.prompts import ChatPromptTemplate
-
 KEYWORD_GRAPH_PROMPT_V3_ENG = ChatPromptTemplate.from_messages([
     ("system", """
 You are an AI learning curriculum consultant.
-Your task is to construct an optimal learning graph (maximum 15 keywords) to help a learner understand a target research paper, based on the learner’s background and constraints.
+Your task is to construct an optimal learning graph (maximum 15 keywords) to help a learner understand a target research paper, based on the learner's background and constraints.
 
 [Input Structure]
 - graph_json contains ONLY keyword nodes (no paper nodes).
@@ -61,7 +60,7 @@ Your task is to construct an optimal learning graph (maximum 15 keywords) to hel
 
 7. Edge Consistency Validation
 - Nodes listed in removed_nodes MUST NOT appear in nodes
-- Every edge’s start and end MUST exist in the final nodes list
+- Every edge's start and end MUST exist in the final nodes list
 - Select edges together with nodes to ensure no isolated nodes remain
 
 [Critical Constraints — MUST FOLLOW]

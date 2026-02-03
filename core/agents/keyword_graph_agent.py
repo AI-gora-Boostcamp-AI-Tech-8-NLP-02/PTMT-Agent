@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3_ENG
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V3 | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V3_ENG | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -42,8 +42,8 @@ class KeywordGraphAgent:
         
         self.init_subgraph = get_subgraph_1(paper_name, initial_keyword)
         # 디버깅 -> json으로 저장
-        with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
-            json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
+        # with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
+        #     json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
 
         # 2. 생성된 1차 Subgraph를 LLM Input에 맞춰 처리
         subgraph = self._preprocess_graph(self.init_subgraph)
@@ -115,7 +115,6 @@ class KeywordGraphAgent:
         except Exception as e:
             raise RuntimeError(f"Unknown Error: {e}")
 
-
         # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
         tp_name = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('name', '')
         valid_keywords = set(agent_output.get('nodes', []) + ([tp_name] if tp_name else []))
@@ -129,20 +128,41 @@ class KeywordGraphAgent:
         subgraph = transform_graph_data(self.init_subgraph, agent_output, keyword_name_to_property, paper_id)
 
         # 3. Agent의 출력 Keyword의 GraphDB 상 name, alias 뽑기
-        all_keyword_alias = []
+        all_keyword_alias = {}
         for db_keyword in self.init_subgraph['graph']['nodes']['keywords']:
             if db_keyword['name'] in valid_keywords:
-                all_keyword_alias.append(db_keyword['name'].lower())
-                all_keyword_alias.extend(alias.lower() for alias in db_keyword['alias'])
+                all_keyword_alias[db_keyword['name'].lower()] = db_keyword['name'] 
+                for alias in db_keyword['alias']:
+                    all_keyword_alias[alias.lower()] = db_keyword['name']
 
-        # 4. Agent 생성에 포함되지 않았던 Initial Keyword 추가
+        # 4. Initial Keyword 처리
         for keyword in initial_keyword:
             if keyword.lower() in all_keyword_alias:
-                continue
-            subgraph['nodes'].append({
-                "keyword_id": None,
-                "keyword": keyword,
-                "resources": []
-            })
+                # 4-1. Agent 생성에 포함된 Initial Keyword 처리
+                original_keyword_name = all_keyword_alias[keyword.lower()].lower()
+                original_keyword_property = keyword_name_to_property[original_keyword_name]
+                
+                for edge in subgraph['edges']:
+                    if edge['start'] == original_keyword_property['id'] and edge['end'] == paper_id:
+                        break
+                else:
+                    subgraph['edges'].append({
+                        'start': original_keyword_property['id'],
+                        'end': paper_id,
+                        'type': "IN",
+                        'reason': "",
+                        'strength': ""
+                    })
+            else:
+                # 4-2. Agent 생성에 포함되지 않았던 Initial Keyword 추가
+                subgraph['nodes'].append({
+                    "keyword_id": None,
+                    "keyword": keyword,
+                    "resources": []
+                })
+
+        # 5. Subgraph Keyword 이름 수정
+        for nodes in subgraph['nodes']:
+            nodes['keyword'] = nodes['keyword'].split("(")[0].strip()
 
         return subgraph

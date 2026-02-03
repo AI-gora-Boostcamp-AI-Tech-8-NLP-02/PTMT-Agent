@@ -50,35 +50,24 @@ def transform_graph_data(
         keyword_to_paper[keyword_id].append(paper_id)
         used_paper.add(paper_id)
 
-    # 2. nodes 생성
-    nodes = []
-    for keyword_name in selected_keyword_names:
-        if keyword_name.lower() not in keyword_name_to_property:
-            raise KeyError(f"{keyword_name} not found in GraphDB data")
-        
-        keyword_property = keyword_name_to_property[keyword_name.lower()]
-        keyword_id = keyword_property['id']
+    # 2. edges 생성
+    ## 2-1. 특정 Keyword로 PREREQ 관계로 들어오는 모든 다른 Keyword의 Property 수집
+    keyword_income_edge = defaultdict(list)
+    for agent_edge in agent_output['edges']:
+        start_name = agent_edge['start']
+        end_name = agent_edge['end']
+        type = agent_edge['type']
 
-        # 2-1. 해당 keyword_id와 연결된 paper_id를 찾아 resource로 구성
-        resources = []
-        for paper_id in keyword_to_paper.get(keyword_id, []):
-            paper_property = paper_id_to_property[paper_id]
-            resources.append({
-                "resource_id": paper_property['id'],
-                'resource_name': paper_property['name'],
-                'url': paper_property['url'],
-                'type': 'paper',
-                'description': paper_property['description']
+        if type == "PREREQ":
+            keyword_income_edge[end_name.lower()].append({
+                'name': start_name,
+                'type': type,
+                'reason': agent_edge['reason'],
+                'strength': agent_edge['strength']
             })
 
-        nodes.append({
-            "keyword_id": keyword_id,
-            "keyword": keyword_name,
-            "resources": resources
-        })
-
-    # 3. edges 생성
-    edges = []
+    ## 2-2. Agent Ouput으로 나온 Edge를 2차 Sub-graph의 Edge로 변형
+    edges, about_node = [], []
     for agent_edge in agent_output['edges']:
         start_name = agent_edge['start']
         end_name = agent_edge['end']
@@ -93,13 +82,18 @@ def transform_graph_data(
                 'strength': agent_edge['strength']
             })
         elif type == "ABOUT":
-            edges.append({
-                'start': target_paper_id,
-                'end': keyword_name_to_property[end_name.lower()]['id'],
-                'type': type,
-                'reason': agent_edge['reason'],
-                'strength': agent_edge['strength']
-            })
+            ## 2-3. ABOUT으로 연결된 Keyword-Paper를 분해
+            about_node.append(end_name.lower())
+
+            for income_keyword_property in keyword_income_edge[end_name.lower()]:
+                income_keyword_name = income_keyword_property['name']
+                edges.append({
+                    'start': keyword_name_to_property[income_keyword_name.lower()]['id'],
+                    'end': target_paper_id,
+                    'type': "IN",
+                    'reason': income_keyword_property['reason'],
+                    'strength': income_keyword_property['strength']
+                })
         elif type == "IN":
             edges.append({
                 'start': keyword_name_to_property[start_name.lower()]['id'],
@@ -111,6 +105,35 @@ def transform_graph_data(
         else:
             raise ValueError(f"type {type} is not allowed.")
 
+    # 3. nodes 생성
+    nodes = []
+    for keyword_name in selected_keyword_names:
+        if keyword_name.lower() in about_node:
+            continue
+
+        if keyword_name.lower() not in keyword_name_to_property:
+            raise KeyError(f"{keyword_name} not found in GraphDB data")
+        
+        keyword_property = keyword_name_to_property[keyword_name.lower()]
+        keyword_id = keyword_property['id']
+
+        # 2-1. 해당 keyword_id와 연결된 paper_id를 찾아 resource로 구성
+        resources = []
+        # for paper_id in keyword_to_paper.get(keyword_id, []):
+        #     paper_property = paper_id_to_property[paper_id]
+        #     resources.append({
+        #         "resource_id": paper_property['id'],
+        #         'resource_name': paper_property['name'],
+        #         'url': paper_property['url'],
+        #         'type': 'paper',
+        #         'description': paper_property['description']
+        #     })
+
+        nodes.append({
+            "keyword_id": keyword_id,
+            "keyword": keyword_name,
+            "resources": resources
+        })
 
     return {
         "paper_id": target_paper_id,

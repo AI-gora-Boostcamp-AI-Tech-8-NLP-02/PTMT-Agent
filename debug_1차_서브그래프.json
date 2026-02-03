@@ -5,6 +5,79 @@
         {
           "name": "Transformer (deep learning)",
           "link": "https://en.wikipedia.org/wiki/Transformer_%28deep_learning_architecture%29",
+          "alias": [
+            "transformer",
+            "Transformer architecture",
+            "transformer model",
+            "transformer neural network",
+            "transformer architecture",
+            "transformer deep learning",
+            "Transformer",
+            "transformer network",
+            "Transformer Architecture",
+            "transformer_architecture",
+            "transformer architecture model",
+            "Transformer architectures",
+            "transformer architectures",
+            "Transformer Architectures",
+            "transformer models",
+            "transformer-based architectures",
+            "Transformer language model",
+            "transformer language model",
+            "transformer-based language model",
+            "transformer LM",
+            "transformer language modelling",
+            "transformer lm",
+            "Transformer models",
+            "TransformerModels",
+            "transformer-models",
+            "Transformer-based language models",
+            "transformer-based language models",
+            "transformer language models",
+            "transformer-based models",
+            "transformer-based NLP models",
+            "transformer-based neural language models",
+            "Transformer-based model",
+            "transformer based model",
+            "transformer-based model",
+            "transformer-based neural network",
+            "transformer model architecture",
+            "Transformer-based models",
+            "transformer based models",
+            "transformer-based neural networks",
+            "transformer-based systems",
+            "Transformer-based neural architecture",
+            "transformer neural architecture",
+            "transformer-based network",
+            "transformer-based deep architecture",
+            "Transformers",
+            "transformers",
+            "Transformers library",
+            "transformers library",
+            "TransformersLibrary",
+            "transformer library",
+            "transformers lib",
+            "transformer encoder-decoder architecture",
+            "transformer encoder decoder architecture",
+            "transformer encoder-decoder",
+            "transformer encoder decoder",
+            "transformer encoder-decoder model",
+            "encoder-decoder transformer",
+            "language model transformer",
+            "lm transformer",
+            "transformer model for language",
+            "Transformer Model",
+            "transformermodel",
+            "transformer-model",
+            "transformerModel",
+            "Transformer Models",
+            "transformer_models",
+            "transformermodelss",
+            "transformer-based architecture",
+            "transformer-based networks",
+            "transformer based networks",
+            "transformer networks"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
           "categories": [
             "19th-century inventions|British inventions|Electric power conversion|Electric transformers|Electrical engineering|Hungarian inventions",
@@ -15,6 +88,26 @@
         {
           "name": "Attention (machine learning)",
           "link": "https://en.wikipedia.org/wiki/Attention_%28machine_learning%29",
+          "alias": [
+            "attention",
+            "Attention",
+            "attention mechanism",
+            "Attention mechanism",
+            "attention model",
+            "Attention model",
+            "self-attention",
+            "Self-attention",
+            "scaled dot-product attention",
+            "Scaled dot-product attention",
+            "Self-attention mechanisms",
+            "self attention mechanisms",
+            "self attention",
+            "self-attention mechanisms",
+            "selfattention",
+            "SelfAttention",
+            "self attention mechanism",
+            "self-attention mechanism"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
           "categories": [
             "Machine learning",
@@ -24,30 +117,74 @@
         {
           "name": "attention-only mechanism",
           "link": NaN,
+          "alias": [
+            "attention only mechanism",
+            "attention-only model",
+            "attentiononly mechanism",
+            "attention only model",
+            "attention only architecture"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:9544",
           "categories": []
         },
         {
           "name": "encoder-decoder architecture",
           "link": NaN,
+          "alias": [
+            "encoder decoder architecture",
+            "encoder-decoder",
+            "encoder decoder",
+            "enc-dec architecture",
+            "encoder decoder model",
+            "enc-dec",
+            "encoder-decoder attention",
+            "encoder decoder attention",
+            "attention encoder decoder",
+            "attention encoder-decoder",
+            "encoder-decoder framework",
+            "encoder decoder framework",
+            "encoder-decoder model",
+            "encoder-decoder architecture",
+            "enc-dec framework"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:11362",
           "categories": []
         },
         {
           "name": "parallelizable training",
           "link": NaN,
+          "alias": [
+            "parallelizabletraining",
+            "parallelizable-training"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:14531",
           "categories": []
         },
         {
           "name": "single-model state-of-the-art",
           "link": NaN,
+          "alias": [
+            "single model state of the art",
+            "single-model SOTA",
+            "single model SOTA",
+            "single model state-of-the-art model",
+            "SOTA single model"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:15883",
           "categories": []
         },
         {
           "name": "Machine translation",
           "link": "https://en.wikipedia.org/wiki/Machine_Translation",
+          "alias": [
+            "machine translation",
+            "MT",
+            "MachineTranslation",
+            "machine translation system",
+            "translation machine",
+            "MT system",
+            "Machine translation"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:593",
           "categories": [
             "Applications of artificial intelligence|Automation software|Computational linguistics|Computer-assisted translation|Machine translation|Tasks of natural language processing"
@@ -56,6 +193,14 @@
         {
           "name": "Rnn (software)",
           "link": "https://en.wikipedia.org/wiki/Rnn_%28software%29",
+          "alias": [
+            "rnn",
+            "RNN",
+            "rnn model",
+            "recurrent neural network",
+            "Recurrent Neural Network",
+            "RNN model"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1838",
           "categories": [
             "Deep learning software",
@@ -70,6 +215,15 @@
         {
           "name": "Seq2seq",
           "link": "https://en.wikipedia.org/wiki/Seq2seq",
+          "alias": [
+            "seq2seq",
+            "Seq2Seq",
+            "sequence-to-sequence",
+            "sequence to sequence",
+            "seq 2 seq",
+            "seq2 seq",
+            "Seq2seq"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2124",
           "categories": [
             "2014 in artificial intelligence",
@@ -81,6 +235,14 @@
         {
           "name": "Convolutional neural network",
           "link": "https://en.wikipedia.org/wiki/Convolutional_neural_network",
+          "alias": [
+            "convolutional neural network",
+            "CNN",
+            "convnet",
+            "convolutional neural net",
+            "convolutional net",
+            "CNN model"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4771",
           "categories": [
             "Computational neuroscience",
@@ -91,24 +253,90 @@
         {
           "name": "Pretrained Encoder-Decoder Models",
           "link": NaN,
+          "alias": [
+            "pretrained encoder decoder models",
+            "pretrained encoder-decoder models",
+            "pretrained encoder decoder",
+            "encoder decoder models",
+            "pretrained enc-dec models",
+            "encoder-decoder models",
+            "encoder-decoder",
+            "encoder_decoder_models",
+            "encoder decoder",
+            "enc-dec models",
+            "enc-dec",
+            "encoder-decoder network",
+            "encoder decoder network",
+            "encoder_decoder",
+            "enc-dec network",
+            "encoder-decoder networks",
+            "encoder decoder networks",
+            "encoder_decoder networks",
+            "enc-dec networks",
+            "encoder–decoder architecture",
+            "encoder-decoder architecture",
+            "encoder decoder architecture",
+            "enc-dec architecture",
+            "retriever-ranker encoder-decoder architectures",
+            "retriever-ranker",
+            "retriever ranker",
+            "retriever ranker encoder decoder",
+            "retriever ranker encoder decoder architectures"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:8397",
           "categories": []
         },
         {
           "name": "Multi-head Self-Attention",
           "link": NaN,
+          "alias": [
+            "multi-head self-attention",
+            "Multi-Head Self-Attention",
+            "multi head self attention",
+            "MHSA",
+            "multi-head attention",
+            "self-attention with multiple heads"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:8101",
           "categories": []
         },
         {
           "name": "novel positional encoding scheme",
           "link": NaN,
+          "alias": [
+            "novel positional encoding",
+            "positional encoding scheme",
+            "novel position encoding",
+            "positional encoding",
+            "position encoding scheme"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:14291",
           "categories": []
         },
         {
           "name": "Backpropagation",
           "link": "https://en.wikipedia.org/wiki/Backpropagation",
+          "alias": [
+            "backpropagation",
+            "Backprop",
+            "backprop",
+            "BP",
+            "back propagation",
+            "back-propagation",
+            "Backpropagation",
+            "Backpropagation algorithm",
+            "Binary pattern",
+            "binary pattern",
+            "binary-pattern",
+            "BinaryPattern",
+            "binarypattern",
+            "binary pattern recognition",
+            "arterial hypertension",
+            "high blood pressure",
+            "hypertension",
+            "high BP",
+            "HTN"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
           "categories": [
             "Artificial neural networks",
@@ -120,6 +348,15 @@
         {
           "name": "Gradient",
           "link": "https://en.wikipedia.org/wiki/Gradient",
+          "alias": [
+            "gradient",
+            "grad",
+            "gradient descent",
+            "gradients",
+            "Gradients",
+            "grads",
+            "gradient vector"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5908",
           "categories": [
             "Differential calculus",
@@ -134,6 +371,14 @@
         {
           "name": "Differentiable function",
           "link": "https://en.wikipedia.org/wiki/Differentiable_function",
+          "alias": [
+            "differentiable function",
+            "differentiable func",
+            "diff function",
+            "differentiable",
+            "diff'ble function",
+            "differentiable mapping"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5134",
           "categories": [
             "Multivariable calculus",
@@ -143,6 +388,14 @@
         {
           "name": "Chain rule",
           "link": "https://en.wikipedia.org/wiki/Chain_rule",
+          "alias": [
+            "chain rule",
+            "Chain Rule",
+            "chainrule",
+            "chain-rule",
+            "Chainrule",
+            "calculus chain rule"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4419",
           "categories": [
             "Differentiation rules",
@@ -153,6 +406,14 @@
         {
           "name": "Partial derivative",
           "link": "https://en.wikipedia.org/wiki/Partial_derivative",
+          "alias": [
+            "partial deriv",
+            "partial derivative",
+            "partial derivativ",
+            "partial diff",
+            "partial differentiation",
+            "δf/δx"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1365",
           "categories": [
             "Differential operators",
@@ -162,6 +423,14 @@
         {
           "name": "Attention Is All You Need",
           "link": "https://en.wikipedia.org/wiki/Attention_Is_All_You_Need",
+          "alias": [
+            "attention is all you need",
+            "AttentionIsAllYouNeed",
+            "attention all you need",
+            "attention is all you need paper",
+            "transformer paper",
+            "all you need is attention"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987",
           "categories": [
             "2017 documents",
@@ -173,6 +442,23 @@
         {
           "name": "Parallel text",
           "link": "https://en.wikipedia.org/wiki/Parallel_corpora",
+          "alias": [
+            "parallel corpora",
+            "parallel corpora",
+            "parallel-corpus",
+            "parallel corpus",
+            "parallel corpora",
+            "parallel corpus",
+            "parallel corpora",
+            "parallel corpus",
+            "parallelcorpus",
+            "parallel texts",
+            "paralleltext",
+            "parallel-texts",
+            "parallel text",
+            "parallel texts corpus",
+            "paralleltext corpus"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1348",
           "categories": [
             "Corpus linguistics|Language acquisition|Translation databases"
@@ -181,12 +467,19 @@
         {
           "name": "Natural language processing",
           "link": "https://en.wikipedia.org/wiki/Natural_Language_Processing",
+          "alias": [],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1040",
           "categories": []
         },
         {
           "name": "Recurrent neural network",
           "link": "https://en.wikipedia.org/wiki/Recurrent_neural_network",
+          "alias": [
+            "RNN",
+            "recurrent neural network",
+            "rnn",
+            "recurrent neural net"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1725",
           "categories": [
             "Neural network architectures"
@@ -195,6 +488,15 @@
         {
           "name": "Backpropagation through time",
           "link": "https://en.wikipedia.org/wiki/Backpropagation_through_time",
+          "alias": [
+            "bptt",
+            "BPTT",
+            "backpropagation through time",
+            "backprop through time",
+            "bptt algorithm",
+            "backpropagation through retrieval",
+            "backprop through retrieval"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4110",
           "categories": [
             "Artificial neural networks"
@@ -203,6 +505,7 @@
         {
           "name": "Convolution",
           "link": "https://en.wikipedia.org/wiki/Convolution",
+          "alias": [],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4770",
           "categories": [
             "Bilinear maps",
@@ -215,12 +518,37 @@
         {
           "name": "Neural network (machine learning)",
           "link": "https://en.wikipedia.org/wiki/Artificial_Neural_Network",
+          "alias": [
+            "artificial neural network",
+            "ANN",
+            "artificial neural networks",
+            "ann",
+            "neural network",
+            "neural networks",
+            "artificial neural net"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3917",
           "categories": []
         },
         {
           "name": "Multilayer perceptron",
           "link": "https://en.wikipedia.org/wiki/Multilayer_perceptron",
+          "alias": [
+            "multilayer perceptron",
+            "MLP",
+            "multilayer perceptron neural network",
+            "multi-layer perceptron",
+            "MLP network",
+            "multilayer perceptron model",
+            "Multilayer perceptron",
+            "multi layer perceptron",
+            "mlp",
+            "multi-layer perceptron interaction",
+            "mlp interaction",
+            "multi layer perceptron interaction",
+            "multilayer perceptron interaction",
+            "MLP interaction"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:959",
           "categories": [
             "Classification algorithms",
@@ -231,12 +559,28 @@
         {
           "name": "Artificial neural network",
           "link": "https://en.wikipedia.org/wiki/Artificial_neural_network",
+          "alias": [
+            "artificial neural network",
+            "ANN",
+            "artificial neural network model",
+            "neural network",
+            "artificial neural networks",
+            "ann"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3095",
           "categories": []
         },
         {
           "name": "Neural backpropagation",
           "link": "https://en.wikipedia.org/wiki/Neural_backpropagation",
+          "alias": [
+            "neural backpropagation",
+            "neural back propagation",
+            "backpropagation",
+            "back propagation",
+            "neural bp",
+            "bp"
+          ],
           "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1092",
           "categories": [
             "Computational neuroscience",
@@ -249,17 +593,20 @@
         {
           "name": "Transformers in Vision: A Survey",
           "description": "이 논문은 컴퓨터 비전 분야에서 Transformer 모델의 기초 개념과 응용을 종합적으로 조망하며, 이미지 분류, 객체 검출, 행동 인식, 세그멘테이션 등 다양한 작업에 대한 성능과 한계를 비교 분석한다.",
-          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17634"
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17634",
+          "url": "https://www.semanticscholar.org/paper/3a906b77fa218adc171fecb28bb81c24c14dcc7b"
         },
         {
           "name": "A survey of the recent architectures of deep convolutional neural networks",
           "description": "최근에 보고된 깊은 컨볼루셔널 신경망 아키텍처의 내적 분류를 위해 공간, 깊이, 다중 경로, 폭, 특징맵 활용, 채널 강화 및 주의 메커니즘의 7가지 범주로 분류한 조사 보고서이다.",
-          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17806"
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17806",
+          "url": "https://www.semanticscholar.org/paper/8452941a175c899628c679523da952b18f63e335"
         },
         {
           "name": "EnlightenGAN: Deep Light Enhancement Without Paired Supervision",
           "description": "낮은 조명 이미지 강화를 위해 쌍이 없는 학습을 가능하게 한 EnlightenGAN은 입력 이미지 자체의 정보를 활용한 자기 정규화 손실과 전역-국소 판별자 구조를 통해 우수한 성능을 발휘한다.",
-          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18015"
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18015",
+          "url": "https://www.semanticscholar.org/paper/228a801801abd28b58db1de75cfe6885f7d47bb7"
         }
       ]
     },
