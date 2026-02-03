@@ -79,23 +79,24 @@ class CurriculumComposeAgent:
         for node in nodes:
             new_node = node.copy()
             original_resources = node.get("resources", [])
+            # DELETE 판정된 리소스는 제거하고, 나머지만 유지
+            kept_resources = [
+                res for res in original_resources
+                if action_map.get(res.get("resource_id"), "PRESERVE") != "DELETE"
+            ]
             new_resources = []
             keyword_necessary_flag = False
-            for res in original_resources:
+            for res in kept_resources:
                 rid = res.get("resource_id")
-                action = action_map.get(rid, "PRESERVE") # 기본값 PRESERVE
+                action = action_map.get(rid, "PRESERVE")
 
-                if action == "DELETE":
-                    # print(f"🗑️ [DELETE Resource] {res.get('resource_name')} ({rid})")
-                    continue
-                
                 new_res = res.copy()
                 if action == "EMPHASIZE":
                     new_res["is_necessary"] = True
-                    keyword_necessary_flag=True
-                else: # PRESERVE
+                    keyword_necessary_flag = True
+                else:  # PRESERVE
                     new_res["is_necessary"] = False
-                
+
                 new_resources.append(new_res)
 
             new_node["resources"] = new_resources
