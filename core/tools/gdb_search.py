@@ -187,13 +187,13 @@ def get_subgraph_1(paper_name, initial_keywords):
     CALL (paper_nodes_raw) {
     UNWIND paper_nodes_raw AS n
     WITH DISTINCT elementId(n) AS id, n
-    RETURN collect({ id:id, name:n.name, description:n.description }) AS paper_nodes
+    RETURN collect({ id:id, name:n.name, description:n.description, url: n.url }) AS paper_nodes
     }
 
     CALL (kc_nodes_raw) {
     UNWIND kc_nodes_raw AS k
     WITH DISTINCT elementId(k) AS id, k
-    RETURN collect({ id:id, name:k.name, categories:k.categories, link:k.link }) AS kc_nodes
+    RETURN collect({ id:id, name:k.name, categories:k.categories, link:k.link, alias: coalesce(k.alias, []) }) AS kc_nodes
     }
 
     /*-- 엣지 dedup + 분리-- */
