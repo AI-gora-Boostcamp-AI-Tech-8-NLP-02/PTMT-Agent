@@ -27,6 +27,7 @@ STUDY_LOAD_ESTIMATION_PROMPT_V1 = ChatPromptTemplate.from_messages([
         - {user_level} 수준의 학습자 입장에서 난이도와 중요도를 판단하세요.
         - study_load는 자료의 실제 길이를 고려하세요. (영상 재생 시간 등)
         - 반드시 아래 JSON 형식으로만 출력하세요. 마크다운 태그(```)는 절대 금지입니다.
+        - {keyword}와 자료 간의 관계 정도가 낮을 시 importance를 낮게 책정하고 resource_description에 관계가 낮다는 것을 명시하세요.
         
         {{
             "difficulty": number,
