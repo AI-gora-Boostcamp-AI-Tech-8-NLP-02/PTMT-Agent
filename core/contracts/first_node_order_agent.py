@@ -6,8 +6,8 @@ from core.contracts.types.user_info import UserInfo
 
 class FirstNodeOrderAgentInput(TypedDict):
     paper_content: PaperInfo
-    curriculum: CurriculumGraph
+    final_curriculum: CurriculumGraph
     user_info: UserInfo
 
 class FirstNodeOrderAgentOutput(TypedDict):
-    curriculum: CurriculumGraph
+    final_curriculum: CurriculumGraph
