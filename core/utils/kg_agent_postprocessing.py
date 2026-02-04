@@ -76,7 +76,7 @@ def transform_graph_data(
         if type == 'PREREQ':
             edges.append({
                 'start': keyword_name_to_property[start_name.lower()]['id'],
-                'end': keyword_name_to_property[end_name.lower()]['id'],
+                'end': keyword_name_to_property[end_name.lower()]['id'] if end_name.lower() in keyword_name_to_property else end_name,
                 'type': type,
                 'reason': agent_edge['reason'],
                 'strength': agent_edge['strength']

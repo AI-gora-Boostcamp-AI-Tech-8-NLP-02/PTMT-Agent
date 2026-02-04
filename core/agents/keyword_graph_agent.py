@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3_ENG
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V7
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V3_ENG | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V7 | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -41,9 +41,21 @@ class KeywordGraphAgent:
         print(f'initial_keyword = {initial_keyword}')
         
         self.init_subgraph = get_subgraph_1(paper_name, initial_keyword)
+
+        # 만약 init_subgraph가 빈칸인 경우 초기값으로 채우기 -> RDB의 ID, NAME
+        if self.init_subgraph['graph']['target_paper'] == None:
+            target_paper = {
+                'citationCount': 0,
+                'name': paper_name,
+                'description': '',
+                'abstract': input_data['paper_info']['abstract'],
+                'id': "paper-0" 
+            }
+            self.init_subgraph['graph']['target_paper'] = target_paper
+
         # 디버깅 -> json으로 저장
-        # with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
-        #     json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
+        with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
+            json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
 
         # 2. 생성된 1차 Subgraph를 LLM Input에 맞춰 처리
         subgraph = self._preprocess_graph(self.init_subgraph)
@@ -117,7 +129,8 @@ class KeywordGraphAgent:
 
         # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
         tp_name = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('name', '')
-        valid_keywords = set(agent_output.get('nodes', []) + ([tp_name] if tp_name else []))
+        tp_id = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('id', '')
+        valid_keywords = set(agent_output.get('nodes', []) + [tp_name, tp_id])
         agent_output['edges'] = [
             edge for edge in agent_output['edges']
             if edge['start'] in valid_keywords and edge['end'] in valid_keywords
