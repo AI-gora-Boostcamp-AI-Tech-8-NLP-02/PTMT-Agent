@@ -62,13 +62,6 @@ async def main():
                             "Positional Encoding",
                             "Residual Connections and Layer Normalization"
                             ] # 일단 임의로 설정
-        # "initial_keyword": [
-        #     "Multi-reward Reinforcement Learning",
-        #     "Group Relative Policy Optimization",
-        #     "Advantage Estimation",
-        #     "Reward Normalization",
-        #     "Policy Optimization"
-        # ]
     }
     result = await agent.run(test_input)
 

@@ -70,19 +70,19 @@ class KeywordGraphAgent:
         hours_per_day = bt.get("hours_per_day", 0)
 
         response = await self.chain.ainvoke(
-        input={
-            "user_level": user_info["level"],
-            "user_purpose": user_info["purpose"],
-            "known_concepts": user_info.get("known_concept", []),
-            "total_hours": total_hours,
-            "total_days": total_days, 
-            "hours_per_day": hours_per_day, 
-            "target_paper_title": target_paper.get("name", ""),
-            "target_paper_id": target_paper.get("id", ""),
-            "target_paper_description": target_paper.get("description", ""),
-            "graph_json": subgraph
-        }, 
-        config={
+            input={
+                "user_level": user_info["level"],
+                "user_purpose": user_info["purpose"],
+                "known_concepts": user_info.get("known_concept", []),
+                "total_hours": total_hours,
+                "total_days": total_days, 
+                "hours_per_day": hours_per_day, 
+                "target_paper_title": target_paper.get("name", ""),
+                "target_paper_id": target_paper.get("id", ""),
+                "target_paper_description": target_paper.get("description", ""),
+                "graph_json": subgraph
+            }, 
+            config={
                 "tags": ["keyword-graph-agent"]
             }
         )
