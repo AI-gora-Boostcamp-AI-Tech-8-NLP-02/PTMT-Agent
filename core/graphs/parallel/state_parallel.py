@@ -94,4 +94,4 @@ class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOu
     insufficient_resource_ids: List[str] 
     missing_concepts: List[str]          
     keyword_reasoning:str
-    resource_reasoning:str          
+    resource_reasoning:Dict[str, str]    

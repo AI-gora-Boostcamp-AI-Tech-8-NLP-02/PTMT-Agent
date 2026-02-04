@@ -2,6 +2,7 @@ from typing import List, TypedDict
 from core.contracts.types.curriculum import KeywordNode, Resource
 
 class ResourceDiscoveryAgentInput(TypedDict):
+    paper_name:str
     nodes: List[KeywordNode]    
     user_level: str
     purpose: str

@@ -6,13 +6,14 @@ from core.contracts.curriculum_orchestrator import (
     CurriculumOrchestratorInput, 
     CurriculumOrchestratorOutput
 )
-from core.prompts.curriculum_orchestrator.v1 import KEYWORD_CHECK_PROMPT, RESOURCE_CHECK_PROMPT
+from core.prompts.curriculum_orchestrator.v1 import KEYWORD_CHECK_PROMPT_V1, RESOURCE_CHECK_PROMPT_V1
+from core.prompts.curriculum_orchestrator.v2 import KEYWORD_CHECK_PROMPT_V2, RESOURCE_CHECK_PROMPT_V2
 
 class CurriculumOrchestrator:
     def __init__(self, llm):
         self.llm = llm
-        self.kw_chain = KEYWORD_CHECK_PROMPT | llm
-        self.res_chain = RESOURCE_CHECK_PROMPT | llm
+        self.kw_chain = KEYWORD_CHECK_PROMPT_V2 | llm
+        self.res_chain = RESOURCE_CHECK_PROMPT_V2 | llm
 
     async def run(self, input_data: CurriculumOrchestratorInput) -> CurriculumOrchestratorOutput:
         paper_content = input_data["paper_content"]
@@ -98,12 +99,11 @@ class CurriculumOrchestrator:
         if insufficient_res_ids:
             final_tasks.append("resource_search")
 
-        res_reasoning_list = [
-            f"[{nodes_to_check[i]['keyword']}]: {dec.get('reasoning')}" 
-            for i, dec in enumerate(res_decisions) 
+        res_reasoning_map = {
+            nodes_to_check[i]["keyword_id"]: dec.get("reasoning")
+            for i, dec in enumerate(res_decisions)
             if not dec.get("is_resource_sufficient", True)
-        ]
-        res_reasoning = " | ".join(res_reasoning_list) if res_reasoning_list else "All resources are sufficient."
+        }
 
         if not final_tasks:
             final_tasks = ["curriculum_compose"]
@@ -116,15 +116,32 @@ class CurriculumOrchestrator:
             "missing_concepts": filtered_missing_concepts,
             "insufficient_resource_ids": insufficient_res_ids,
             "keyword_reasoning": kw_decision.get("reasoning", "No keyword gaps found."),
-            "resource_reasoning": res_reasoning,
+            "resource_reasoning": res_reasoning_map 
         }
 
 
     async def check_keyword_sufficiency(self, paper: PaperInfo, curr: CurriculumGraph, level: str, purpose: str) -> Dict[str, Any]:
         """전체적인 키워드 구성이 논문을 커버하는지 확인"""
+
+        simplified_nodes = [
+            {
+                "keyword_id": node["keyword_id"],
+                "keyword": node["keyword"],
+                "description": node["description"]
+            }
+            for node in curr.get("nodes", [])
+        ]
+        edges = curr.get("edges", [])
+        
+        simplified_curr = {
+            "nodes": simplified_nodes,
+            "edges": edges
+        }
+            
         response = await self.kw_chain.ainvoke({
+            "paper_id": curr["graph_meta"]["paper_id"],
             "paper_content": paper,
-            "curriculum_json": curr,
+            "curriculum_json": simplified_curr,
             "user_level": level,
             "user_purpose": purpose
         }, config={"tags": ["orch-kw-check"]})
@@ -167,5 +184,5 @@ class CurriculumOrchestrator:
             "needs_description_ids": desc_ids,
             "missing_concepts": [],
             "keyword_reasoning": "Rule-base: No missing keywords detected (pre-check).",
-            "resource_reasoning": "Rule-base: Missing resources/descriptions detected in nodes.",
+            "resource_reasoning": {},
         }
