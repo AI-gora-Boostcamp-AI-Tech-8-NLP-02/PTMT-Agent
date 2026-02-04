@@ -11,7 +11,7 @@ class CurriculumComposeInput(TypedDict):
     curriculum: CurriculumData
 
 class CurriculumComposeOutput(TypedDict):
-    curriculum: CurriculumData
+    final_curriculum: CurriculumData
 
 # 에이전트 내부 판단용 타입
 class NodeAction(TypedDict):

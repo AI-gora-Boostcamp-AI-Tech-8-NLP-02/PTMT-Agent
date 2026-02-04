@@ -13,10 +13,10 @@ async def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information.json")
     paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper.json")
-    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph.json")
+    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph_rs_del.json")
     meta_path = os.path.join(current_dir, "../../dummy_data/dummy_meta_data_attention.json")
     
-    
+    initial_keywords=["dummy_1","dummy_2"]
     
     # 데이터 로드
     try:
@@ -37,7 +37,8 @@ async def main():
         subgraph_data=dummy_subgraph,
         user_info_data=user_info_data,
         paper_raw_data=paper_raw_data,
-        paper_meta_data=paper_meta_data
+        paper_meta_data=paper_meta_data,
+        initial_keywords=initial_keywords
     )
 
     app = run_langgraph_workflow()
@@ -45,15 +46,15 @@ async def main():
     
     print("\n🌊 LangGraph 병렬 워크플로우 실행...")
     final_state = await app.ainvoke(initial_state)
-
+    real_final_state= final_state.get("final_curriculum")
 
     print("\n" + "="*50)
     print(f"📊 최종 루프 횟수: {final_state.get('current_iteration_count')}")
     print(f"✅ 리소스 충분성: {final_state.get('is_resource_sufficient')}")
     
-    output_filename = "langgraph_parallel.json"
+    output_filename = "langgraph_parallel_rs_del.json"
     with open(output_filename, "w", encoding="utf-8") as f:
-        json.dump(final_state, f, indent=2, ensure_ascii=False)
+        json.dump(real_final_state, f, indent=2, ensure_ascii=False)
     print(f"\n✅ 결과 저장 완료: {output_filename}")
 
 if __name__ == "__main__":

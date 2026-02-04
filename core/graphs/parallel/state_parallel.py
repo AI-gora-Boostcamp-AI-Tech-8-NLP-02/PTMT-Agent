@@ -72,7 +72,7 @@ class CreateCurriculumInputState(TypedDict):
     user_info: UserInfo       # 구조화 된 사용자 정보 (목적,수준,시간,자료선호,{ "level": "", "purpose": "", "time_investment": "", "pref_type": "" })
 	 
 class CreateCurriculmOutputState(TypedDict):
-    final_curriculum: Dict[str, Any]    # 최종 커리큘럼 그래프 (JSON)
+    final_curriculum: CurriculumGraph    # 최종 커리큘럼 그래프 (JSON)
 
 class CreateCurriculumOverallState(CreateCurriculumInputState, CreateCurriculmOutputState):
     # Subgraph

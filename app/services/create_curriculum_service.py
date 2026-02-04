@@ -74,7 +74,7 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
             "initial_keyword": initial_keywords
         }
 
-        # Subgraph 생성 (현재는 더미 반환)
+        # Subgraph 생성 
         keyword_result = await keyword_agent.run(KeywordGraphInput(**keyword_input))
         subgraph = keyword_result.get("subgraph")
         
@@ -101,7 +101,7 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
         
         # 워크플로우 실행
         final_state = await app_workflow.ainvoke(initial_state)
-        final_curriculum = final_state.get("curriculum")
+        final_curriculum = final_state.get("final_curriculum")
         
         if not final_curriculum:
             print("❌ 커리큘럼 생성 실패 (LangGraph)")

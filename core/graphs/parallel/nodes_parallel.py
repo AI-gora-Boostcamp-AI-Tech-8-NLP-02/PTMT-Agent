@@ -231,7 +231,7 @@ async def curriculum_compose_node(state: CreateCurriculumOverallState):
     new_curriculum = result.get("curriculum", curriculum)
 
     return {
-        "curriculum": new_curriculum
+        "final_curriculum": new_curriculum
     }
 
 async def concept_expansion_node(state: CreateCurriculumOverallState):
@@ -312,7 +312,7 @@ async def first_node_order_node(state: CreateCurriculumOverallState):
     llm = get_solar_model(temperature=0.1)
     agent = FirstNodeOrderAgent(llm)
 
-    curriculum = state.get("curriculum", {})
+    curriculum = state.get("final_curriculum", {})
     paper_info = state.get("paper_content", {})
     user_info = state.get("user_info", {})
 
@@ -330,5 +330,5 @@ async def first_node_order_node(state: CreateCurriculumOverallState):
 
 
     return {
-        "curriculum": curriculum
+        "final_curriculum": curriculum
     }
