@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V6
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V7
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V6 | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V7 | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -113,6 +113,11 @@ class KeywordGraphAgent:
             else:
                 parsed_dict = ast.literal_eval(text)
                 agent_output = json.loads(json.dumps(parsed_dict, ensure_ascii=True))
+        
+            print("\n===== RAW AGENT OUTPUT (BEFORE POSTPROCESS) =====")
+            print(json.dumps(agent_output, indent=2, ensure_ascii=False))
+            print("================================================\n")
+        
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
