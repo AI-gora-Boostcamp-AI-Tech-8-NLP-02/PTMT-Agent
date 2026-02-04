@@ -32,13 +32,21 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
     insufficient_ids = result.get("insufficient_resource_ids", [])
     current_curriculum = state.get("curriculum", {})
     nodes = current_curriculum.get("nodes", [])
+    resource_reason_map = result.get("resource_reasoning", {})
+
 
     updated_nodes = []
     for node in nodes:
         new_node = node.copy() 
+        kid = new_node["keyword_id"]
         
-        # insufficient_ids에 있으면 False, 없으면 True
-        new_node["is_resource_sufficient"] = (new_node["keyword_id"] not in insufficient_ids)
+        # sufficiency 업데이트
+        new_node["is_resource_sufficient"] = (kid not in insufficient_ids)
+
+        # resource_reason 업데이트
+        # 사전에 키가 있으면 이유를 넣고, 없으면 None을 넣음
+        new_node["resource_reason"] = resource_reason_map.get(kid)
+        
         updated_nodes.append(new_node)
 
     # 새로운 curriculum 객체 생성
@@ -63,7 +71,7 @@ async def curriculum_orchestrator_node(state: CreateCurriculumOverallState):
         "needs_description_ids": result.get("needs_description_ids", []),
         "missing_concepts": result.get("missing_concepts", []),
 
-        "keyword_reasoning":result.get('keyword_reasoning',"None"),
+        "keyword_expand_reason":result.get('keyword_reasoning',"None"),
         "resource_reasoning":result.get('resource_reasoning',"None"),
         "current_iteration_count": current_count + 1
     }
@@ -89,6 +97,7 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
 
     # 에이전트 실행 
     result = await agent.run({
+        "paper_name":curriculum["graph_meta"]["title"],
         "nodes": nodes_list,
         "user_level": user_info.get("level"),
         "purpose": user_info.get("purpose"),
