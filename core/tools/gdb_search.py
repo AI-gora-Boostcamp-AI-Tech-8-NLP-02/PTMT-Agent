@@ -20,7 +20,10 @@ NEO4J_DATABASE = os.getenv("NEO4J_DATABASE")
 AURA_INSTANCEID = os.getenv("AURA_INSTANCEID") 
 AURA_INSTANCENAME = os.getenv("AURA_INSTANCENAME") 
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+driver = GraphDatabase.driver(NEO4J_URI, 
+                              auth=(NEO4J_USERNAME, NEO4J_PASSWORD),
+                              max_connection_lifetime=60*15,
+                              connection_acquisition_timeout=30,)
 
 def close_driver():
     driver.close()
@@ -29,9 +32,11 @@ print(driver.get_server_info())
 
 def run_cypher(query: str, params: dict | None = None, limit: int = 10):
     params = params or {}
-    with driver.session() as session:
-        result = session.run(query, params)
-        rows = [r.data() for r in result]
+    def work(tx):
+        return list(tx.run(query, params))
+    with driver.session(database=NEO4J_DATABASE) as session:
+        records = session.execute_read(work)
+        rows = [r.data() for r in records]
     return rows[:limit]
 
 

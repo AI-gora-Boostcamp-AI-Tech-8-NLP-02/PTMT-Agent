@@ -81,7 +81,10 @@ class KeywordGraphAgent:
             "target_paper_id": target_paper.get("id", ""),
             "target_paper_description": target_paper.get("description", ""),
             "graph_json": subgraph
-        }
+        }, 
+        config={
+                "tags": ["keyword-graph-agent"]
+            }
         )
 
         # 4. LLM 실행 결과 후처리
@@ -122,6 +125,11 @@ class KeywordGraphAgent:
             else:
                 parsed_dict = ast.literal_eval(text)
                 agent_output = json.loads(json.dumps(parsed_dict, ensure_ascii=True))
+        
+            print("\n===== RAW AGENT OUTPUT (BEFORE POSTPROCESS) =====")
+            print(json.dumps(agent_output, indent=2, ensure_ascii=False))
+            print("================================================\n")
+        
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
