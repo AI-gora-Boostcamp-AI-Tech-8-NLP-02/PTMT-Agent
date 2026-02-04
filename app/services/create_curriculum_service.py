@@ -50,6 +50,8 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
         else:
             author_list = author_data # 이미 리스트
 
+        
+
         paper_info = {
             "title": request.paper_content.title,
             "author": author_list,
@@ -59,7 +61,15 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
         
         # User Info 변환
         user_info = request.user_traits.model_dump(by_alias=True)
-        
+
+        # Level 변환
+        level_map = {
+            "non_major": "novice",
+            "bachelor": "intermediate",
+            "master": "expert"
+        }
+        user_info["level"] = level_map[user_info["level"]]
+
         # 1. KeywordGraphAgent 실행 -> Subgraph 생성
         llm = get_solar_model()
         keyword_agent = KeywordGraphAgent(llm=llm)
