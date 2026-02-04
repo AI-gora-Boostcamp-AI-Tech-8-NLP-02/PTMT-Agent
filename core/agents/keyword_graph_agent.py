@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3_ENG
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V6
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V3_ENG | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V6 | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -69,7 +69,10 @@ class KeywordGraphAgent:
             "target_paper_id": target_paper.get("id", ""),
             "target_paper_description": target_paper.get("description", ""),
             "graph_json": subgraph
-        }
+        }, 
+        config={
+                "tags": ["keyword-graph-agent"]
+            }
         )
 
         # 4. LLM 실행 결과 후처리
