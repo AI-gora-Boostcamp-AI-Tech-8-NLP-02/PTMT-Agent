@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 from langchain_core.prompts import ChatPromptTemplate
 
-KEYWORD_CHECK_PROMPT= ChatPromptTemplate.from_messages([
+KEYWORD_CHECK_PROMPT_V1= ChatPromptTemplate.from_messages([
     ("system", """당신은 인공지능 분야 전문 교육 컨설턴트입니다. 커리큘럼을 구성하고 있는 키워드가 논문을 이해하기에 충분한지 판단하십시오.
 
 [핵심 판단 가이드라인]
@@ -42,7 +42,7 @@ KEYWORD_CHECK_PROMPT= ChatPromptTemplate.from_messages([
 
 
 
-RESOURCE_CHECK_PROMPT = ChatPromptTemplate.from_messages([
+RESOURCE_CHECK_PROMPT_V1 = ChatPromptTemplate.from_messages([
     ("system", """당신은 인공지능 분야 전문 교육 컨설턴트입니다. 제공된 학습 자료가 키워드를 이해하는데 충분한지 판단하십시오.
 
 [핵심 판단 가이드라인]
