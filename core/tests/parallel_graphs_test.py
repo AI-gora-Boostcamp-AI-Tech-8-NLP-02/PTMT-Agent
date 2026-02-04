@@ -12,11 +12,11 @@ async def main():
     # dummy 데이터 경로 설정
     current_dir = os.path.dirname(os.path.abspath(__file__))
     user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information.json")
-    paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper.json")
-    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph_rs_del.json")
-    meta_path = os.path.join(current_dir, "../../dummy_data/dummy_meta_data_attention.json")
+    paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper_BERT.json")
+    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph_BERT.json")
+    meta_path = os.path.join(current_dir, "../../dummy_data/dummy_meta_data_BERT.json")
     
-    initial_keywords=["dummy_1","dummy_2"]
+    initial_keywords=["Bidirectional Encoder Representations","Masked Language Model","Next Sentence Prediction","Transformer","Fine-tuning"]
     
     # 데이터 로드
     try:
@@ -52,7 +52,7 @@ async def main():
     print(f"📊 최종 루프 횟수: {final_state.get('current_iteration_count')}")
     print(f"✅ 리소스 충분성: {final_state.get('is_resource_sufficient')}")
     
-    output_filename = "langgraph_parallel_rs_del.json"
+    output_filename = "langgraph_parallel_v2_2.json"
     with open(output_filename, "w", encoding="utf-8") as f:
         json.dump(real_final_state, f, indent=2, ensure_ascii=False)
     print(f"\n✅ 결과 저장 완료: {output_filename}")
