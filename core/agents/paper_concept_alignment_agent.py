@@ -15,7 +15,7 @@ from core.prompts.paper_concept_alignment.v2 import PAPER_CONCEPT_ALIGNMENT_PROM
 class PaperConceptAlignmentAgent:
     """논문 내용과 커리큘럼 구조를 기반으로 각 키워드가 논문 이해에 필요한 이유를 설명하는 에이전트"""
 
-    def __init__(self, llm, max_body_chars: int = 30000):
+    def __init__(self, llm, max_body_chars: int = 50000):
         """
         Args:
             llm: LangChain 호환 LLM 인스턴스
