@@ -42,7 +42,7 @@ class FirstNodeOrderAgent:
             llm_output_list=ordered_first_nodes
         )
 
-        #final_order = self._reorder_by_necessary_and_cap(curriculum, final_order)
+        final_order = self._reorder_by_necessary_and_cap(curriculum, final_order)
 
         curriculum["first_node_order"] = final_order
 
