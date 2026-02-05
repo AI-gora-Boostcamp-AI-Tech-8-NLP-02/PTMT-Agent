@@ -2,12 +2,13 @@ import json
 import re
 from typing import Any, Dict, List, Tuple
 from dotenv import load_dotenv
+
+from core.prompts.concept_expansion.v4 import CONCEPT_EXPANSION_PROMPT_V4
 from langchain.agents import create_agent
 from langchain_tavily import TavilySearch
 
 from core.contracts.concept_expansion import ConceptExpansionInput, ConceptExpansionOutput
 from core.contracts.types.curriculum import CurriculumGraph, KeywordNode
-from core.prompts.concept_expansion.v2 import CONCEPT_EXPANSION_PROMPT_V2
 from core.utils.get_message import get_last_ai_message
 
 load_dotenv()
@@ -33,13 +34,14 @@ class ConceptExpansionAgent:
         paper_info = input["curriculum"]["graph_meta"]
         
         # 프롬프트 적용
-        messages = CONCEPT_EXPANSION_PROMPT_V2.format_messages(
+        messages = CONCEPT_EXPANSION_PROMPT_V4.format_messages(
             paper_info = paper_info,
             keyword_graph=json.dumps(
                 keyword_graph, ensure_ascii=False
             ),
             reason=input["keyword_expand_reason"],
             keyword_ids = input["missing_concepts"],
+            user_level = input["user_info"]["level"],
             known_concept=input["user_info"]["known_concept"]
         )
 
@@ -235,6 +237,8 @@ class ConceptExpansionAgent:
 
             # description 없으면 None으로 보정
             if "description" not in node:
+                node["description"] = None
+            else: 
                 node["description"] = None
 
             if keyword_id not in node_map:
