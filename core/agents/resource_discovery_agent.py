@@ -4,6 +4,7 @@ from typing import List, Dict, Any
 from core.contracts.types.curriculum import KeywordNode, Resource
 from core.contracts.resource_discovery import ResourceDiscoveryAgentInput, ResourceDiscoveryAgentOutput
 from core.prompts.resource_discovery.v1 import QUERY_GEN_PROMPT_V1
+from core.prompts.resource_discovery.v2 import QUERY_GEN_PROMPT_V2
 from core.tools.tavily_search import search_web_resources
 from core.agents.study_load_estimation_agent import StudyLoadEstimationAgent
 
@@ -11,7 +12,7 @@ class ResourceDiscoveryAgent:
     def __init__(self, llm_discovery, llm_estimation):
         # 검색용 LLM 
         self.llm_discovery = llm_discovery
-        self.query_chain = QUERY_GEN_PROMPT_V1 | llm_discovery
+        self.query_chain = QUERY_GEN_PROMPT_V2 | llm_discovery
         
         # 평가용 LLM
         self.llm_estimation = llm_estimation
@@ -37,6 +38,7 @@ class ResourceDiscoveryAgent:
             
             # 검색 태스크 생성
             tasks.append(self.process_single_node(
+                paper_name=input_data["paper_name"],
                 node=node,
                 user_level=input_data["user_level"],
                 pref_types=input_data["pref_types"],
@@ -64,13 +66,15 @@ class ResourceDiscoveryAgent:
         # 최종 결과 반환
         return {"evaluated_resources": estimation_result["evaluated_resources"]}
 
-    async def process_single_node(self, node, user_level, pref_types, excluded_urls):
+    async def process_single_node(self, paper_name,node, user_level, pref_types, excluded_urls):
         """단일 키워드 자료 검색"""
         async with self.sem:
             # 쿼리 생성
             response = await self.query_chain.ainvoke({
+                "paper_name":paper_name,
                 "keyword": node["keyword"],
-                "description": node["description"]
+                "description": node["description"],
+                "search_direction": node.get("resource_reason") or ""
             },config={"tags": ["rs-discovery"]})
             
             raw_queries = response.content.strip().split('\n')
@@ -96,7 +100,7 @@ class ResourceDiscoveryAgent:
                         "keyword": node["keyword"],
                         "resource_name": res.get("title", "Untitled Resource"),
                         "url": url,
-                        "raw_content": (res.get("content") or "")[:1000],
+                        "raw_content": (res.get("content") or "")[:2000],
                         "query": query
                     })
             return keyword_resources
