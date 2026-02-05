@@ -76,7 +76,7 @@ def transform_graph_data(
         if type == 'PREREQ':
             edges.append({
                 'start': keyword_name_to_property[start_name.lower()]['id'],
-                'end': keyword_name_to_property[end_name.lower()]['id'],
+                'end': keyword_name_to_property[end_name.lower()]['id'] if end_name.lower() in keyword_name_to_property else end_name,
                 'type': type,
                 'reason': agent_edge['reason'],
                 'strength': agent_edge['strength']
@@ -116,8 +116,8 @@ def transform_graph_data(
         
         keyword_property = keyword_name_to_property[keyword_name.lower()]
         keyword_id = keyword_property['id']
-
-        # 2-1. 해당 keyword_id와 연결된 paper_id를 찾아 resource로 구성
+        
+        # 3-1. 해당 keyword_id와 연결된 paper_id를 찾아 resource로 구성
         resources = []
         # for paper_id in keyword_to_paper.get(keyword_id, []):
         #     paper_property = paper_id_to_property[paper_id]
@@ -134,6 +134,43 @@ def transform_graph_data(
             "keyword": keyword_name,
             "resources": resources
         })
+
+    # 4. 최종적으로 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
+    all_node_id = [target_paper_id]
+    for node in nodes:
+        all_node_id.append(node['keyword_id'])
+
+    for edge in edges:
+        start_id = edge['start']
+        end_id = edge['end']
+
+        if start_id in all_node_id and end_id in all_node_id:
+            continue
+        else:
+            edges.remove(edge)
+
+    # 5. 고립 노드 제거, Start로 한 번도 되지 않은 키워드 노드 페이퍼와 IN으로 엣지 연결
+    all_start_id = []
+    all_end_id = []
+    for edge in edges:
+        all_start_id.append(edge['start'])
+        all_end_id.append(edge['end'])
+
+    for node in nodes:
+        node_id = node['keyword_id']
+
+        if node_id in all_start_id:
+            continue
+        elif node_id in all_end_id:
+            edges.append({
+                'start': node_id,
+                'end': target_paper_id,
+                'type': "IN",
+                'reason': "",
+                'strength': ""
+            })
+        else:
+            nodes.remove(node)
 
     return {
         "paper_id": target_paper_id,

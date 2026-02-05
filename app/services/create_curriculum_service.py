@@ -71,7 +71,7 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
         user_info["level"] = level_map[user_info["level"]]
 
         # 1. KeywordGraphAgent 실행 -> Subgraph 생성
-        llm = get_solar_model()
+        llm = get_solar_model(temperature=0.3)
         keyword_agent = KeywordGraphAgent(llm=llm)
         
         # KeywordGraphInput 구성

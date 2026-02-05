@@ -24,7 +24,7 @@ async def main():
     # 2. LLM 생성
     llm = get_solar_model(
         model_name="solar-pro2",
-        temperature=0.5
+        temperature=0.3
     )
 
     # 3. Agent 생성

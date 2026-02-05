@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V3_ENG
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V8
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V3_ENG | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V8 | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -41,35 +41,50 @@ class KeywordGraphAgent:
         print(f'initial_keyword = {initial_keyword}')
         
         self.init_subgraph = get_subgraph_1(paper_name, initial_keyword)
+
+        # 만약 init_subgraph가 빈칸인 경우 초기값으로 채우기 -> RDB의 ID, NAME
+        if self.init_subgraph['graph']['target_paper'] == None:
+            target_paper = {
+                'citationCount': 0,
+                'name': paper_name,
+                'description': '',
+                'abstract': input_data['paper_info']['abstract'],
+                'id': "paper-0" 
+            }
+            self.init_subgraph['graph']['target_paper'] = target_paper
+
         # 디버깅 -> json으로 저장
-        # with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
-        #     json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
+        with open("debug_1차_서브그래프.json", "w", encoding="utf-8") as f:
+            json.dump(self.init_subgraph, f, ensure_ascii=False, indent=2)
 
         # 2. 생성된 1차 Subgraph를 LLM Input에 맞춰 처리
         subgraph = self._preprocess_graph(self.init_subgraph)
 
         # 3. LLM 실행
-        user_info = self._preprocess_user_info(input_data['user_info'])
+        user_info = input_data['user_info']
         target_paper = (self.init_subgraph.get("graph", self.init_subgraph).get("target_paper", {})) or {}
 
-        bt = user_info.get("budgeted_time", {}) or {}
-        total_hours = bt.get("total_hours", 0)
-        total_days = bt.get("total_days", 0)
-        hours_per_day = bt.get("hours_per_day", 0)
+        # bt = user_info.get("budgeted_time", {}) or {}
+        # total_hours = bt.get("total_hours", 0)
+        # total_days = bt.get("total_days", 0)
+        # hours_per_day = bt.get("hours_per_day", 0)
 
         response = await self.chain.ainvoke(
-        input={
-            "user_level": user_info["level"],
-            "user_purpose": user_info["purpose"],
-            "known_concepts": user_info.get("known_concept", []),
-            "total_hours": total_hours,
-            "total_days": total_days, 
-            "hours_per_day": hours_per_day, 
-            "target_paper_title": target_paper.get("name", ""),
-            "target_paper_id": target_paper.get("id", ""),
-            "target_paper_description": target_paper.get("description", ""),
-            "graph_json": subgraph
-        }
+            input={
+                "user_level": user_info["level"],
+                # "user_purpose": user_info["purpose"],
+                "known_concepts": user_info.get("known_concept", []),
+                # "total_hours": total_hours,
+                # "total_days": total_days, 
+                # "hours_per_day": hours_per_day, 
+                "target_paper_title": target_paper.get("name", ""),
+                "target_paper_id": target_paper.get("id", ""),
+                "target_paper_description": target_paper.get("description", ""),
+                "graph_json": subgraph
+            }, 
+            config={
+                "tags": ["keyword-graph-agent"]
+            }
         )
 
         # 4. LLM 실행 결과 후처리
@@ -80,19 +95,7 @@ class KeywordGraphAgent:
         )
 
         return {"subgraph": subgraph}
-    
 
-    def _preprocess_user_info(self, user_info):
-        """
-        - 필요한 키만 가져오기
-        """
-        ui = copy.deepcopy(user_info) if user_info else {}
-        ui_out = {}
-        for k in ("purpose", "level", "known_concept", "budgeted_time", "resource_type_preference"):
-            if k in ui:
-                ui_out[k] = ui[k]
-        return ui_out
-    
 
     def _preprocess_graph(self, raw_subgraph):
         return preprocess_graph(raw_subgraph=raw_subgraph)
@@ -110,6 +113,11 @@ class KeywordGraphAgent:
             else:
                 parsed_dict = ast.literal_eval(text)
                 agent_output = json.loads(json.dumps(parsed_dict, ensure_ascii=True))
+        
+            print("\n===== RAW AGENT OUTPUT (BEFORE POSTPROCESS) =====")
+            print(json.dumps(agent_output, indent=2, ensure_ascii=False))
+            print("================================================\n")
+        
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM output is not valid JSON: {text}") from e
         except Exception as e:
@@ -117,7 +125,8 @@ class KeywordGraphAgent:
 
         # 1. 삭제된 Node를 참고하고 있는 Edge 존재시 삭제
         tp_name = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('name', '')
-        valid_keywords = set(agent_output.get('nodes', []) + ([tp_name] if tp_name else []))
+        tp_id = self.init_subgraph.get('graph', {}).get('target_paper', {}).get('id', '')
+        valid_keywords = set(agent_output.get('nodes', []) + [tp_name, tp_id])
         agent_output['edges'] = [
             edge for edge in agent_output['edges']
             if edge['start'] in valid_keywords and edge['end'] in valid_keywords
@@ -163,6 +172,6 @@ class KeywordGraphAgent:
 
         # 5. Subgraph Keyword 이름 수정
         for nodes in subgraph['nodes']:
-            nodes['keyword'] = nodes['keyword'].split("(")[0].strip()
+            nodes['keyword'] = nodes['keyword'].split("(")[0].strip().title()
 
         return subgraph
