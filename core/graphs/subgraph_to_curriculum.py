@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph.json")
+    subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_BERT_novice.json")
     
     # 데이터 로드
     try:
@@ -134,9 +134,9 @@ if __name__ == "__main__":
 
 
     meta_data_input = {
-        "paper_id": "123456",
-        "title" : "Attention Is All You Need",
-        "summarize": "이 논문은 기존의 RNN이나 CNN을 완전히 배제하고 오로지 어텐션(Attention) 메커니즘만으로 구성된 트랜스포머(Transformer) 아키텍처를 제시하며 딥러닝 연구의 새로운 패러다임을 열었습니다. 연산의 병렬화를 통해 학습 속도를 비약적으로 높였을 뿐만 아니라, 기존 모델들의 고질적인 문제였던 장거리 의존성 문제를 해결함으로써 현재 GPT와 같은 초거대 언어 모델들이 탄생할 수 있는 결정적인 토대를 마련했습니다."
+        "paper_id": "26c69973-02be-4052-a794-6973546e8baf",
+        "title" : "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+        "summarize": "BERT 논문은 Transformer 기반의 양방향 언어 표현 모델을 제안한다. 기존 단방향 언어 모델의 한계를 극복하기 위해 마스크된 언어 모델(MLM)과 다음 문장 예측(NSP) 과제를 결합한 사전 훈련 방식을 도입한다. MLM은 입력 토큰의 일부를 무작위로 마스킹하고 주변 문맥을 활용해 이를 예측하는 방식으로 양방향 표현을 학습한다. NSP는 문장 쌍 간의 관계를 이해하는 능력을 향상시킨다. BERT는 사전 훈련 후 간단한 출력 계층 추가로 다양한 NLP 작업(질문 답변, 언어 추론 등)에 미세 조정될 수 있으며, 11개의 주요 NLP 작업에서 기존 방법을 크게 능가하는 성능을 달성했다. GLUE, SQuAD, SWAG 벤치마크에서 새로운 성능 기록을 수립했다."
     }
 
     # 함수 실행
@@ -144,6 +144,6 @@ if __name__ == "__main__":
 
     # 결과 출력
     print("=== 변환 결과 ===")
-    with open("sub_to_curr.json", "w", encoding="utf-8") as f:
+    with open("dummy_initial_novice.json", "w", encoding="utf-8") as f:
         json.dump(result_json, f, indent=2, ensure_ascii=False)
     print("\n✅ '저장 완료.")

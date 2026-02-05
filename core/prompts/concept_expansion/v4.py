@@ -48,7 +48,7 @@ CONCEPT_EXPANSION_PROMPT_V4 = ChatPromptTemplate.from_messages([
         - Add only concepts that directly help with implementation, mathematical understanding,
           or comprehension of algorithmic structure.
 
-        ### master
+        ### expert
         - Do NOT add high-level domain concepts or general concepts that are not directly related to the target paper.
         - Concepts must focus on paper-level details such as specific mechanisms,
           theoretical assumptions, or subtle distinctions.

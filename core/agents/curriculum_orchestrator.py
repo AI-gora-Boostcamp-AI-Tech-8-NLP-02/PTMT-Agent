@@ -9,17 +9,18 @@ from core.contracts.curriculum_orchestrator import (
 from core.prompts.curriculum_orchestrator.v1 import KEYWORD_CHECK_PROMPT_V1, RESOURCE_CHECK_PROMPT_V1
 from core.prompts.curriculum_orchestrator.v2 import KEYWORD_CHECK_PROMPT_V2, RESOURCE_CHECK_PROMPT_V2
 from core.prompts.curriculum_orchestrator.v3 import KEYWORD_CHECK_PROMPT_V3, RESOURCE_CHECK_PROMPT_V3
-
+from core.prompts.curriculum_orchestrator.v4 import KEYWORD_CHECK_PROMPT_V4, RESOURCE_CHECK_PROMPT_V4
 class CurriculumOrchestrator:
     def __init__(self, llm):
         self.llm = llm
-        self.kw_chain = KEYWORD_CHECK_PROMPT_V3 | llm
-        self.res_chain = RESOURCE_CHECK_PROMPT_V3 | llm
+        self.kw_chain = KEYWORD_CHECK_PROMPT_V4 | llm
+        self.res_chain = RESOURCE_CHECK_PROMPT_V4 | llm
 
     async def run(self, input_data: CurriculumOrchestratorInput) -> CurriculumOrchestratorOutput:
         paper_content = input_data["paper_content"]
         curriculum = input_data["curriculum"]
         user_info = input_data["user_info"]
+        paper_id=input_data["curriculum"]["graph_meta"]["paper_id"]
 
         nodes: List[KeywordNode] = curriculum.get("nodes", [])
         user_level = user_info.get("level", "unknown")
@@ -78,10 +79,10 @@ class CurriculumOrchestrator:
         
         raw_missing_concepts = kw_decision.get("missing_concepts", [])
         
-        # 기존 키워드에 포함되지 않은 개념만 필터링  여기수정!!!!!!!!
+        # 개념 필터링
         filtered_missing_concepts = [
             concept for concept in raw_missing_concepts 
-            if concept in existing_keywords
+            if concept in existing_keywords or concept == paper_id
         ]
 
         print(f"거르기전:{raw_missing_concepts}")
