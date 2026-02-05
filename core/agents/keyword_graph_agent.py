@@ -7,7 +7,7 @@ import copy
 import json
 
 from core.tools.gdb_search import get_subgraph_1
-from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V7
+from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V8
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
@@ -20,7 +20,7 @@ class KeywordGraphAgent:
             llm: LangChain 호환 LLM 인스턴스
         """
         self.llm = llm
-        self.chain = KEYWORD_GRAPH_PROMPT_V7 | llm
+        self.chain = KEYWORD_GRAPH_PROMPT_V8 | llm
         self.init_subgraph = None
 
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
@@ -61,22 +61,22 @@ class KeywordGraphAgent:
         subgraph = self._preprocess_graph(self.init_subgraph)
 
         # 3. LLM 실행
-        user_info = self._preprocess_user_info(input_data['user_info'])
+        user_info = input_data['user_info']
         target_paper = (self.init_subgraph.get("graph", self.init_subgraph).get("target_paper", {})) or {}
 
-        bt = user_info.get("budgeted_time", {}) or {}
-        total_hours = bt.get("total_hours", 0)
-        total_days = bt.get("total_days", 0)
-        hours_per_day = bt.get("hours_per_day", 0)
+        # bt = user_info.get("budgeted_time", {}) or {}
+        # total_hours = bt.get("total_hours", 0)
+        # total_days = bt.get("total_days", 0)
+        # hours_per_day = bt.get("hours_per_day", 0)
 
         response = await self.chain.ainvoke(
             input={
                 "user_level": user_info["level"],
-                "user_purpose": user_info["purpose"],
+                # "user_purpose": user_info["purpose"],
                 "known_concepts": user_info.get("known_concept", []),
-                "total_hours": total_hours,
-                "total_days": total_days, 
-                "hours_per_day": hours_per_day, 
+                # "total_hours": total_hours,
+                # "total_days": total_days, 
+                # "hours_per_day": hours_per_day, 
                 "target_paper_title": target_paper.get("name", ""),
                 "target_paper_id": target_paper.get("id", ""),
                 "target_paper_description": target_paper.get("description", ""),
@@ -95,19 +95,7 @@ class KeywordGraphAgent:
         )
 
         return {"subgraph": subgraph}
-    
 
-    def _preprocess_user_info(self, user_info):
-        """
-        - 필요한 키만 가져오기
-        """
-        ui = copy.deepcopy(user_info) if user_info else {}
-        ui_out = {}
-        for k in ("purpose", "level", "known_concept", "budgeted_time", "resource_type_preference"):
-            if k in ui:
-                ui_out[k] = ui[k]
-        return ui_out
-    
 
     def _preprocess_graph(self, raw_subgraph):
         return preprocess_graph(raw_subgraph=raw_subgraph)
@@ -184,6 +172,6 @@ class KeywordGraphAgent:
 
         # 5. Subgraph Keyword 이름 수정
         for nodes in subgraph['nodes']:
-            nodes['keyword'] = nodes['keyword'].split("(")[0].strip()
+            nodes['keyword'] = nodes['keyword'].split("(")[0].strip().title()
 
         return subgraph
