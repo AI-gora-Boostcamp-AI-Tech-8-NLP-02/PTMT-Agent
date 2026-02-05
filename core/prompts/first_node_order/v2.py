@@ -15,7 +15,7 @@ FIRST_ORDER_PROMPT_V2 = ChatPromptTemplate.from_messages([
         
         2. **Reference Only:** The `keyword_graph` serves **strictly as a Lookup Dictionary** to check node attributes. Do not select candidates from this source.
 
-        ### Sorting Algorithm (Sorting Logic)
+        ### Sorting Algorithm (Sorting Logic) :
         
         **1. Purpose Relevance:** Prioritize nodes most relevant to the `{user_purpose}`.
 
@@ -56,7 +56,7 @@ FIRST_ORDER_PROMPT_V2 = ChatPromptTemplate.from_messages([
         {paper_content}
 
         ---
-        **Command:** Using ALL IDs in the [Fixed Node List] above, output a JSON with the order optimized for the user's level and purpose.
+        **Command:** Return the JSON with `{first_nodes}` reordered according to the sorting logic.
         """
     )
 ])
