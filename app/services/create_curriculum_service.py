@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import List
+from typing import List, Optional
 import os
 import aiohttp
 import asyncio
@@ -137,8 +137,49 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
             "created_at": datetime.now(timezone.utc).isoformat()
         }
 
+        token = await _login_to_backend(backend_url)
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(target_url, json=payload, headers=headers) as resp:
+                if resp.status == 201:
+                    print("✅ 커리큘럼 전송 성공")
+                else:
+                    print(f"❌ 전송 실패: {resp.status}, {await resp.text()}")
 
-        # /api/auth/login
+    except Exception as e:
+        backend_url = os.getenv("MAIN_BACKEND_SERVER_PATH")
+        if not backend_url:
+            print("⚠️ MAIN_BACKEND_SERVER_PATH not set")
+            return
+        
+        target_url = f"{backend_url}/api/curriculums/import_failed"
+        token = await _login_to_backend(backend_url=backend_url)
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "curriculum_id": request.curriculum_id,
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(target_url, json=payload, headers=headers) as resp:
+                if resp.status == 200:
+                    print("커리큘럼 실패 전송 성공")
+                else:
+                    print(f"커리큘럼 실패 전송 실패: {resp.status}, {await resp.text()}")
+        print(f"Background Task Error: {e}")
+
+    
+
+    
+    
+async def _login_to_backend(backend_url: str) -> Optional[str]: 
         email = os.getenv("MAIN_BACKEND_SERVER_EMAIL", "") 
         password = os.getenv("MAIN_BACKEND_SERVER_PASSWORD", "") 
 
@@ -151,32 +192,7 @@ async def _generate_curriculum_graph(request: CurriculumGenerateRequest):
             async with session.post(f"{backend_url}/api/auth/login", json=login_payload) as resp:
                 if resp.status == 200:
                     resp_json = await resp.json()
-                    token = resp_json["data"]["access_token"]
+                    return resp_json["data"]["access_token"]
                 else:
                     print(f"❌ 로그인 실패: {resp.status}, {await resp.text()}")
-                    return
-
-        headers = {
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json"
-        }
-        
-        async with aiohttp.ClientSession() as session:
-            async with session.post(target_url, json=payload, headers=headers) as resp:
-                if resp.status == 201:
-                    print("✅ 커리큘럼 전송 성공")
-                else:
-                    print(f"❌ 전송 실패: {resp.status}, {await resp.text()}")
-        # import json
-        # save_path = f"curriculum_{request.curriculum_id}.json"
-        # with open(save_path, "w", encoding="utf-8") as f:
-        #     json.dump(payload, f, ensure_ascii=False, indent=4)
-        # print(f"💾 백엔드 미구현으로 인해 JSON 파일로 임시 저장되었습니다: {save_path}")
-
-    except Exception as e:
-        print(f"❌ Background Task Error: {e}")
-
-    
-
-    
-    
+                    return None
