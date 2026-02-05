@@ -1,3 +1,5 @@
+#core/contracts/resource_discovery.py
+
 from typing import List, TypedDict
 from core.contracts.types.curriculum import KeywordNode, Resource
 
