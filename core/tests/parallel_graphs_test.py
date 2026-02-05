@@ -11,7 +11,7 @@ async def main():
 
     # dummy 데이터 경로 설정
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information.json")
+    user_info_path = os.path.join(current_dir, "../../dummy_data/dummy_user_information_ch.json")
     paper_content_path = os.path.join(current_dir, "../../dummy_data/dummy_parsing_paper_BERT.json")
     subgraph_path = os.path.join(current_dir, "../../dummy_data/dummy_subgraph_BERT.json")
     meta_path = os.path.join(current_dir, "../../dummy_data/dummy_meta_data_BERT.json")
@@ -52,7 +52,7 @@ async def main():
     print(f"📊 최종 루프 횟수: {final_state.get('current_iteration_count')}")
     print(f"✅ 리소스 충분성: {final_state.get('is_resource_sufficient')}")
     
-    output_filename = "langgraph_parallel_v2_2.json"
+    output_filename = "langgraph_parallel_NV.json"
     with open(output_filename, "w", encoding="utf-8") as f:
         json.dump(real_final_state, f, indent=2, ensure_ascii=False)
     print(f"\n✅ 결과 저장 완료: {output_filename}")

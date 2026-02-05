@@ -8,13 +8,13 @@ from core.llm.solar_pro_2_llm import get_solar_model
 async def main():
     # 환경 설정 및 LLM 초기화
     load_dotenv()
-    llm = get_solar_model(temperature=0.1) 
+    llm = get_solar_model(temperature=0.3) 
     agent = CurriculumOrchestrator(llm)
 
     # 더미 데이터 경로 설정
-    user_info_path = "../../dummy_data/dummy_user_information.json"
+    user_info_path = "../../dummy_data/dummy_user_information_ch.json"
     curriculum_path = "../../dummy_data/dummy_initial_curriculum.json"
-    paper_content_path="../../dummy_data/dummy_parsing_paper_v2.json"
+    paper_content_path="../../dummy_data/dummy_parsing_paper_BERT.json"
     
     # 데이터 로드
     try:
@@ -34,11 +34,15 @@ async def main():
     print(f"👤 학습자 수준: {user_info['level']} | 목적: {user_info['purpose']}")
     
     # Agent 실행
-    result = await agent.run(
-        paper_content=paper_content,
-        curriculum=curriculum,
-        user_info=user_info
-    )
+    result = await agent.run({
+        "paper_content": paper_content,
+        "curriculum": curriculum,
+        "user_info": user_info,
+        "is_keyword_sufficient": False,
+        "is_resource_sufficient": False,
+        "current_iteration_count":1
+    })
+
 
     # 결과 분석 및 출력
     print("\n" + "="*50)

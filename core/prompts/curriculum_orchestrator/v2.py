@@ -1,8 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-
-from langchain_core.prompts import ChatPromptTemplate
-
 KEYWORD_CHECK_PROMPT_V2= ChatPromptTemplate.from_messages([
     ("system", """당신은 인공지능 분야 전문 교육 컨설턴트입니다.
 현재 구성된 커리큘럼(Node List)이 학습자의 수준과 목적에 맞춰 논문을 이해하기에 충분한지 평가하십시오.
