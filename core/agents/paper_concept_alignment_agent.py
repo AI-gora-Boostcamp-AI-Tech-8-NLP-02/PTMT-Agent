@@ -1,26 +1,28 @@
 import json
-import re
-from typing import Dict, Any, List
+from typing import Dict, List
+
 from core.contracts.paper_concept_alignment import (
     PaperConceptAlignmentInput,
     PaperConceptAlignmentOutput
 )
 from core.contracts.types.curriculum import KeywordNode, KeywordEdge
 from core.contracts.types.paper_info import PaperInfo
-from core.prompts.paper_concept_alignment.v1 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V1
+# from core.prompts.paper_concept_alignment.v1 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V1
+from core.prompts.paper_concept_alignment.v2 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V2
+
 
 
 class PaperConceptAlignmentAgent:
     """논문 내용과 커리큘럼 구조를 기반으로 각 키워드가 논문 이해에 필요한 이유를 설명하는 에이전트"""
 
-    def __init__(self, llm, max_body_chars: int = 4000):
+    def __init__(self, llm, max_body_chars: int = 50000):
         """
         Args:
             llm: LangChain 호환 LLM 인스턴스
             max_body_chars: 논문 본문의 최대 문자 수
         """
         self.llm = llm
-        self.chain = PAPER_CONCEPT_ALIGNMENT_PROMPT_V1 | llm
+        self.chain = PAPER_CONCEPT_ALIGNMENT_PROMPT_V2 | llm
         self.max_body_chars = max_body_chars
 
     async def run(self, input_data: PaperConceptAlignmentInput) -> PaperConceptAlignmentOutput:
@@ -49,6 +51,7 @@ class PaperConceptAlignmentAgent:
 
         # 논문 본문 생성
         paper_body_summary = curriculum["graph_meta"]["summarize"]
+        paper_body = self._format_paper_body(paper_info, paper_body_summary)
 
         # 전체 커리큘럼 구조 포맷팅
         curriculum_nodes = self._format_all_nodes(nodes)
@@ -61,7 +64,9 @@ class PaperConceptAlignmentAgent:
             response = await self.chain.ainvoke({
                 "paper_title": paper_info.get("title", ""),
                 "paper_abstract": paper_info.get("abstract", ""),
-                "paper_body_summary": paper_body_summary,
+                "paper_id" : paper_info.get("paper_id", ""),
+                #"paper_body_summary": paper_body_summary,
+                "paper_text": paper_body,
                 "curriculum_nodes": curriculum_nodes,
                 "curriculum_edges": curriculum_edges,
                 "keywords_to_describe": keywords_to_describe
@@ -91,8 +96,8 @@ class PaperConceptAlignmentAgent:
             if not node.get("description") or node.get("description", "").strip() == ""
         ]
 
-    def _format_paper_body(self, paper_info: PaperInfo) -> str:
-        """논문 본문을 포맷팅"""
+    def _format_paper_body(self, paper_info: PaperInfo, paper_body_summary: str) -> str:
+        """논문 본문을 포맷팅. 본문이 max_body_chars를 넘으면 summary를 사용한다."""
         body = paper_info.get("body", [])
         if not body:
             return "본문 내용이 없습니다."
@@ -103,18 +108,26 @@ class PaperConceptAlignmentAgent:
         for section in body:
             subtitle = section.get("subtitle", "")
             text = section.get("text", "")
-            
             section_text = f"### {subtitle}\n{text}"
-            
-            if total_chars + len(section_text) > self.max_body_chars:
-                # 남은 공간만큼만 추가
-                remaining = self.max_body_chars - total_chars
-                if remaining > 100:
-                    body_parts.append(f"### {subtitle}\n{text[:remaining]}...")
-                break
-            
             body_parts.append(section_text)
             total_chars += len(section_text)
+
+        if total_chars > self.max_body_chars:
+            summary = paper_body_summary
+            if summary:
+                return summary
+            # summary가 없으면 기존처럼 잘라서 반환
+            truncated = []
+            total_chars = 0
+            for section_text in body_parts:
+                if total_chars + len(section_text) > self.max_body_chars:
+                    remaining = self.max_body_chars - total_chars
+                    if remaining > 100:
+                        truncated.append(section_text[:remaining] + "...")
+                    break
+                truncated.append(section_text)
+                total_chars += len(section_text)
+            return "\n\n".join(truncated)
 
         return "\n\n".join(body_parts)
 
