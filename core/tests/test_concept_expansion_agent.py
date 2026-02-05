@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from core.agents.concept_expansion_agent import ConceptExpansionAgent
 from core.contracts.types.curriculum import CurriculumGraph
-from core.graphs.state_definition import CreateCurriculumOverallState
+from core.graphs.parallel.state_parallel import CreateCurriculumOverallState
 from core.llm.solar_pro_2_llm import get_solar_model
 
 def main():
@@ -23,7 +23,7 @@ def main():
     agent = ConceptExpansionAgent(llm)
 
     # 4. 테스트용 JSON 데이터 로드
-    with open("./dummy_data/dummy_initial_curriculum.json", "r", encoding="utf-8") as f:
+    with open("./dummy_data/old_data/dummy_initial_curriculum.json", "r", encoding="utf-8") as f:
         curriculum = json.load(f)
 
     curriculum_graph: CurriculumGraph = cast(CurriculumGraph, curriculum)
