@@ -137,6 +137,7 @@ class KeywordGraphAgent:
         subgraph = transform_graph_data(self.init_subgraph, agent_output, keyword_name_to_property, paper_id)
 
         # 3. Agent의 출력 Keyword의 GraphDB 상 name, alias 뽑기
+        valid_keywords = set([keyword['keyword'] for keyword in subgraph['nodes']])
         all_keyword_alias = {}
         for db_keyword in self.init_subgraph['graph']['nodes']['keywords']:
             if db_keyword['name'] in valid_keywords:
@@ -173,5 +174,16 @@ class KeywordGraphAgent:
         # 5. Subgraph Keyword 이름 수정
         for nodes in subgraph['nodes']:
             nodes['keyword'] = nodes['keyword'].split("(")[0].strip().title()
+
+        # 6. 없는 Node를 참조하고 있는 모든 Edge 삭제
+        valid_ids = [subgraph['paper_id']] + [keyword['keyword_id'] for keyword in subgraph['nodes'] if keyword['keyword_id']]
+        for edge in subgraph['edges']:
+            start_id = edge['start']
+            end_id = edge['end']
+
+            if start_id in valid_ids and end_id in valid_ids:
+                continue
+            else:
+                subgraph['edges'].remove(edge)
 
         return subgraph
