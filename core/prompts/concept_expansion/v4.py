@@ -52,6 +52,17 @@ CONCEPT_EXPANSION_PROMPT_V4 = ChatPromptTemplate.from_messages([
         - Do NOT add high-level domain concepts or general concepts that are not directly related to the target paper.
         - Concepts must focus on paper-level details such as specific mechanisms,
           theoretical assumptions, or subtle distinctions.
+          
+        ---
+        ## How to Use the Expansion Reason
+        - The provided reason explains why concept expansion was requested and may suggest specific missing concepts or learning gaps.
+        - You MUST consider this reason when deciding whether to add new concepts. However, the reason is NOT a hard constraint.
+        
+        You MAY add concepts that are NOT explicitly mentioned in the reason
+        if and only if:
+        - They are necessary to improve the learning flow toward the target paper, AND
+        - They comply with the user's level ({user_level}), AND
+        - They do NOT violate any rules regarding concepts already known by the user.
 
         ---
         ## Rules Regarding Concepts Already Known by the User

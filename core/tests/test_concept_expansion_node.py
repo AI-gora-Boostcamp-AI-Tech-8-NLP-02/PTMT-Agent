@@ -10,7 +10,7 @@ from core.graphs.parallel.state_parallel import CreateCurriculumOverallState
 
 def main():
     # 테스트용 JSON 데이터 로드
-    with open("./dummy_data/dummy_middle_curriculum_4.json", "r", encoding="utf-8") as f:
+    with open("./dummy_data/dummy_middle_curriculum_Inter.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
     
