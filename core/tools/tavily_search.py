@@ -1,3 +1,5 @@
+# core/tools/tavily_search.py
+
 import os
 import asyncio
 from typing import List, Dict, Any
@@ -9,9 +11,8 @@ load_dotenv()
 
 TAVILY_KEY = os.environ.get("TAVILY_API_KEY")
 tavily_client = TavilyClient(api_key=TAVILY_KEY)
+
 @traceable(run_type="tool", name="Tavily Search")
-
-
 async def search_web_resources(query: str, max_results: int = 2,search_depth:str= "basic") -> List[Dict[str, Any]]:
     """Tavily를 이용해 웹 서치"""
     try:
@@ -20,9 +21,11 @@ async def search_web_resources(query: str, max_results: int = 2,search_depth:str
             tavily_client.search, 
             query=query, 
             max_results=max_results, 
-            search_depth=search_depth
+            search_depth=search_depth, 
+            topic="general",
+            country="south korea",             
         )
         return result.get('results', [])
     except Exception as e:
-        print(f"❌ [Tavily Tool Error] {e}")
+        print(f"[Tavily Tool Error] {e}")
         return []

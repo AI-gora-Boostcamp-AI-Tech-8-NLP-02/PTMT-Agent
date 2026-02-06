@@ -1,3 +1,5 @@
+# core/contracts/study_load_estimation.py
+
 from typing import List, TypedDict
 from core.contracts.types.curriculum import Resource
 
