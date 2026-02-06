@@ -3,6 +3,7 @@
 import asyncio
 import re
 from typing import List, Dict, Any, Optional
+from langsmith import traceable
 
 from core.contracts.resource_discovery import ResourceDiscoveryAgentInput, ResourceDiscoveryAgentOutput
 from core.prompts.resource_discovery.v3 import QUERY_GEN_PROMPT_V3
@@ -38,6 +39,7 @@ class ResourceDiscoveryAgent:
         
         self.sem = asyncio.Semaphore(5)
 
+    @traceable(run_type="chain", name="Resource Discovery Agent") 
     async def run(self, input_data: ResourceDiscoveryAgentInput) -> ResourceDiscoveryAgentOutput:
         """에이전트의 메인 실행 로직"""
         all_resources = []
