@@ -81,7 +81,7 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
     Resource Discovery Agent를 호출하여 웹 서치를 통해 자료를 탐색하고 자료를 평가
     """
 
-    llm_for_search = get_solar_model(temperature=0.7)
+    llm_for_search = get_solar_model(temperature=0.7, reasoning_effort='low')
     llm_for_eval = get_solar_model(temperature=0.1)
 
     agent = ResourceDiscoveryAgent(
