@@ -8,13 +8,14 @@ from core.contracts.first_node_order_agent import (
 )
 # from core.prompts.first_node_order.v1 import FIRST_ORDER_PROMPT_V1
 from core.prompts.first_node_order.v2 import FIRST_ORDER_PROMPT_V2
+from core.utils.timeout import async_timeout
 
 class FirstNodeOrderAgent:
     def __init__(self, llm):
         self.llm = llm
         self.order_chain = FIRST_ORDER_PROMPT_V2 | llm
         
-
+    @async_timeout(45)
     async def run(self, input_data: FirstNodeOrderAgentInput) -> FirstNodeOrderAgentOutput:
         paper_content = input_data["paper_content"]
         curriculum = input_data["curriculum"]

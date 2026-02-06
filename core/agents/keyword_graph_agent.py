@@ -11,6 +11,7 @@ from core.prompts.keyword_graph import KEYWORD_GRAPH_PROMPT_V9
 from core.contracts.keywordgraph import KeywordGraphInput, KeywordGraphOutput
 from core.utils.kg_agent_preprocessing import preprocess_graph, build_keyword_name_to_property
 from core.utils.kg_agent_postprocessing import transform_graph_data
+from core.utils.timeout import async_timeout
 
 class KeywordGraphAgent:
     def __init__(self, llm):
@@ -23,6 +24,7 @@ class KeywordGraphAgent:
         self.chain = KEYWORD_GRAPH_PROMPT_V9 | llm
         self.init_subgraph = None
 
+    @async_timeout(90)
     async def run(self, input_data: KeywordGraphInput) -> KeywordGraphOutput:
         """에이전트 실행
 

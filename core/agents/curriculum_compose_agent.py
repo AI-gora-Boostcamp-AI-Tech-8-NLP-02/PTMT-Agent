@@ -8,6 +8,7 @@ from core.contracts.curriculum_compose import (
     KeywordEdge
 )
 from core.prompts.curriculum_compose.v1 import CURRICULUM_COMPOSE_PROMPT_V1
+from core.utils.timeout import async_timeout
 
 
 class CurriculumComposeAgent:
@@ -17,6 +18,7 @@ class CurriculumComposeAgent:
         self.llm = llm
         self.chain = CURRICULUM_COMPOSE_PROMPT_V1 | llm
 
+    @async_timeout(60)
     async def run(self, input_data: CurriculumComposeInput) -> CurriculumComposeOutput:
         """에이전트 실행"""
         user_info = input_data["user_info"]
