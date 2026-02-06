@@ -31,46 +31,52 @@ def plan_tools(pref_types: List[str] | None) -> List[Dict[str, Any]]:
     # paper + web_doc
     if "paper" in P and "web_doc" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "semantic_scholar", "max_results": 2},
-            {"tool": "serper_web", "max_results": 2},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "serper_web", "max_results": 1},
+            {"tool": "serper_video", "max_results": 1},
+            {"tool": "semantic_scholar", "max_results": 1},
         ]
 
     # paper + video
     if "paper" in P and "video" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "semantic_scholar", "max_results": 2},
-            {"tool": "serper_video", "max_results": 2},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "serper_web", "max_results": 1},
+            {"tool": "serper_video", "max_results": 1},
+            {"tool": "semantic_scholar", "max_results": 1},
         ]
 
     # web_doc + video
     if "web_doc" in P and "video" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "serper_web", "max_results": 2},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "serper_web", "max_results": 1},
             {"tool": "serper_video", "max_results": 2},
         ]
 
     # paper only
     if "paper" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "semantic_scholar", "max_results": 4},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "semantic_scholar", "max_results": 1},
+            {"tool": "serper_web", "max_results": 1},
+            {"tool": "serper_video", "max_results": 1},
         ]
 
     # web_doc only
     if "web_doc" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "serper_web", "max_results": 4},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "serper_web", "max_results": 2},
+            {"tool": "serper_video", "max_results": 1},
         ]
 
     # video only
     if "video" in P:
         return [
-            {"tool": "tavily", "max_results": 1},
-            {"tool": "serper_video", "max_results": 4},
+            {"tool": "tavily", "max_results": 2},
+            {"tool": "serper_web", "max_results": 1},
+            {"tool": "serper_video", "max_results": 2},
         ]
 
     # 아무 선호도 없으면 tavily 5개
