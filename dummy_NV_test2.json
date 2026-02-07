@@ -1,0 +1,1040 @@
+{
+  "graph_meta": {
+    "paper_id": "26c69973-02be-4052-a794-6973546e8baf",
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "summarize": "BERT 논문은 Transformer 기반의 양방향 언어 표현 모델을 제안한다. 기존 단방향 언어 모델의 한계를 극복하기 위해 마스크된 언어 모델(MLM)과 다음 문장 예측(NSP) 과제를 결합한 사전 훈련 방식을 도입한다. MLM은 입력 토큰의 일부를 무작위로 마스킹하고 주변 문맥을 활용해 이를 예측하는 방식으로 양방향 표현을 학습한다. NSP는 문장 쌍 간의 관계를 이해하는 능력을 향상시킨다. BERT는 사전 훈련 후 간단한 출력 계층 추가로 다양한 NLP 작업(질문 답변, 언어 추론 등)에 미세 조정될 수 있으며, 11개의 주요 NLP 작업에서 기존 방법을 크게 능가하는 성능을 달성했다. GLUE, SQuAD, SWAG 벤치마크에서 새로운 성능 기록을 수립했다."
+  },
+  "first_node_order": [
+    "key-005",
+    "key-015",
+    "key-004",
+    "key-016",
+    "key-021",
+    "key-017",
+    "key-020",
+    "key-018",
+    "key-019",
+    "key-013",
+    "key-010",
+    "key-009",
+    "key-014",
+    "key-001",
+    "key-008"
+  ],
+  "nodes": [
+    {
+      "keyword_id": "key-001",
+      "keyword": "Chain Rule",
+      "description": "Chain Rule은 역전파(Backpropagation)의 수학적 기반이 되는 개념입니다. BERT의 학습 과정에서 경사 하강법을 통해 모델 파라미터를 업데이트할 때 연쇄 법칙이 필수적으로 활용되므로, 모델의 최적화 메커니즘을 이해하려면 이 개념이 필요합니다. 다만 논문에서는 직접적으로 언급되지 않아 간접적인 선수 지식으로 분류됩니다.",
+      "keyword_importance": 5,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-001",
+          "resource_name": "BERT: Pre-training of Deep Bidirectional Transformers for ...",
+          "url": "https://rosinality.github.io/2018/10/bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding/",
+          "type": "web_doc",
+          "resource_description": "BERT의 사전 훈련 과정에서 연쇄 법칙을 활용한 확률 계산 예시를 제공하여 자연어 처리 맥락에서의 적용 방법을 이해하는 데 도움을 줍니다.",
+          "difficulty": 4,
+          "importance": 5,
+          "study_load": 0.5,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-002",
+          "resource_name": "BERT Uncovered: The Breakthrough in Deep Bidirectional ...",
+          "url": "https://www.youtube.com/watch?v=-KECe6AlB3k",
+          "type": "video",
+          "resource_description": "BERT의 핵심 개념을 시각적으로 설명하며 연쇄 법칙이 언어 모델 훈련에 어떻게 활용되는지 초보자도 쉽게 이해할 수 있습니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.26,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-002",
+      "keyword": "Backpropagation",
+      "description": "Backpropagation은 BERT의 사전 학습 및 미세 조정(Fine-Tuning) 단계에서 모델 파라미터를 업데이트하는 핵심 알고리즘입니다. 경사 기반 최적화 없이는 BERT의 양방향 표현 학습이 불가능하므로, 학습 프로세스 이해의 필수 요소입니다.",
+      "keyword_importance": 8,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-037",
+          "resource_name": "[Paper Review] BERT: Pre-training of Deep Bidirectional ...",
+          "url": "https://sonstory.tistory.com/103",
+          "type": "web_doc",
+          "resource_description": "BERT의 사전 학습과 미세 조정 과정에서 역전파가 어떻게 적용되는지 구조적으로 설명하여 학습 흐름을 이해하는 데 유용합니다.",
+          "difficulty": 6,
+          "importance": 5,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-038",
+          "resource_name": "Fine-Tuning BERT for Text Classification (w/ Example Code)",
+          "url": "https://www.youtube.com/watch?v=4QHg8Ix8WWQ",
+          "type": "video",
+          "resource_description": "BERT를 활용한 텍스트 분류 실습 영상을 통해 역전파의 실제 적용 사례를 시각적으로 학습할 수 있습니다.",
+          "difficulty": 4,
+          "importance": 4,
+          "study_load": 0.38,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-041",
+          "resource_name": "The spelled-out intro to neural networks and backpropagation ...",
+          "url": "https://www.youtube.com/watch?v=VMj-3S1tku0",
+          "type": "video",
+          "resource_description": "역전파의 전체 과정을 단계별로 실습하며 학습할 수 있어 초보자도 실제 구현 방식을 체계적으로 익히는 데 적합합니다.",
+          "difficulty": 5,
+          "importance": 9,
+          "study_load": 2.4,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-042",
+          "resource_name": "A Beginner's Guide to Backpropagation in Neural Networks",
+          "url": "http://wiki.pathmind.com/backpropagation",
+          "type": "web_doc",
+          "resource_description": "초보자에게 역전파의 기본 개념과 오차 역전파 과정을 직관적으로 설명하여 신경망 학습의 기초를 이해하는 데 유용합니다.",
+          "difficulty": 2,
+          "importance": 9,
+          "study_load": 0.5,
+          "is_necessary": true
+        }
+      ],
+      "resource_reason": "[key-002]: Provided resources (difficulty 4-7) focus on BERT-specific applications without foundational intuition for backpropagation basics (e.g., chain rule, gradient descent), making them too advanced for a Novice learner who needs introductory context before tackling complex model implementations."
+    },
+    {
+      "keyword_id": "key-003",
+      "keyword": "Language Representation Model",
+      "description": "Language Representation Model은 BERT의 핵심 목표인 언어 이해 모델의 기반이 되는 개념입니다. 기존 언어 모델(ELMo, GPT)과의 비교를 통해 BERT의 혁신성을 이해하려면 이 개념이 선행되어야 합니다. 논문의 서론과 관련 작업에서 반복적으로 강조됩니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-004",
+          "resource_name": "[BERT] Pretranied Deep Bidirectional Transformers for ...",
+          "url": "https://www.youtube.com/watch?v=BhlOGGzC0Q0",
+          "type": "video",
+          "resource_description": "BERT의 사전 훈련 과정을 시각적으로 설명하여 초보자도 언어 표현 모델의 작동 원리를 쉽게 이해할 수 있습니다.",
+          "difficulty": 5,
+          "importance": 9,
+          "study_load": 0.89,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-005",
+          "resource_name": "BERT Explained: How AI Understands Context (Bidirectional ...",
+          "url": "https://www.youtube.com/watch?v=_Fou4xbyESw",
+          "type": "video",
+          "resource_description": "BERT의 핵심 개념을 간결하게 요약하여 언어 표현 모델의 기본 아이디어를 빠르게 파악하는 데 유용합니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 0.06,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-004",
+      "keyword": "Attention",
+      "description": "Attention 메커니즘은 Transformer 아키텍처의 핵심 구성 요소로, BERT가 문맥을 양방향으로 처리하는 방식을 결정합니다. Self-Attention 없이는 BERT의 깊은 양방향 표현 학습이 불가능하므로, 모델 구조 이해의 필수 요소입니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-007",
+          "resource_name": "BERT(Pre-training of Deep Bidirectional Transformers for ...",
+          "url": "https://simonezz.tistory.com/48",
+          "type": "web_doc",
+          "resource_description": "BERT의 어텐션 메커니즘과 트랜스포머 구조를 초보자도 이해하기 쉽게 단계별로 설명하여 어텐션 값의 계산 과정을 학습하는 데 유용합니다.",
+          "difficulty": 6,
+          "importance": 8,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-008",
+          "resource_name": "[논문 리뷰] BERT: Pre-training of Deep Bidirectional ...",
+          "url": "https://suanlab.com/blog/20251231-paper-1810-04805-bert-pre-training-of-deep-bidi/",
+          "type": "web_doc",
+          "resource_description": "BERT의 양방향 어텐션 기반 사전 학습 방식을 간결하게 요약하여 어텐션의 문맥 이해 역할을 직관적으로 파악하는 데 도움이 됩니다.",
+          "difficulty": 5,
+          "importance": 7,
+          "study_load": 1.2,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-009",
+          "resource_name": "최재규-BERT:Pre-training of Deep Bidirectional Transformers ...",
+          "url": "https://www.youtube.com/watch?v=vo3cyr_8eDQ",
+          "type": "video",
+          "resource_description": "25분 분량의 동영상 강의로 BERT 논문의 어텐션 메커니즘을 시각적으로 설명하여 초보자도 핵심 개념을 쉽게 습득할 수 있습니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 0.42,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-005",
+      "keyword": "Natural Language Processing",
+      "description": "Natural Language Processing(NLP)은 BERT가 해결하려는 문제의 도메인입니다. 언어 이해, 문장 관계 추론, 토큰 수준 예측 등 NLP 태스크에 대한 기본 지식 없이는 BERT의 실험 결과와 응용 분야를 이해하기 어렵습니다.",
+      "keyword_importance": 7,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-010",
+          "resource_name": "What is BERT? Bidirectional Transformers for NLP",
+          "url": "https://www.ultralytics.com/glossary/bert-bidirectional-encoder-representations-from-transformers",
+          "type": "web_doc",
+          "resource_description": "BERT의 핵심 개념과 코드 예제를 함께 설명하여 초보자도 실습하며 이해하기 쉬운 실용적인 자료입니다.",
+          "difficulty": 5,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-011",
+          "resource_name": "Transformer models and BERT model: Overview",
+          "url": "https://www.youtube.com/watch?v=t45S_MwAcOw",
+          "type": "video",
+          "resource_description": "트랜스포머와 BERT의 기본 개념을 시각적으로 설명하므로 초보자도 직관적으로 이해하기 좋은 동영상 자료입니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.2,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-012",
+          "resource_name": "GPT and BERT - Architecture, Examples, Comparison",
+          "url": "https://www.youtube.com/watch?v=G1-k1bd1obQ",
+          "type": "video",
+          "resource_description": "BERT와 GPT의 아키텍처 차이를 예제와 함께 비교하므로 초보자도 모델 특성을 명확히 구분할 수 있습니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 0.25,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-006",
+      "keyword": "Transformer",
+      "description": "Transformer는 BERT의 아키텍처를 구성하는 기반 모델입니다. 인코더-디코더 구조, 멀티헤드 어텐션, 포지셔널 인코딩 등 Transformer의 구성 요소를 이해하지 못하면 BERT의 구현 방식을 파악할 수 없습니다. 논문의 3장과 부록에서 상세히 설명됩니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-013",
+          "resource_name": "How is BERT different from the original transformer ...",
+          "url": "https://ai.stackexchange.com/questions/23221/how-is-bert-different-from-the-original-transformer-architecture",
+          "type": "web_doc",
+          "resource_description": "BERT와 원본 트랜스포머 아키텍처의 차이점을 명확히 설명하여 초보자도 트랜스포머의 핵심 개념을 이해하는 데 도움을 줍니다.",
+          "difficulty": 6,
+          "importance": 9,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-014",
+          "resource_name": "Transformer models and BERT model: Overview",
+          "url": "https://www.youtube.com/watch?v=t45S_MwAcOw",
+          "type": "video",
+          "resource_description": "트랜스포머 아키텍처와 BERT 모델을 시각적으로 설명하여 초보자도 복잡한 개념을 쉽게 이해할 수 있도록 도와줍니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 0.19,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-015",
+          "resource_name": "Transformer Models and BERT Model: Overview",
+          "url": "https://www.youtube.com/watch?v=hsp1OAcoLBY",
+          "type": "video",
+          "resource_description": "트랜스포머 모델의 기본 원리와 BERT의 작동 방식을 간결하게 요약하여 빠르게 학습할 수 있도록 구성된 동영상입니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.14,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-007",
+      "keyword": "Bert",
+      "description": "Bert는 논문의 핵심 주제로, 양방향 Transformer 인코더 기반의 사전 학습 및 미세 조정 전략을 포함합니다. MLM(Masked Language Model)과 NSP(Next Sentence Prediction) 태스크, 입력 표현 방식([CLS], [SEP] 토큰) 등 BERT의 모든 기술적 세부 사항을 이해하려면 이 개념이 필수적입니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-017",
+          "resource_name": "Deep Dive into BERT Model: Architecture, Tasks & Training ...",
+          "url": "https://www.youtube.com/watch?v=SlYBD7Oeo2w",
+          "type": "video",
+          "resource_description": "BERT의 아키텍처, 학습 파라미터 등을 시각적으로 설명하여 복잡한 개념을 직관적으로 이해할 수 있습니다.",
+          "difficulty": 6,
+          "importance": 8,
+          "study_load": 0.33,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-018",
+          "resource_name": "BERT NLP Tutorial 1- Introduction | BERT Machine Learning ...",
+          "url": "https://www.youtube.com/watch?v=h_U27jBNYI4",
+          "type": "video",
+          "resource_description": "트랜스포머와 어텐션 메커니즘을 기반으로 BERT의 기본 원리를 단계별로 소개하는 입문용 강의입니다.",
+          "difficulty": 5,
+          "importance": 8,
+          "study_load": 0.47,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-008",
+      "keyword": "Textual Entailment",
+      "description": "Textual Entailment는 BERT가 평가하는 GLUE 벤치마크의 MNLI 태스크와 직접 관련된 개념입니다. 문장 간 논리적 관계를 판단하는 능력을 평가하는 이 태스크를 이해하면 BERT의 문장 수준 표현 학습 효과를 분석할 수 있습니다.",
+      "keyword_importance": 6,
+      "is_keyword_necessary": false,
+      "is_resource_sufficient": true,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-009",
+      "keyword": "Nlp Tasks",
+      "description": "Nlp Tasks는 BERT가 적용되는 다양한 자연어 처리 작업(예: 질문 응답, 개체명 인식, 감정 분석)을 포괄합니다. BERT의 범용성을 입증하려면 이러한 태스크에 대한 이해가 필요하며, 논문의 4장과 실험 결과에서 상세히 다뤄집니다.",
+      "keyword_importance": 7,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-022",
+          "resource_name": "BERT 101 - State Of The Art NLP Model Explained",
+          "url": "https://huggingface.co/blog/bert-101",
+          "type": "web_doc",
+          "resource_description": "BERT 모델의 기본 개념과 NLP 작업에서의 활용 사례를 초보자도 이해하기 쉽게 설명하여 NLP 학습에 유용합니다.",
+          "difficulty": 4,
+          "importance": 9,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-023",
+          "resource_name": "NLP Project in 20 Minutes Using BERT",
+          "url": "https://www.youtube.com/watch?v=iiwEW-sg9KE",
+          "type": "video",
+          "resource_description": "20분 안에 BERT를 활용한 NLP 프로젝트를 완성하는 실용적인 튜토리얼로 초보자도 쉽게 따라 할 수 있습니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.33,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-010",
+      "keyword": "Fine-Tuning",
+      "description": "Fine-Tuning은 BERT의 사전 학습 모델을 특정 태스크에 맞게 조정하는 과정입니다. 추가 출력 레이어를 도입하고 모든 파라미터를 미세 조정하는 방식을 이해하지 못하면 BERT의 실험 설계와 결과 해석을 할 수 없습니다. 논문의 3.2장과 4장에서 핵심적으로 다뤄집니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-025",
+          "resource_name": "Fine-Tuning BERT for Classification: A Practical Guide",
+          "url": "https://medium.com/@heyamit10/fine-tuning-bert-for-classification-a-practical-guide-b8c1c56f252c",
+          "type": "web_doc",
+          "resource_description": "BERT를 분류 작업에 파인튜닝하는 실용적인 단계를 설명하여 초보자도 쉽게 따라할 수 있는 가이드입니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 1.0,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-026",
+          "resource_name": "Fine-Tuning BERT for Text Classification (w/ Example Code)",
+          "url": "https://www.youtube.com/watch?v=4QHg8Ix8WWQ",
+          "type": "video",
+          "resource_description": "BERT 파인튜닝을 통한 피싱 URL 분류 예제 코드를 시각 자료와 함께 설명하여 실습에 유용합니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 0.4,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-027",
+          "resource_name": "LLM Fine-Tuning 09: Fine-Tuning BERT for NLP (NER ...",
+          "url": "https://www.youtube.com/watch?v=3gj8wyZOkV8",
+          "type": "video",
+          "resource_description": "Hugging Face를 활용한 BERT 파인튜닝 튜토리얼로 다양한 NLP 작업(텍스트 분류, 개체명 인식 등)을 포괄적으로 다룹니다.",
+          "difficulty": 5,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-011",
+      "keyword": "Question Answering",
+      "description": "Question Answering은 BERT가 SQuAD 데이터셋에서 성능을 입증한 태스크입니다. 토큰 수준 예측과 문맥 이해를 요구하는 이 작업을 이해하면 BERT의 양방향 표현 학습 효과를 구체적으로 파악할 수 있습니다.",
+      "keyword_importance": 7,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-028",
+          "resource_name": "Applying BERT to Question Answering (SQuAD v1.1)",
+          "url": "https://www.youtube.com/watch?v=l8ZYCvgGu0o",
+          "type": "video",
+          "resource_description": "SQuAD v1.1 데이터셋에 BERT를 적용하는 방법을 상세히 설명하여 질문 답변 작업의 핵심 개념을 체계적으로 습득할 수 있습니다.",
+          "difficulty": 5,
+          "importance": 9,
+          "study_load": 0.35,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-029",
+          "resource_name": "Fine-tuning BERT: Unlocking the Power of Pre-trained ...",
+          "url": "https://dev.to/nareshnishad/fine-tuning-bert-unlocking-the-power-of-pre-trained-language-models-4i1k",
+          "type": "web_doc",
+          "resource_description": "BERT 파인튜닝의 기본 개념과 질문 답변 작업 적용 방법을 초보자 친화적으로 설명하여 기초 이해에 도움이 됩니다.",
+          "difficulty": 4,
+          "importance": 6,
+          "study_load": 1.0,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-030",
+          "resource_name": "[Fine Tune] Fine Tuning BERT for Question Answering (QA ...",
+          "url": "https://medium.com/@xiaohan_63326/fine-tune-fine-tuning-bert-for-question-answering-qa-task-5c29e3d518f1",
+          "type": "web_doc",
+          "resource_description": "질문 답변 작업을 위한 BERT 파인튜닝 과정을 단계별로 안내하여 실습에 바로 적용 가능한 지식을 제공합니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.5,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-012",
+      "keyword": "Masked Language Model",
+      "description": "Masked Language Model(MLM)은 BERT의 사전 학습 목표 중 하나로, 무작위 마스킹된 토큰을 예측하는 방식입니다. 기존 단방향 언어 모델과 달리 양방향 표현을 학습하는 핵심 메커니즘이므로, BERT의 혁신성을 이해하려면 필수적입니다. 논문의 3.1장에서 상세히 설명됩니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-031",
+          "resource_name": "[Paper Review] BERT: Pre-training of Deep Bidirectional ...",
+          "url": "https://dream2reality.tistory.com/34",
+          "type": "web_doc",
+          "resource_description": "BERT의 MLM 메커니즘을 양방향 문맥 학습과 GPT와의 비교를 통해 체계적으로 설명하여 초보자도 핵심 개념을 이해하기에 적합합니다.",
+          "difficulty": 6,
+          "importance": 9,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-032",
+          "resource_name": "[논문리뷰] BERT: Pre-training of Deep Bidirectional ...",
+          "url": "https://uiandwe.tistory.com/1418",
+          "type": "web_doc",
+          "resource_description": "BERT의 MLM과 모델 구조, 파라미터 규모를 간결하게 요약하여 초보자가 핵심 아이디어를 빠르게 파악하는 데 도움이 됩니다.",
+          "difficulty": 5,
+          "importance": 8,
+          "study_load": 1.2,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-033",
+          "resource_name": "6기 논문 리뷰 BERT(2019.05.V5): Pre-training of Deep ...",
+          "url": "https://www.youtube.com/watch?v=jyOAdj0yi18",
+          "type": "video",
+          "resource_description": "13분 분량의 동영상 강의로 MLM과 BERT의 기본 원리를 시각적으로 설명하여 초보자에게 접근성이 높습니다.",
+          "difficulty": 4,
+          "importance": 7,
+          "study_load": 0.23,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-013",
+      "keyword": "Next Sentence Prediction",
+      "description": "Next Sentence Prediction(NSP)은 BERT의 두 번째 사전 학습 목표로, 문장 간 관계를 학습합니다. QA 및 NLI 태스크에서 성능을 향상시키는 데 기여하므로, BERT의 문장 쌍 표현 학습 방식을 이해하려면 필요합니다. 논문의 3.1장과 5.1장에서 실험 결과로 검증됩니다.",
+      "keyword_importance": 8,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-034",
+          "resource_name": "Training BERT #4 - Train With Next Sentence Prediction (NSP)",
+          "url": "https://www.youtube.com/watch?v=x1lAcT3xl5M",
+          "type": "video",
+          "resource_description": "NSP의 실습 예시를 포함한 상세한 강의로 초보자가 BERT 학습 과정을 체계적으로 배울 수 있습니다.",
+          "difficulty": 4,
+          "importance": 9,
+          "study_load": 0.61,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-035",
+          "resource_name": "Transformer Models: Key Methodologies, Next Sentence ...",
+          "url": "https://ijisae.org/index.php/IJISAE/article/download/8035/7044/13550",
+          "type": "web_doc",
+          "resource_description": "BERT의 NSP와 MLM 목표를 설명하여 초보자도 트랜스포머 모델의 핵심 개념을 이해하는 데 도움을 줍니다.",
+          "difficulty": 6,
+          "importance": 8,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-036",
+          "resource_name": "BERT: Bidirectional Pretraining Revolutionizes Language ...",
+          "url": "https://mbrenndoerfer.com/writing/bert-bidirectional-pretraining-revolutionizes-language-understanding",
+          "type": "web_doc",
+          "resource_description": "BERT의 NSP 작업을 간결하게 설명하여 초보자가 언어 모델의 사전 학습 방식을 쉽게 이해할 수 있습니다.",
+          "difficulty": 4,
+          "importance": 9,
+          "study_load": 1.0,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-014",
+      "keyword": "Gradient Descent",
+      "description": "Gradient Descent는 BERT의 사전 학습 및 미세 조정 과정에서 모델 파라미터를 최적화하는 데 사용되는 기본 알고리즘입니다. 논문에서 학습률 스케줄링 및 최적화 전략을 언급하지만, 핵심 기여는 아키텍처 및 학습 목표에 있으므로 직접적인 연관성은 낮습니다. 그러나 딥러닝 모델 학습의 기본 원리를 이해하려면 필요합니다.",
+      "keyword_importance": 5,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-043",
+          "resource_name": "Language Processing with BERT: The 3 Minute Intro (Deep ...",
+          "url": "https://www.youtube.com/watch?v=ioGry-89gqE",
+          "type": "video",
+          "resource_description": "BERT 소개 영상에서 경사하강법을 간략히 언급해 초보자에게 기본 개념 이해에 도움.",
+          "difficulty": 3,
+          "importance": 6,
+          "study_load": 0.1,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-066",
+          "resource_name": "Gradient Descent & Learning Rates Overview",
+          "url": "https://www.youtube.com/watch?v=6DIObA3IWyg",
+          "type": "video",
+          "resource_description": "경사 하강법과 학습률의 기본 개념을 간결하게 요약하여 머신러닝 입문자에게 가장 적합한 자료입니다.",
+          "difficulty": 2,
+          "importance": 9,
+          "study_load": 0.09,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-067",
+          "resource_name": "Gradient Descent: The Algorithm That Trains Everything",
+          "url": "https://medium.com/@spjosyula2005/gradient-descent-the-algorithm-that-trains-everything-5d0a0245f070",
+          "type": "web_doc",
+          "resource_description": "경사 하강법의 핵심 개념과 실전 팁(예: 학습률 웜업)을 초보자 친화적으로 설명하여 기초 이해에 적합합니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-068",
+          "resource_name": "How to Use Learning Rate Scheduling for Neural Network ...",
+          "url": "https://www.youtube.com/watch?v=4FcW7OkIZLw",
+          "type": "video",
+          "resource_description": "학습률 스케줄링의 시각적 설명을 통해 초보자도 신경망 훈련 과정을 직관적으로 파악할 수 있습니다.",
+          "difficulty": 3,
+          "importance": 6,
+          "study_load": 0.14,
+          "is_necessary": true
+        }
+      ],
+      "resource_reason": "[key-014]: Provided resources include overly technical papers (difficulty 7) and lack foundational, intuitive explanations suitable for a Novice; only one brief video (difficulty 3) offers basic context but insufficient for mastery."
+    },
+    {
+      "keyword_id": "key-015",
+      "keyword": "Language Model",
+      "description": "Language Model은 BERT의 핵심 기반 개념입니다. 논문은 기존 단방향 언어 모델(예: GPT)과 달리 양방향 표현을 학습하는 방식을 제안하며, MLM(Masked Language Model)을 통해 언어 이해 능력을 향상시킵니다. 언어 모델의 기본 원리를 모르면 BERT의 혁신성을 이해하기 어렵습니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-047",
+          "resource_name": "BERT: Pre-training of Deep Bidirectional Transformers for ...",
+          "url": "https://www.youtube.com/watch?v=j9toSIRf4RI",
+          "type": "video",
+          "resource_description": "BERT 논문을 시각적으로 설명하여 복잡한 개념을 쉽게 이해할 수 있도록 돕는 50분 분량의 동영상 강의",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.83,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-048",
+          "resource_name": "[BERT] Pretranied Deep Bidirectional Transformers for ...",
+          "url": "https://www.youtube.com/watch?v=BhlOGGzC0Q0",
+          "type": "video",
+          "resource_description": "BERT의 구조와 학습 방법을 상세히 다루는 53분 분량의 동영상 강의로 초보자에게 적합한 설명 제공",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.88,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-069",
+          "resource_name": "The Evolution of Natural Language Processing: From N- ...",
+          "url": "https://medium.com/aimonks/the-evolution-of-natural-language-processing-from-n-grams-to-gpt-22b67fb228ea",
+          "type": "web_doc",
+          "resource_description": "초보자에게 언어 모델의 기초와 발전 과정을 이해하는 데 유용한 자료입니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        }
+      ],
+      "resource_reason": "[key-015]: Provided resources focus on BERT-specific implementations (MLM, bidirectional training) without first establishing foundational language model concepts (e.g., n-gram models, unidirectional models), making them insufficient for a Novice to grasp core language model principles before BERT's innovations."
+    },
+    {
+      "keyword_id": "key-016",
+      "keyword": "Self-Attention",
+      "description": "Self-Attention은 Transformer의 핵심 메커니즘으로, BERT가 입력 시퀀스 내 모든 토큰 간의 관계를 모델링하는 데 필수적입니다. 논문에서 '양방향 자기 주의'를 강조하며, 이는 기존 단방향 주의(예: GPT)와의 차별점입니다. Self-Attention을 이해하지 않으면 BERT의 동작 원리를 파악할 수 없습니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-049",
+          "resource_name": "A Deep Dive into BERT's Attention Mechanism",
+          "url": "https://www.analyticsvidhya.com/blog/2023/12/berts-attention-mechanism/",
+          "type": "web_doc",
+          "resource_description": "BERT의 자기 주의 메커니즘을 초보자 친화적으로 상세히 설명하여 트랜스포머 아키텍처의 핵심 개념을 이해하는 데 도움을 줍니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-050",
+          "resource_name": "BERT Research - Ep. 6 - Inner Workings III - Multi-Headed ...",
+          "url": "https://www.youtube.com/watch?v=0U1irnILcN0",
+          "type": "video",
+          "resource_description": "에피소드 5의 자기 주의 메커니즘을 기반으로 한 시각적 설명을 통해 복잡한 개념을 쉽게 이해할 수 있도록 도와줍니다.",
+          "difficulty": 2,
+          "importance": 9,
+          "study_load": 0.3,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-071",
+          "resource_name": "Gen AI Part 4 - Understanding Transformers, Self-Attention ...",
+          "url": "https://www.youtube.com/watch?v=Gy84sFW5Uv8",
+          "type": "video",
+          "resource_description": "트랜스포머와 셀프 어텐션의 핵심 개념을 시각적 설명과 함께 초보자에게 친절하게 소개하는 동영상으로, 복잡한 문맥을 이해하는 AI 메커니즘을 직관적으로 학습할 수 있습니다.",
+          "difficulty": 4,
+          "importance": 8,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-072",
+          "resource_name": "GPT and BERT - Architecture, Examples, Comparison",
+          "url": "https://www.youtube.com/watch?v=G1-k1bd1obQ",
+          "type": "video",
+          "resource_description": "BERT와 GPT의 아키텍처를 예시와 비교하며 간결하게 설명하는 동영상으로, 셀프 어텐션이 적용된 모델 구조를 빠르게 이해하는 데 도움이 됩니다.",
+          "difficulty": 3,
+          "importance": 6,
+          "study_load": 0.25,
+          "is_necessary": true
+        }
+      ],
+      "resource_reason": "[key-016]: The provided resources include an academic paper (difficulty 6) unsuitable for a Novice, despite two beginner-friendly resources; the inclusion of overly technical material fails the level-appropriate function requirement."
+    },
+    {
+      "keyword_id": "key-017",
+      "keyword": "Positional Embeddings",
+      "description": "Positional Embeddings는 Transformer가 토큰의 순서 정보를 보존하도록 하는 요소입니다. BERT는 단어 임베딩과 함께 위치 임베딩을 합산하여 시퀀스의 문맥적 위치를 인코딩합니다. 위치 임베딩 없이는 시퀀스 내 토큰 간 상대적 위치 관계를 학습할 수 없습니다.",
+      "keyword_importance": 8,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-052",
+          "resource_name": "Positional Encoding in Transformer | Sinusoidal Positional ...",
+          "url": "https://www.youtube.com/watch?v=dWkm4nFikgM",
+          "type": "video",
+          "resource_description": "트랜스포머의 위치 인코딩 원리를 시각적으로 설명하여 초보자도 쉽게 이해할 수 있도록 구성된 동영상 강의입니다.",
+          "difficulty": 2,
+          "importance": 9,
+          "study_load": 0.34,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-053",
+          "resource_name": "What is the difference between position embedding vs ...",
+          "url": "https://stats.stackexchange.com/questions/470804/what-is-the-difference-between-position-embedding-vs-positional-encoding-in-bert",
+          "type": "web_doc",
+          "resource_description": "초보자가 BERT에서 위치 임베딩과 위치 인코딩의 차이를 명확히 이해할 수 있도록 간결한 설명을 제공합니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.5,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-054",
+          "resource_name": "Sinusoidal vs Learned Positional Embeddings",
+          "url": "https://apxml.com/courses/foundations-transformers-architecture/chapter-4-positional-encoding-embedding-layer/comparing-positional-encodings",
+          "type": "web_doc",
+          "resource_description": "고정형 사인곡선과 학습형 위치 인코딩의 장단점을 비교하여 초보자가 개념을 체계적으로 정리하는 데 도움을 줍니다.",
+          "difficulty": 2,
+          "importance": 8,
+          "study_load": 0.3,
+          "is_necessary": true
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-018",
+      "keyword": "WordPiece Tokenization",
+      "description": "WordPiece Tokenization은 BERT의 입력 전처리 단계에서 사용되는 서브워드 분할 기법입니다. 30,000개의 어휘 집합을 기반으로 희귀 단어를 처리하여 OOV 문제를 완화합니다. 토큰화 방식을 모르면 입력 표현 및 MLM 목표 구현 방식을 이해하기 어렵습니다.",
+      "keyword_importance": 7,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-055",
+          "resource_name": "Lecture 28: Tokenization -- BPE and Wordpiece",
+          "url": "https://www.youtube.com/watch?v=SqDWdwLKhEY",
+          "type": "video",
+          "resource_description": "BPE와 WordPiece를 체계적으로 설명하는 강의로, 시각적 학습을 통해 초보자도 토큰화 과정을 쉽게 따라갈 수 있습니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.92,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-056",
+          "resource_name": "WordPiece Tokenization: A BPE Variant | by Atharv Yeolekar",
+          "url": "https://medium.com/@atharv6f_47401/wordpiece-tokenization-a-bpe-variant-73cc48865cbf",
+          "type": "web_doc",
+          "resource_description": "WordPiece의 기본 개념과 BPE와의 차이점을 초보자에게 친절하게 설명하여 토큰화 알고리즘의 기초를 이해하는 데 유용합니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-057",
+          "resource_name": "Trade-offs in Subword Tokenization Strategies - Newline.co",
+          "url": "https://www.newline.co/@zaoyang/trade-offs-in-subword-tokenization-strategies--be3e6abe",
+          "type": "web_doc",
+          "resource_description": "서브워드 토큰화 전략 간 비교 분석을 통해 WordPiece의 장단점을 이해하는 데 도움이 되지만, 초보자에게는 다소 복잡한 내용이 포함될 수 있습니다.",
+          "difficulty": 4,
+          "importance": 6,
+          "study_load": 1.5,
+          "is_necessary": false
+        }
+      ]
+    },
+    {
+      "keyword_id": "key-019",
+      "keyword": "[CLS]/[SEP] Tokens",
+      "description": "[CLS]와 [SEP] 토큰은 BERT의 입력 표현에서 문장 분류 및 문장 쌍 처리를 위한 특수 마커입니다. [CLS]는 분류 작업의 집계 표현으로, [SEP]는 문장 경계를 구분합니다. 이 토큰들의 역할을 모르면 다운스트림 작업 적용 방식을 이해할 수 없습니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-058",
+          "resource_name": "Understanding the [CLS] Token in BERT - Aditya Raj",
+          "url": "https://aditya007.medium.com/understanding-the-cls-token-in-bert-a-comprehensive-guide-a62b3b94a941",
+          "type": "web_doc",
+          "resource_description": "[CLS] 토큰의 역할과 다양한 NLP 태스크에서의 활용 사례를 체계적으로 정리하여 초보자에게 직관적인 이해를 제공합니다.",
+          "difficulty": 4,
+          "importance": 9,
+          "study_load": 0.8,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-060",
+          "resource_name": "Understanding the CLS Token: How BERT and LLMs ...",
+          "url": "https://www.youtube.com/watch?v=OUDBDu8Gwig",
+          "type": "video",
+          "resource_description": "6분 49초 분량의 짧은 동영상으로 [CLS] 토큰의 작동 원리를 시각적으로 설명하여 초보자도 쉽게 따라갈 수 있습니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.15,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-073",
+          "resource_name": "What role do special tokens (such as [CLS] or [SEP]) play ...",
+          "url": "https://milvus.io/ai-quick-reference/what-role-do-special-tokens-such-as-cls-or-sep-play-in-sentence-transformer-models",
+          "type": "web_doc",
+          "resource_description": "[CLS]/[SEP] 토큰의 구조적·기능적 역할을 명확히 설명하여 문장 임베딩 생성 및 비교 작업에 대한 이해를 돕습니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 1.0,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-074",
+          "resource_name": "What is Separate token ([SEP])?",
+          "url": "https://h2o.ai/wiki/separate-token/",
+          "type": "web_doc",
+          "resource_description": "[SEP] 토큰이 문장 분류 작업에서 문맥을 구분하는 방식을 설명하여 초보자에게 실용적인 예시를 제공합니다.",
+          "difficulty": 4,
+          "importance": 7,
+          "study_load": 0.5,
+          "is_necessary": false
+        }
+      ],
+      "resource_reason": "[key-019]: Provided resources focus solely on [CLS] tokens and omit explanations for [SEP] tokens, which are equally critical for understanding sentence boundary separation in BERT—insufficient for a novice to grasp the full keyword scope."
+    },
+    {
+      "keyword_id": "key-020",
+      "keyword": "Bidirectional Context Fusion",
+      "description": "Bidirectional Context Fusion은 BERT의 핵심 혁신으로, MLM을 통해 좌우 문맥을 동시에 활용하는 양방향 표현을 학습합니다. 이는 기존 단방향 모델(예: ELMo, GPT)과 달리 모든 레이어에서 양방향 정보를 융합하여 성능을 향상시킵니다. 논문의 주요 기여 사항이므로 반드시 이해해야 합니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-061",
+          "resource_name": "BERT Uncovered: The Breakthrough in Deep Bidirectional ...",
+          "url": "https://www.youtube.com/watch?v=-KECe6AlB3k",
+          "type": "video",
+          "resource_description": "BERT의 양방향 컨텍스트 학습 방식을 심층적으로 다루어 키워드 이해에 필수적인 개념을 설명하는 고품질 동영상입니다.",
+          "difficulty": 4,
+          "importance": 9,
+          "study_load": 0.26,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-063",
+          "resource_name": "BI-DIRECTIONAL ATTENTION | Explained in high level",
+          "url": "https://www.youtube.com/watch?v=s-JiY2LNrjY",
+          "type": "video",
+          "resource_description": "NLP에서 양방향 어텐션 메커니즘을 시각적으로 설명하여 초보자에게 직관적인 이해를 제공하는 동영상입니다.",
+          "difficulty": 3,
+          "importance": 7,
+          "study_load": 0.04,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-076",
+          "resource_name": "Comparison between BERT, GPT-2 and ELMo",
+          "url": "https://medium.com/@gghati/comparison-between-bert-gpt-2-and-elmo-9ad140cd1cda",
+          "type": "web_doc",
+          "resource_description": "BERT의 양방향성과 GPT의 단방향성을 비교하여 초보자에게 기본 개념을 직관적으로 설명하는 데 유용합니다.",
+          "difficulty": 4,
+          "importance": 6,
+          "study_load": 0.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-077",
+          "resource_name": "Comparison of BERT, OpenAI GPT and ELMo model ...",
+          "url": "https://www.researchgate.net/figure/Comparison-of-BERT-OpenAI-GPT-and-ELMo-model-architectures-5_fig1_338931711",
+          "type": "web_doc",
+          "resource_description": "BERT의 심층 양방향성과 ELMo의 얕은 양방향성을 시각적으로 비교하여 키워드 이해에 직접적으로 도움을 줍니다.",
+          "difficulty": 5,
+          "importance": 8,
+          "study_load": 0.3,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-078",
+          "resource_name": "GPT vs BERT Explained : Transformer Variations & Use ...",
+          "url": "https://www.youtube.com/watch?v=AprUD-TSUYE",
+          "type": "video",
+          "resource_description": "트랜스포머 기반 모델의 양방향/단방향 컨텍스트 차이를 체계적으로 설명하여 초보자에게 핵심 개념을 명확히 전달합니다.",
+          "difficulty": 3,
+          "importance": 9,
+          "study_load": 0.2,
+          "is_necessary": true
+        }
+      ],
+      "resource_reason": "[key-020]: Provided resources include a high-difficulty web_doc (res-062) focused on Transformer-BiLSTM hybrids, which is overly technical and unrelated to BERT's specific bidirectional context fusion mechanism, making the set insufficient for a Novice learner requiring intuitive BERT-focused explanations."
+    },
+    {
+      "keyword_id": "key-021",
+      "keyword": "Deep Transformer Encoder",
+      "description": "Deep Transformer Encoder는 BERT의 모델 구조를 정의하는 다층 Transformer 블록입니다. BERT BASE(12층)와 LARGE(24층)는 깊이에 따른 성능 차이를 보여주며, 깊은 양방향 표현이 다운스트림 작업에 미치는 영향을 분석합니다. 모델 크기와 성능 관계를 이해하려면 필수적입니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": true,
+      "is_resource_sufficient": true,
+      "resources": [
+        {
+          "resource_id": "res-064",
+          "resource_name": "GPT vs BERT Explained : Transformer Variations & Use ...",
+          "url": "https://www.youtube.com/watch?v=AprUD-TSUYE",
+          "type": "video",
+          "resource_description": "트랜스포머 인코더 기반 모델(BERT)과 디코더 기반 모델(GPT)의 차이를 시각적으로 설명하여 초보자도 인코더 구조를 직관적으로 이해할 수 있습니다.",
+          "difficulty": 3,
+          "importance": 8,
+          "study_load": 0.14,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-065",
+          "resource_name": "Transformer models and BERT model: Overview",
+          "url": "https://www.youtube.com/watch?v=t45S_MwAcOw",
+          "type": "video",
+          "resource_description": "트랜스포머 아키텍처와 BERT 모델의 기본 개념을 개괄적으로 소개하여 인코더 기반 모델의 핵심 원리를 쉽게 학습할 수 있습니다.",
+          "difficulty": 3,
+          "importance": 6,
+          "study_load": 0.19,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-079",
+          "resource_name": "Deep Dive into BERT Model: Architecture, Tasks & Training ...",
+          "url": "https://www.youtube.com/watch?v=SlYBD7Oeo2w",
+          "type": "video",
+          "resource_description": "BERT 아키텍처와 트랜스포머 인코더의 핵심 개념을 시각적으로 설명하여 초보자도 쉽게 이해할 수 있는 필수 영상 자료입니다.",
+          "difficulty": 4,
+          "importance": 10,
+          "study_load": 0.33,
+          "is_necessary": true
+        },
+        {
+          "resource_id": "res-080",
+          "resource_name": "BERT 논문정리",
+          "url": "https://mino-park7.github.io/nlp/2018/12/12/bert-%EB%85%BC%EB%AC%B8%EC%A0%95%EB%A6%AC/?fbclid=IwAR3S-8iLWEVG6FGUVxoYdwQyA-zG0GpOUzVEsFBd0ARFg4eFXqCyGLznu7w",
+          "type": "web_doc",
+          "resource_description": "BERT의 인코더 구조와 모델 크기별 차이를 간결하게 정리하여 초보자도 트랜스포머 인코더의 기본 개념을 쉽게 이해할 수 있습니다.",
+          "difficulty": 5,
+          "importance": 9,
+          "study_load": 1.5,
+          "is_necessary": false
+        },
+        {
+          "resource_id": "res-081",
+          "resource_name": "[5-7] BERT에 대한 모든 것 [전체 논문을 자세하게 분석]",
+          "url": "https://blog.naver.com/gypsi12/222825729805",
+          "type": "web_doc",
+          "resource_description": "BERT의 다층 양방향 트랜스포머 인코더 구조와 모델 변형 사례를 상세히 분석하여 키워드 학습에 직접적으로 도움을 줍니다.",
+          "difficulty": 6,
+          "importance": 8,
+          "study_load": 1.0,
+          "is_necessary": false
+        }
+      ],
+      "resource_reason": "[key-021]: Provided resources explain basic Transformer/BERT encoder structures but lack intuitive coverage of multi-layer depth (e.g., 12 vs 24 layers), performance trade-offs, and foundational connections to downstream task impacts required for a Novice."
+    }
+  ],
+  "edges": [
+    {
+      "start": "key-001",
+      "end": "key-002"
+    },
+    {
+      "start": "key-002",
+      "end": "key-006"
+    },
+    {
+      "start": "key-004",
+      "end": "key-006"
+    },
+    {
+      "start": "key-006",
+      "end": "key-007"
+    },
+    {
+      "start": "key-005",
+      "end": "key-011"
+    },
+    {
+      "start": "key-007",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-011",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-008",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-010",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-003",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-009",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-006",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-012",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-013",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-015",
+      "end": "key-003"
+    },
+    {
+      "start": "key-020",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-018",
+      "end": "key-007"
+    },
+    {
+      "start": "key-014",
+      "end": "key-002"
+    },
+    {
+      "start": "key-016",
+      "end": "key-006"
+    },
+    {
+      "start": "key-021",
+      "end": "26c69973-02be-4052-a794-6973546e8baf"
+    },
+    {
+      "start": "key-015",
+      "end": "key-012"
+    },
+    {
+      "start": "key-017",
+      "end": "key-006"
+    },
+    {
+      "start": "key-019",
+      "end": "key-007"
+    }
+  ]
+}

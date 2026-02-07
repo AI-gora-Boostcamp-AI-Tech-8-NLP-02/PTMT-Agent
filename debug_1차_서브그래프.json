@@ -1,0 +1,561 @@
+{
+  "graph": {
+    "nodes": {
+      "keywords": [
+        {
+          "name": "LoRA (machine learning)",
+          "link": "https://en.wikipedia.org/wiki/LoRA_%28machine_learning%29",
+          "alias": [
+            "lora",
+            "LoRA",
+            "lora machine learning",
+            "low rank adaptation",
+            "low rank adaptation machine learning",
+            "LoRA model",
+            "Low Rank Adapters (LoRA)",
+            "low rank adapters",
+            "low rank adapter",
+            "lora adapter",
+            "Low-Rank Adaptation",
+            "low-rank adaptation",
+            "LRA",
+            "lra",
+            "Low Rank Adaptation",
+            "Low-rank approximation",
+            "low rank approximation",
+            "low-rank approximation",
+            "low rank approx",
+            "low rank approximation algorithm",
+            "low-rank approach",
+            "low rank approach",
+            "low-rank method",
+            "low rank method",
+            "low rank technique",
+            "low-rank matrix approximation",
+            "low rank matrix approximation",
+            "low-rank matrix estimation",
+            "LRMA",
+            "low rank matrix learning",
+            "matrix low rank approximation",
+            "low-rank structure",
+            "low rank structure",
+            "low-rank modelling",
+            "low rank modelling",
+            "low rank representation"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:515",
+          "categories": [
+            "Artificial neural networks",
+            "Computational linguistics",
+            "Deep learning",
+            "Linear algebra",
+            "Machine learning",
+            "Machine learning algorithms",
+            "Mathematical optimization",
+            "Dimension reduction|Mathematical optimization|Numerical linear algebra"
+          ]
+        },
+        {
+          "name": "Matrix decomposition",
+          "link": "https://en.wikipedia.org/wiki/Matrix_decomposition",
+          "alias": [
+            "matrix decomposition",
+            "Matrix decomposition",
+            "matrix-decomposition",
+            "Matrix-decomposition",
+            "matrix decomposition algorithm",
+            "decomposition of matrices",
+            "matrixdecomposition",
+            "matrix decomp",
+            "matrix decomp algorithm",
+            "matrix decomposition method",
+            "matrix decompositions",
+            "matrix decomposition methods",
+            "matrix decomposition techniques"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:696",
+          "categories": [
+            "Factorization",
+            "Matrix decompositions",
+            "Matrix theory",
+            "Factorization|Matrix decompositions|Matrix theory"
+          ]
+        },
+        {
+          "name": "Transformer (deep learning)",
+          "link": "https://en.wikipedia.org/wiki/Transformer_%28deep_learning_architecture%29",
+          "alias": [
+            "transformer",
+            "Transformer architecture",
+            "transformer model",
+            "transformer neural network",
+            "transformer architecture",
+            "transformer deep learning",
+            "Transformer",
+            "transformer network",
+            "Transformer Architecture",
+            "transformer_architecture",
+            "transformer architecture model",
+            "Transformer architectures",
+            "transformer architectures",
+            "Transformer Architectures",
+            "transformer models",
+            "transformer-based architectures",
+            "Transformer language model",
+            "transformer language model",
+            "transformer-based language model",
+            "transformer LM",
+            "transformer language modelling",
+            "transformer lm",
+            "Transformer models",
+            "TransformerModels",
+            "transformer-models",
+            "Transformer-based language models",
+            "transformer-based language models",
+            "transformer language models",
+            "transformer-based models",
+            "transformer-based NLP models",
+            "transformer-based neural language models",
+            "Transformer-based model",
+            "transformer based model",
+            "transformer-based model",
+            "transformer-based neural network",
+            "transformer model architecture",
+            "Transformer-based models",
+            "transformer based models",
+            "transformer-based neural networks",
+            "transformer-based systems",
+            "Transformer-based neural architecture",
+            "transformer neural architecture",
+            "transformer-based network",
+            "transformer-based deep architecture",
+            "Transformers",
+            "transformers",
+            "Transformers library",
+            "transformers library",
+            "TransformersLibrary",
+            "transformer library",
+            "transformers lib",
+            "transformer encoder-decoder architecture",
+            "transformer encoder decoder architecture",
+            "transformer encoder-decoder",
+            "transformer encoder decoder",
+            "transformer encoder-decoder model",
+            "encoder-decoder transformer",
+            "language model transformer",
+            "lm transformer",
+            "transformer model for language",
+            "Transformer Model",
+            "transformermodel",
+            "transformer-model",
+            "transformerModel",
+            "Transformer Models",
+            "transformer_models",
+            "transformermodelss",
+            "transformer-based architecture",
+            "transformer-based networks",
+            "transformer based networks",
+            "transformer networks"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "categories": [
+            "19th-century inventions|British inventions|Electric power conversion|Electric transformers|Electrical engineering|Hungarian inventions",
+            "2017 in artificial intelligence|Google software|Neural network architectures",
+            "Fiction about alien visitations|Fiction about immortality|Fictional extraterrestrial robots|Films about shapeshifting|Hasbro franchises|Mass media franchises|Mass media franchises introduced in 1984|Military fiction|Science fiction franchises|Super robot anime and manga|Takara Tomy franchises|Television series about shapeshifting|Transformers (franchise)"
+          ]
+        },
+        {
+          "name": "Attention",
+          "link": "https://en.wikipedia.org/wiki/Attention",
+          "alias": [
+            "attention",
+            "Attention",
+            "attentive",
+            "attentiveness",
+            "attentive mode",
+            "attention mechanism",
+            "Attention mechanism",
+            "attentionMechanism",
+            "Attention mechanisms",
+            "attention mechanisms",
+            "attentionMechanisms",
+            "attention mechanisms algorithm",
+            "attention mechanisms model",
+            "Attention-based mechanism",
+            "attention based mechanism",
+            "attention-based model",
+            "attention based model",
+            "attention based system",
+            "attention based approach",
+            "attentio",
+            "attentio n",
+            "attntn",
+            "attention-mechanism",
+            "attention-mechanisms",
+            "contextual attention mechanism",
+            "contextual attention",
+            "contextual attention model",
+            "neural attention",
+            "neural attention mechanism",
+            "attention neural network",
+            "attention network",
+            "neural attention model",
+            "neural network attention",
+            "seq2seq attention",
+            "transformer attention"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3985",
+          "categories": [
+            "Attention",
+            "Attention deficit hyperactivity disorder",
+            "Behavioral concepts",
+            "Concepts in the philosophy of mind",
+            "Mental processes",
+            "Neuropsychological assessment",
+            "Philosophy of perception",
+            "Unsolved problems in neuroscience",
+            "Machine learning",
+            "Attention|Attention deficit hyperactivity disorder|Behavioral concepts|Concepts in the philosophy of mind|Mental processes|Neuropsychological assessment|Philosophy of perception|Unsolved problems in neuroscience"
+          ]
+        },
+        {
+          "name": "Attention (machine learning)",
+          "link": "https://en.wikipedia.org/wiki/Attention_%28machine_learning%29",
+          "alias": [
+            "attention",
+            "Attention",
+            "attention mechanism",
+            "Attention mechanism",
+            "attention model",
+            "Attention model",
+            "self-attention",
+            "Self-attention",
+            "scaled dot-product attention",
+            "Scaled dot-product attention",
+            "Self-attention mechanisms",
+            "self attention mechanisms",
+            "self attention",
+            "self-attention mechanisms",
+            "selfattention",
+            "SelfAttention",
+            "self attention mechanism",
+            "self-attention mechanism"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "categories": [
+            "Machine learning",
+            "Disambiguation pages"
+          ]
+        },
+        {
+          "name": "Fine-tuning",
+          "link": "https://en.wikipedia.org/wiki/Fine-tuning",
+          "alias": [
+            "fine tuning",
+            "fine-tuning",
+            "finetuning",
+            "Fine Tuning",
+            "fine tuning model",
+            "Fine-tuning",
+            "FineTuning",
+            "finetune",
+            "fine-tune",
+            "model fine-tuning",
+            "model fine tuning",
+            "model-fine-tuning"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5600",
+          "categories": [
+            "Disambiguation pages"
+          ]
+        },
+        {
+          "name": "Fine-tuning (deep learning)",
+          "link": "https://en.wikipedia.org/wiki/Fine-tuning_%28deep_learning%29",
+          "alias": [
+            "fine tuning",
+            "fine-tuning",
+            "fine tuning deep learning",
+            "fine tuning deep learning",
+            "fine-tune",
+            "fine tune"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5601",
+          "categories": [
+            "Deep learning",
+            "Machine learning"
+          ]
+        },
+        {
+          "name": "Backpropagation",
+          "link": "https://en.wikipedia.org/wiki/Backpropagation",
+          "alias": [
+            "backpropagation",
+            "Backprop",
+            "backprop",
+            "BP",
+            "back propagation",
+            "back-propagation",
+            "Backpropagation",
+            "Backpropagation algorithm",
+            "Binary pattern",
+            "binary pattern",
+            "binary-pattern",
+            "BinaryPattern",
+            "binarypattern",
+            "binary pattern recognition",
+            "arterial hypertension",
+            "high blood pressure",
+            "hypertension",
+            "high BP",
+            "HTN"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "categories": [
+            "Artificial neural networks",
+            "Machine learning algorithms",
+            "Artificial neural networks|Machine learning algorithms",
+            "Hypertension|Medical conditions related to obesity"
+          ]
+        },
+        {
+          "name": "Gradient",
+          "link": "https://en.wikipedia.org/wiki/Gradient",
+          "alias": [
+            "gradient",
+            "grad",
+            "gradient descent",
+            "gradients",
+            "Gradients",
+            "grads",
+            "gradient vector"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5908",
+          "categories": [
+            "Differential calculus",
+            "Differential operators",
+            "Generalizations of the derivative",
+            "Linear operators in calculus",
+            "Rates",
+            "Vector calculus",
+            "Differential calculus|Differential operators|Generalizations of the derivative|Linear operators in calculus|Rates|Vector calculus"
+          ]
+        },
+        {
+          "name": "Differentiable function",
+          "link": "https://en.wikipedia.org/wiki/Differentiable_function",
+          "alias": [
+            "differentiable function",
+            "differentiable func",
+            "diff function",
+            "differentiable",
+            "diff'ble function",
+            "differentiable mapping"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5134",
+          "categories": [
+            "Multivariable calculus",
+            "Smooth functions"
+          ]
+        },
+        {
+          "name": "Chain rule",
+          "link": "https://en.wikipedia.org/wiki/Chain_rule",
+          "alias": [
+            "chain rule",
+            "Chain Rule",
+            "chainrule",
+            "chain-rule",
+            "Chainrule",
+            "calculus chain rule"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4419",
+          "categories": [
+            "Differentiation rules",
+            "Theorems in calculus",
+            "Theorems in mathematical analysis"
+          ]
+        },
+        {
+          "name": "Partial derivative",
+          "link": "https://en.wikipedia.org/wiki/Partial_derivative",
+          "alias": [
+            "partial deriv",
+            "partial derivative",
+            "partial derivativ",
+            "partial diff",
+            "partial differentiation",
+            "δf/δx"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1365",
+          "categories": [
+            "Differential operators",
+            "Multivariable calculus"
+          ]
+        },
+        {
+          "name": "Attention Is All You Need",
+          "link": "https://en.wikipedia.org/wiki/Attention_Is_All_You_Need",
+          "alias": [
+            "attention is all you need",
+            "AttentionIsAllYouNeed",
+            "attention all you need",
+            "attention is all you need paper",
+            "transformer paper",
+            "all you need is attention"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987",
+          "categories": [
+            "2017 documents",
+            "2017 in artificial intelligence",
+            "Artificial intelligence papers",
+            "Google"
+          ]
+        },
+        {
+          "name": "Transfer learning",
+          "link": "https://en.wikipedia.org/wiki/Transfer_learning",
+          "alias": [
+            "transfer learning",
+            "TransferLearning",
+            "transfer-learning",
+            "Transfer Learning",
+            "transfert learning",
+            "transfert-learning",
+            "Transfer learning",
+            "TL"
+          ],
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:6270",
+          "categories": [
+            "Machine learning"
+          ]
+        }
+      ],
+      "papers": [
+        {
+          "name": "LoRA: Low-Rank Adaptation of Large Language Models",
+          "description": "LoRA는 대규모 언어 모델의 가중치를 동결하고 각 레이어에 저차원 분해 행렬을 도입하여 훈련 가능 파라미터 수를 1만 배 줄이고 GPU 메모리 요구량을 3배 줄이는 적응 방법을 제안한다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17234",
+          "url": "https://www.semanticscholar.org/paper/a8ca46b171467ceb2d7652fbfb67fe701ad86092"
+        },
+        {
+          "name": "A Survey on Multi-Task Learning",
+          "description": "다중 작업 학습의 알고리즘 모델링, 응용 및 이론적 분석을 종합적으로 조사하여 각 접근법의 특징과 실용적 성능을 제시한다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17764",
+          "url": "https://www.semanticscholar.org/paper/7ad66cba3b7e3abae7ef33122588512a146f7f77"
+        },
+        {
+          "name": "Linformer: Self-Attention with Linear Complexity",
+          "description": "선형 복잡도를 가진 새로운 자기 주의 메커니즘을 제안하여 표준 트랜스포머의 시간 및 공간 복잡도를 O(n²)에서 O(n)으로 줄였다.",
+          "id": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18024",
+          "url": "https://www.semanticscholar.org/paper/c0b79e6a5fd88ef13aa4780df5aae0aaa6b2be87"
+        }
+      ]
+    },
+    "edges": {
+      "IN": [],
+      "REF_BY": [],
+      "PREREQ": [
+        {
+          "reason": "Backpropagation depends on partial derivatives to compute gradients with respect to individual parameters in a network.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:1365",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "The attention mechanism is a core component of the Transformer architecture, and understanding Transformers is essential to grasping how attention functions in practice.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' introduces the Transformer architecture, making knowledge of the Transformer essential to understanding the paper's core contributions.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987"
+        },
+        {
+          "reason": "The Transformer architecture is built entirely around the attention mechanism, which is essential for understanding its operation and design.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' builds directly on the concept of attention mechanisms in machine learning, using them as the core architectural component.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3986",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987"
+        },
+        {
+          "reason": "The paper 'Attention Is All You Need' introduces the Transformer architecture, making it essential for understanding its design and functionality.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:3987",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "Transformers rely on backpropagation to update parameters during training through gradient descent.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:2710"
+        },
+        {
+          "reason": "Fine-tuning relies on backpropagation to update model parameters based on gradient computation.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5601"
+        },
+        {
+          "reason": "Backpropagation relies on the chain rule to compute gradients through composed functions.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4419",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Backpropagation requires the ability to compute gradients, which depends on functions being differentiable.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5134",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Backpropagation depends on gradients to adjust model parameters during training.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5908",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:4105"
+        },
+        {
+          "reason": "Fine-tuning is a core technique within transfer learning, relying on pretrained models adjusted for specific tasks.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:6270",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:5601"
+        }
+      ],
+      "ABOUT": [
+        {
+          "reason": "The paper explicitly introduces Low-Rank Adaptation as a new method to reduce trainable parameters in large language models. It positions LoRA as a key contribution with detailed technical and empirical justification.",
+          "strength": 0.95,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17234",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:515"
+        },
+        {
+          "reason": "The paper classifies MTL algorithms into five categories, including the low-rank approach, and discusses its characteristics, indicating it is a central part of the survey's methodological framework.",
+          "strength": 0.8,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:17764",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:515"
+        },
+        {
+          "reason": "The paper explicitly introduces low-rank matrix approximation as a key methodological contribution to reduce self-attention complexity. It defines and proposes this approach as central to the Linformer's design.",
+          "strength": 0.9,
+          "source": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:18024",
+          "target": "4:b6e3ffac-75a6-4c31-92d7-0b650c400d49:515"
+        }
+      ]
+    },
+    "target_paper": {
+      "citationCount": 0,
+      "name": "LORA: LOW-RANK ADAPTATION OF LARGE LAN-GUAGE MODELS",
+      "description": "",
+      "abstract": "An important paradigm of natural language processing consists of large-scale pretraining on general domain data and adaptation to particular tasks or domains. As we pre-train larger models, full fine-tuning, which retrains all model parameters, becomes less feasible. Using GPT-3 175B as an example -deploying independent instances of fine-tuned models, each with 175B parameters, is prohibitively expensive. We propose Low-Rank Adaptation, or LoRA, which freezes the pretrained model weights and injects trainable rank decomposition matrices into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. Compared to GPT-3 175B fine-tuned with Adam, LoRA can reduce the number of trainable parameters by 10,000 times and the GPU memory requirement by 3 times. LoRA performs on-par or better than finetuning in model quality on RoBERTa, DeBERTa, GPT-2, and GPT-3, despite having fewer trainable parameters, a higher training throughput, and, unlike adapters, no additional inference latency. We also provide an empirical investigation into rank-deficiency in language model adaptation, which sheds light on the efficacy of LoRA. We release a package that facilitates the integration of LoRA with PyTorch models and provide our implementations and model checkpoints for RoBERTa, DeBERTa, and GPT-2 at https://github.com/microsoft/LoRA . * Equal contribution. 0 Compared to V1, this draft includes better baselines, experiments on GLUE, and more on adapter latency. 1 While GPT-3 175B achieves non-trivial performance with few-shot learning, fine-tuning boosts its performance significantly as shown in Appendix A.",
+      "id": "paper-0"
+    }
+  }
+}

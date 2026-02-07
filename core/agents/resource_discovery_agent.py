@@ -70,7 +70,11 @@ class ResourceDiscoveryAgent:
         # 병렬 검색 수행
         results = await asyncio.gather(*tasks, return_exceptions=True)
         for res in results:
-            if not isinstance(res, Exception):
+            if isinstance(res, Exception):
+                print(f"❌ [ResourceDiscoveryAgent] Task Error: {res}")
+                import traceback
+                traceback.print_exception(type(res), res, res.__traceback__)
+            else:
                 all_resources.extend(res)
 
         return {"evaluated_resources": all_resources}
@@ -100,6 +104,7 @@ class ResourceDiscoveryAgent:
             web_query = await self._generate_web_query(
                 paper_name=paper_name,
                 keyword=keyword,
+                description=description,
                 search_direction=search_direction,
             )
 

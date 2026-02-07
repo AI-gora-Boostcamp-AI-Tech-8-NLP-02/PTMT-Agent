@@ -1,0 +1,190 @@
+{
+  "graph_meta": {
+    "paper_id": "ade53ad9-8bcf-4824-a69b-c5b64b8df194",
+    "title": "LORA: LOW-RANK ADAPTATION OF LARGE LAN-GUAGE MODELS",
+    "summarize": "LORA(LOW-RANK ADAPTATION)는 대규모 언어 모델(LLM)의 파라미터 효율성 문제를 해결하기 위한 적응 기법이다. 기존 전체 미세 조정(Fine-tuning)은 모델 크기가 증가함에 따라 계산 및 저장 비용이 급증하는 문제가 있다. LORA는 사전 훈련된 가중치를 고정한 상태에서 Transformer 레이어에 저랭크 행렬을 주입하여 다운스트림 작업에 필요한 훈련 파라미터 수를 크게 줄인다. GPT-3 175B 기준으로 훈련 파라미터를 10,000배 줄이고 GPU 메모리 요구량을 3배 감소시킬 수 있으며, RoBERTa, DeBERTa, GPT-2, GPT-3에서 미세 조정과 동등하거나 더 나은 성능을 보인다. LORA는 추론 지연 시간 없이 빠른 작업 전환이 가능하며, 랭크 결핍 현상을 분석하여 모델 적응의 효율성을 입증한다."
+  },
+  "first_node_order": [
+    "key-003",
+    "key-002",
+    "key-011",
+    "key-012",
+    "key-010"
+  ],
+  "nodes": [
+    {
+      "keyword_id": "key-001",
+      "keyword": "Chain Rule",
+      "description": "Chain Rule은 역전파 과정에서 그래디언트 계산의 기초가 됩니다. LORA에서 저랭크 행렬(BA)의 그래디언트를 계산할 때 연쇄 법칙이 적용되며, 이는 모델 업데이트의 정확성을 보장합니다. 그러나 논문에서는 직접적으로 다루지 않아 핵심 개념보다는 배경 지식으로 필요합니다.",
+      "keyword_importance": 3,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-002",
+      "keyword": "Attention",
+      "description": "Attention 메커니즘은 Transformer의 핵심 구성 요소로, LORA가 적용되는 대상(예: Wq, Wv)입니다. 논문에서 저랭크 적응이 주로 self-attention 가중치 행렬에 적용되므로, attention의 동작 방식을 이해해야 LORA의 적용 위치와 효과를 파악할 수 있습니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-003",
+      "keyword": "Transfer Learning",
+      "description": "Transfer Learning은 사전 학습된 모델을 특정 태스크에 적응하는 과정을 의미합니다. LORA는 전이 학습의 효율성을 개선하기 위한 방법으로, 전체 미세 조정 대신 저랭크 행렬을 학습함으로써 파라미터 효율성을 달성합니다. 논문의 전체 맥락을 이해하는 데 필수적입니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-004",
+      "keyword": "Transformer",
+      "description": "Transformer 아키텍처는 LORA가 적용되는 모델 구조입니다. 논문에서 GPT-3, RoBERTa 등 Transformer 기반 모델을 대상으로 실험하며, self-attention 및 MLP 레이어의 특성을 이해해야 LORA의 적용 방식을 파악할 수 있습니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-005",
+      "keyword": "Differentiable Function",
+      "description": "Differentiable Function은 그래디언트 기반 최적화의 전제 조건입니다. LORA에서 저랭크 행렬(BA)은 미분 가능한 함수로 설계되어 Adam 옵티마이저로 학습됩니다. 그러나 이는 기본적인 딥러닝 개념이며, 논문의 핵심 주제는 아닙니다.",
+      "keyword_importance": 2,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-006",
+      "keyword": "Partial Derivative",
+      "description": "Partial Derivative는 그래디언트 계산의 기본 단위입니다. LORA의 저랭크 행렬 학습 시 각 파라미터에 대한 편미분 값이 필요하지만, 이는 역전파 구현의 세부 사항으로 논문에서 직접 강조되지 않습니다.",
+      "keyword_importance": 2,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-007",
+      "keyword": "Backpropagation",
+      "description": "Backpropagation은 LORA의 저랭크 행렬을 학습하는 데 사용되는 핵심 알고리즘입니다. 논문에서 Adam 옵티마이저를 통해 역전파를 수행한다고 명시하며, 그래디언트 흐름 이해는 모델 업데이트 메커니즘 파악에 필수적입니다.",
+      "keyword_importance": 8,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-008",
+      "keyword": "Fine-Tuning",
+      "description": "Fine-Tuning은 LORA와 비교되는 기존 방법입니다. 논문은 전체 미세 조정의 단점(메모리/계산 비용)을 해결하기 위해 LORA를 제안하며, 두 방법의 성능 및 효율성 차이를 분석하는 데 미세 조정 이해가 필수적입니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-009",
+      "keyword": "Attention Is All You Need",
+      "description": "Attention Is All You Need는 Transformer 아키텍처를 제안한 원본 논문입니다. LORA가 Transformer의 self-attention 레이어에 적용되므로, 해당 논문의 구조(예: Wq, Wk, Wv, Wo)를 이해해야 LORA의 적용 방식을 명확히 파악할 수 있습니다.",
+      "keyword_importance": 8,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-010",
+      "keyword": "Gradient",
+      "description": "Gradient는 LORA의 저랭크 행렬(BA)을 업데이트하는 데 직접적으로 사용됩니다. 논문은 그래디언트 계산 및 옵티마이저 상태 저장 비용 절감을 강조하며, 그래디언트 흐름 분석은 모델 효율성 평가의 핵심입니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-011",
+      "keyword": "Low-Rank Adaptation",
+      "description": "Low-Rank Adaptation은 논문의 핵심 기여입니다. 사전 학습된 가중치를 고정하고 저랭크 행렬을 학습함으로써 파라미터 효율성을 달성하는 방법을 제안하며, 이는 전체 논문의 주제와 직접적으로 연결됩니다.",
+      "keyword_importance": 10,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    },
+    {
+      "keyword_id": "key-012",
+      "keyword": "Matrix Decomposition",
+      "description": "Matrix Decomposition은 LORA의 수학적 기반입니다. 가중치 업데이트(ΔW = BA)를 저랭크 행렬 분해로 표현하여 파라미터 수를 줄이는 핵심 기법이며, 특이값 분해(SVD)와의 연관성을 이해해야 합니다.",
+      "keyword_importance": 9,
+      "is_keyword_necessary": null,
+      "is_resource_sufficient": false,
+      "resources": []
+    }
+  ],
+  "edges": [
+    {
+      "start": "key-006",
+      "end": "key-007"
+    },
+    {
+      "start": "key-002",
+      "end": "key-004"
+    },
+    {
+      "start": "key-004",
+      "end": "key-009"
+    },
+    {
+      "start": "key-002",
+      "end": "key-009"
+    },
+    {
+      "start": "key-007",
+      "end": "key-004"
+    },
+    {
+      "start": "key-007",
+      "end": "key-008"
+    },
+    {
+      "start": "key-001",
+      "end": "key-007"
+    },
+    {
+      "start": "key-005",
+      "end": "key-007"
+    },
+    {
+      "start": "key-010",
+      "end": "key-007"
+    },
+    {
+      "start": "key-003",
+      "end": "key-008"
+    },
+    {
+      "start": "key-008",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    },
+    {
+      "start": "key-009",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    },
+    {
+      "start": "key-004",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    },
+    {
+      "start": "key-002",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    },
+    {
+      "start": "key-011",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    },
+    {
+      "start": "key-012",
+      "end": "ade53ad9-8bcf-4824-a69b-c5b64b8df194"
+    }
+  ]
+}
