@@ -18,27 +18,27 @@ Therefore, a **Novice** needs the largest and most detailed graph, while an **Ex
    - **Scope**: Must cover **Foundational Prerequisites** AND **Technical Components** AND **Paper Novelty**.
    - **Judgment Criteria**: "Does the graph connect the paper's core concepts back to specific **fundamental concept names**? AND Does the current keyword need more basic concepts to understand it?"
    - **Insufficiency Condition**:
-     - Judge as insufficient if a keyword requires a **simpler, foundational concept** that is currently missing.
-     - **Constraint**: Do NOT use broad subject names like "Linear Algebra" or "Calculus". Instead, demand specific operations like **"Chain Rule"** or **"Gradient Descent"**.
-     - Also insufficient if Intermediate or Expert level details are missing.
-     - Ask for **"What concept must be learned FIRST?"** 
-     - The graph should remain **compact (under 25 nodes)**.
+   - Judge as insufficient if a keyword requires a **simpler, foundational concept** that is currently missing.
+   - **Constraint**: Do NOT use broad subject names like "Linear Algebra" or "Calculus". Instead, demand specific operations like **"Chain Rule"** or **"Gradient Descent"**.
+   - Also insufficient if Intermediate or Expert level details are missing.
+   - Ask for **"What concept must be learned FIRST?"** 
+   - The graph should remain **compact (under 25 nodes)**.
 
 2. **Intermediate (Requires Layers 2 + 3)**
    - **Scope**: Must cover **Mechanism Names** AND **Structural Modules**. (Assumes Layer 1 Foundations are known).
    - **Judgment Criteria**: "Does the graph contain specific **keywords** representing the **components** or **algorithms** used?"
    - **Insufficiency Condition**:
-     - Judge as insufficient if keywords are too abstract (e.g., just "Model").
-     - **CRITICAL CONSTRAINT**: **Do NOT require specific numerical values or hyperparameters** (e.g., do NOT ask for "15%", "12 layers", "5e-5").
-     - Also insufficient if Expert level novelty is missing.
-     - **Note**: Ignore missing Layer 1 (foundations).
+   - Judge as insufficient if keywords are too abstract (e.g., just "Model").
+   - **CRITICAL CONSTRAINT**: **Do NOT require specific numerical values or hyperparameters** (e.g., do NOT ask for "15%", "12 layers", "5e-5").
+   - Also insufficient if Expert level novelty is missing.
+   - **Note**: Ignore missing Layer 1 (foundations).
 
 3. **Expert (Requires Layer 3 Only)**
    - **Scope**: Focus strictly on **Novelty Keywords** & **Unique Methodologies**. (Assumes Layer 1 & 2 are known).
    - **Judgment Criteria**: "Does the graph isolate **specific terminology** unique to this paper's contribution?"
    - **Insufficiency Condition**:
-     - **CRITICAL**: Do NOT judge as insufficient if foundations or standard implementation details are missing.
-     - Judge as insufficient ONLY if keywords corresponding to the **paper's specific contribution**, **unique constraints**, or **comparative differences** are missing.
+   - **CRITICAL**: Do NOT judge as insufficient if foundations or standard implementation details are missing.
+   - Judge as insufficient ONLY if keywords corresponding to the **paper's specific contribution**, **unique constraints**, or **comparative differences** are missing.
 
 [Strict Constraints]
 1. **Content-Based Judgment**: Construct the reasoning using ONLY the content and terminology found in the provided **[Target Paper Info]**.
@@ -80,11 +80,11 @@ Based on the [Judgment Criteria by User Level] above, when insufficiency is foun
 [Output Format]
 You must return ONLY one JSON object containing the keys below:
 {{
-    "is_keyword_sufficient": boolean,
-    "missing_concepts": ["List of keyword_ids requiring supplementation"],
-    "reasoning": "Judgment basis by ID (e.g., [key-001]: Too difficult for Novice, need basic concepts / [{paper_id}]: 'keyword' which is a detailed mechanism for Expert level is missing)"
+   "is_keyword_sufficient": boolean,
+   "missing_concepts": ["List of keyword_ids requiring supplementation"],
+   "reasoning": "Judgment basis by ID (e.g., [key-001]: Too difficult for Novice, need basic concepts / [{paper_id}]: 'keyword' which is a detailed mechanism for Expert level is missing)"
 }}"""),
-    ("human", """
+   ("human", """
 [Learner Info]
 - Level: {user_level}
 - Purpose: {user_purpose}
@@ -105,33 +105,46 @@ Be careful not to generate non-existent IDs, as this causes system errors.
 
 
 RESOURCE_CHECK_PROMPT_V4 = ChatPromptTemplate.from_messages([
-    ("system", """당신은 인공지능 분야 전문 교육 컨설턴트입니다. 제공된 학습 자료가 키워드를 이해하는데 충분한지 판단하십시오.
+    ("system", """You are an expert educational consultant in the field of Artificial Intelligence.
+Evaluate whether the provided **Learning Resources** are sufficient for the learner to understand the specific **Keyword** based on their level ({user_level}).
 
-[핵심 판단 가이드라인]
-- 각 키워드 노드에 해당 keyword 개념을 학습하기 위한 충분한 학습 자료(Resource)가 할당되었는가?
-- 각 자료의 is_necessary 필드는 중요하지 않다.
+[Hierarchy of Resource Requirements]
+1. **Novice (Requires Foundations + Intuition)**
+   - Resources must provide intuitive explanations and connect the keyword to foundational prerequisites.
+   - Judge as insufficient if the resources are too technical, assume prior advanced knowledge, or lack introductory context suitable for a beginner.
+2. **Intermediate (Requires Mechanisms + Implementation)**
+   - Resources should focus on specific algorithm names, structural components, and how the mechanism works.
+   - Judge as insufficient if the resources are too high-level/vague or, conversely, too focused on absolute basics the user is assumed to know.
+3. **Expert (Requires Novelty + Specific Methodology)**
+   - Resources must isolate the unique terminology, comparative differences, and specific contributions related to the keyword.
+   - Judge as insufficient if the resources only provide standard textbook explanations without addressing advanced methodological nuances.
 
-[출력 형식]
-반드시 아래 키를 포함한 JSON 객체 하나만 반환하세요:
+[Strict Constraints]
+- **Quality over Quantity**: The number of resources does not determine sufficiency. Sufficiency is met if the provided resources clearly function as effective study materials for the keyword at the specific user level.
+- **Ignore is_necessary**: The `is_necessary` field of each resource is not important for this judgment.
+- **Level-Appropriate Function**: If a resource is technically accurate but too difficult or too simple for the given {user_level}, it fails to provide sufficiency.
+- **NO NUMBERS**: Do not judge sufficiency based on the presence or absence of specific numerical values/hyperparameters in the resources.
+
+[Output Format]
+You must return ONLY one JSON object containing the keys below:
 {{
     "is_resource_sufficient": boolean,
-    "reasoning": "판단 근거를 한 문장으로 설명"
+    "reasoning": "A single sentence explaining the basis of judgment (e.g., [key-001]: Provided resources are too academic for a Novice level; need more intuitive blog-style explanations.)"
 }}"""),
     ("human", """
-[학습자 정보]
-- 수준: {user_level}
-- 목적: {user_purpose}
+[Learner Info]
+- Level: {user_level}
 
-[분석 대상 키워드]
+[Target Keyword]
 - ID: {keyword_id}
-- 키워드: {keyword}
-- 설명: {description}
+- Keyword: {keyword}
+- Description: {description}
 
-[제공된 학습 자료 목록]
+[Provided Learning Resources]
 {resources}
 
+[Instructions]
+Evaluate if the resources are sufficient to master the keyword for a {user_level} learner. Strictly follow the criteria above and output the result in JSON.
 """)
 ])
-
-
 
