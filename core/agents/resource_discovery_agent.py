@@ -98,8 +98,7 @@ class ResourceDiscoveryAgent:
             keyword = node.get("keyword", "")
             keyword_id = node.get("keyword_id", "")
             description = node.get("description", "")
-            search_direction = node.get("resource_reason") or "
-            
+            search_direction = node.get("resource_reason") or ""
 
             # web/video 공용 쿼리 생성
             web_query = await self._generate_web_query(
