@@ -1,7 +1,14 @@
 import asyncio
 import json
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
+
+# 프로젝트 루트를 sys.path에 추가
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
 from core.agents.curriculum_orchestrator import CurriculumOrchestrator
 from core.llm.solar_pro_2_llm import get_solar_model
 
@@ -12,9 +19,9 @@ async def main():
     agent = CurriculumOrchestrator(llm)
 
     # 더미 데이터 경로 설정
-    user_info_path = "../../dummy_data/dummy_user_information_ch.json"
-    curriculum_path = "../../dummy_data/dummy_initial_curriculum.json"
-    paper_content_path="../../dummy_data/dummy_parsing_paper_BERT.json"
+    user_info_path = project_root / "dummy_data/dummy_user_information.json"
+    curriculum_path = project_root / "dummy_data/dummy_initial_curriculum.json"
+    paper_content_path= project_root / "dummy_data/dummy_parsing_paper.json"
     
     # 데이터 로드
     try:

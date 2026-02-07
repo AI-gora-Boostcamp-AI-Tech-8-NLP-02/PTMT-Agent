@@ -8,6 +8,7 @@ import requests
 
 from core.contracts.concept_extraction import ConceptExtractionInput, ConceptExtractionOutput
 from core.prompts.concept_extraction.v2 import FINAL_CONCEPT_EXTRACTION_PROMPT, FIRST_CONCEPT_EXTRACTION_PROMPT
+from core.utils.timeout import async_timeout
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ class ConceptExtractionAgent:
         self.first_concept_chain = FIRST_CONCEPT_EXTRACTION_PROMPT | llm
         self.final_concept_chain = FINAL_CONCEPT_EXTRACTION_PROMPT | llm
     
+    @async_timeout(30)
     async def run(self, paper: ConceptExtractionInput) -> ConceptExtractionOutput:
         response = await self.first_concept_chain.ainvoke(
             {

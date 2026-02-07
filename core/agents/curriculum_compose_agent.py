@@ -8,6 +8,8 @@ from core.contracts.curriculum_compose import (
     KeywordEdge
 )
 from core.prompts.curriculum_compose.v2 import CURRICULUM_COMPOSE_PROMPT_V2
+from core.utils.timeout import async_timeout
+
 
 class CurriculumComposeAgent:
     """사용자 정보를 바탕으로 커리큘럼 내 자료(Resource)를 최적화(삭제/보존/강조)하는 에이전트"""
@@ -16,6 +18,7 @@ class CurriculumComposeAgent:
         self.llm = llm
         self.chain = CURRICULUM_COMPOSE_PROMPT_V2 | llm
 
+    @async_timeout(60)
     async def run(self, input_data: CurriculumComposeInput) -> CurriculumComposeOutput:
         """에이전트 실행"""
         user_info = input_data["user_info"]
