@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import requests
 
 from core.contracts.concept_extraction import ConceptExtractionInput, ConceptExtractionOutput
-from core.prompts.concept_extraction.v1 import FINAL_CONCEPT_EXTRACTION_PROMPT, FIRST_CONCEPT_EXTRACTION_PROMPT
+from core.prompts.concept_extraction.v2 import FINAL_CONCEPT_EXTRACTION_PROMPT, FIRST_CONCEPT_EXTRACTION_PROMPT
 from core.utils.timeout import async_timeout
 
 load_dotenv()
