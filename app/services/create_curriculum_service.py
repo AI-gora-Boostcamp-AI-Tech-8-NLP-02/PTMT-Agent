@@ -163,9 +163,16 @@ async def _generate_curriculum_graph(
             async with aiohttp.ClientSession() as session:
                 async with session.post(target_url, json=payload, headers=headers) as resp:
                     if resp.status == 201:
-                        print("✅ 커리큘럼 전송 성공")
+                        print(f"✅ 커리큘럼 전송 성공 (slot={assigned_key_slot})")
                     else:
-                        print(f"❌ 전송 실패: {resp.status}, {await resp.text()}")
+                        error_text = await resp.text()
+                        print(
+                            f"❌ 전송 실패 (slot={assigned_key_slot}): "
+                            f"{resp.status}, {error_text}"
+                        )
+                        raise RuntimeError(
+                            f"curriculum import failed with status={resp.status}: {error_text}"
+                        )
 
         except Exception as e:
             backend_url = os.getenv("MAIN_BACKEND_SERVER_PATH")
@@ -186,11 +193,14 @@ async def _generate_curriculum_graph(
 
             async with aiohttp.ClientSession() as session:
                 async with session.post(target_url, json=payload, headers=headers) as resp:
-                    if resp.status == 200:
-                        print("커리큘럼 실패 전송 성공")
+                    if resp.status in {200, 201}:
+                        print(f"커리큘럼 실패 전송 성공 (slot={assigned_key_slot})")
                     else:
-                        print(f"커리큘럼 실패 전송 실패: {resp.status}, {await resp.text()}")
-            print(f"Background Task Error: {e}")
+                        print(
+                            f"커리큘럼 실패 전송 실패 (slot={assigned_key_slot}): "
+                            f"{resp.status}, {await resp.text()}"
+                        )
+            print(f"Background Task Error (slot={assigned_key_slot}): {e}")
     finally:
         reset_assigned_key_slot(slot_token)
 
