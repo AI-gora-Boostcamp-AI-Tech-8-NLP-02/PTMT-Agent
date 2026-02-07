@@ -7,15 +7,14 @@ from core.contracts.curriculum_compose import (
     KeywordNode,
     KeywordEdge
 )
-from core.prompts.curriculum_compose.v1 import CURRICULUM_COMPOSE_PROMPT_V1
-
+from core.prompts.curriculum_compose.v2 import CURRICULUM_COMPOSE_PROMPT_V2
 
 class CurriculumComposeAgent:
     """사용자 정보를 바탕으로 커리큘럼 내 자료(Resource)를 최적화(삭제/보존/강조)하는 에이전트"""
 
     def __init__(self, llm):
         self.llm = llm
-        self.chain = CURRICULUM_COMPOSE_PROMPT_V1 | llm
+        self.chain = CURRICULUM_COMPOSE_PROMPT_V2 | llm
 
     async def run(self, input_data: CurriculumComposeInput) -> CurriculumComposeOutput:
         """에이전트 실행"""
@@ -49,7 +48,7 @@ class CurriculumComposeAgent:
         # 2. LLM 호출
         try:
             payload = {
-                "user_purpose": user_info["purpose"],
+                "user_type_preference": user_info["resource_type_preference"],
                 "user_level": user_info["level"],
                 "user_known_concepts": ", ".join(user_info["known_concept"]),
                 "user_total_hours": user_info["budgeted_time"]["total_hours"],
