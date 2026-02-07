@@ -14,7 +14,7 @@ async def extract_keywords(request: KeywordExtractRequest) -> KeywordExtractResp
     """
     try:
         # 1. LLM 및 Agent 초기화
-        llm = get_solar_model()
+        llm = get_solar_model(assigned_key_slot=request.assigned_key_slot)
         agent = ConceptExtractionAgent(llm=llm)
         
         # 2. 입력 데이터 구성
