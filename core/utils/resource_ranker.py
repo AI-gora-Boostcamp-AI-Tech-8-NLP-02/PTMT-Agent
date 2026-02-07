@@ -49,6 +49,23 @@ def select_top_resources(
     """
     if not resources:
         return []
+    
+    # 중요도가 3 이하인 자료들은 미리 필터링
+    valid_resources = []
+    for r in resources:
+        try:
+            imp = float(r.get("importance", 0))
+        except (ValueError, TypeError):
+            imp = 0
+        
+        # 중요도가 3보다 큰 경우만 리스트에 담음
+        if imp > 3:
+            valid_resources.append(r)
+    
+    resources = valid_resources
+
+    if not resources: # 필터링 후 남은 게 없다면 즉시 빈 리스트 반환
+        return []
 
     # score, is_preferred 붙이기
     scored: List[Dict[str, Any]] = []
