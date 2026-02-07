@@ -1,12 +1,13 @@
 # core/agents/resource_discovery_agent.py
 
 import asyncio
+import json
 import re
 from typing import List, Dict, Any, Optional
 from langsmith import traceable
 
 from core.contracts.resource_discovery import ResourceDiscoveryAgentInput, ResourceDiscoveryAgentOutput
-from core.prompts.resource_discovery.v3 import QUERY_GEN_PROMPT_V3
+from core.prompts.resource_discovery.v5 import QUERY_GEN_PROMPT_V5
 
 from core.tools.tavily_search import search_web_resources
 from core.tools.serper_web_search import search_web_resources_serper
@@ -32,7 +33,7 @@ class ResourceDiscoveryAgent:
     def __init__(self, llm_discovery, llm_estimation):
         # 검색용 LLM (쿼리 재생성)
         self.llm_discovery = llm_discovery
-        self.query_chain = QUERY_GEN_PROMPT_V3 | llm_discovery
+        self.query_chain = QUERY_GEN_PROMPT_V5 | llm_discovery
         
         # 평가용 LLM 
         self.llm_estimation = llm_estimation
@@ -218,12 +219,23 @@ class ResourceDiscoveryAgent:
         )
 
         raw = (response.content or "").strip()
+        # v5 프롬프트: JSON {"query": "..."} 형식 파싱
+        cleaned = re.sub(r"^```(?:json)?\s*", "", raw)
+        cleaned = re.sub(r"\s*```\s*$", "", cleaned).strip()
+        try:
+            data = json.loads(cleaned)
+            if isinstance(data, dict) and data.get("query"):
+                return data["query"].strip() or keyword
+        except (json.JSONDecodeError, TypeError):
+            print(f"⚠️ [ResourceDiscoveryAgent] JSON 파싱 실패: {cleaned}")
+            pass
+        # JSON 파싱 실패 시 첫 줄에서 쿼리 추출 (폴백)
         lines = [ln.strip() for ln in raw.split("\n") if ln.strip()][:1]
-        if not lines:
-            return keyword
-
-        q = re.sub(r"^\d+[\.\s\-]+", "", lines[0]).strip()
-        return q or keyword
+        if lines:
+            q = re.sub(r"^\d+[\.\s\-]+", "", lines[0]).strip()
+            if q:
+                return q
+        return keyword
 
     def _normalize_generic_results(
         self,
