@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional
 from langsmith import traceable
 
 from core.contracts.resource_discovery import ResourceDiscoveryAgentInput, ResourceDiscoveryAgentOutput
-from core.prompts.resource_discovery.v5 import QUERY_GEN_PROMPT_V5
+from core.prompts.resource_discovery.v6 import QUERY_GEN_PROMPT_V6
 
 from core.tools.tavily_search import search_web_resources
 from core.tools.serper_web_search import search_web_resources_serper
@@ -33,7 +33,7 @@ class ResourceDiscoveryAgent:
     def __init__(self, llm_discovery, llm_estimation):
         # 검색용 LLM (쿼리 재생성)
         self.llm_discovery = llm_discovery
-        self.query_chain = QUERY_GEN_PROMPT_V5 | llm_discovery
+        self.query_chain = QUERY_GEN_PROMPT_V6 | llm_discovery
         
         # 평가용 LLM 
         self.llm_estimation = llm_estimation
@@ -100,7 +100,6 @@ class ResourceDiscoveryAgent:
             web_query = await self._generate_web_query(
                 paper_name=paper_name,
                 keyword=keyword,
-                description=description,
                 search_direction=search_direction,
             )
 
@@ -212,7 +211,6 @@ class ResourceDiscoveryAgent:
             {
                 "paper_name": paper_name,
                 "keyword": keyword,
-                "description": description,
                 "search_direction": search_direction,
             },
             config={"tags": ["rs-discovery-querygen"]},
