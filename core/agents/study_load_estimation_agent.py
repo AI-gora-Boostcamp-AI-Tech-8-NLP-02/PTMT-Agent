@@ -6,12 +6,12 @@ import asyncio
 from typing import List, Dict, Any
 from core.contracts.study_load_estimation import StudyLoadEstimationInput, StudyLoadEstimationOutput
 from core.contracts.types.curriculum import Resource
-from core.prompts.study_load_estimation.v3 import STUDY_LOAD_ESTIMATION_PROMPT_V3
+from core.prompts.study_load_estimation.v4 import STUDY_LOAD_ESTIMATION_PROMPT_V4
 
 class StudyLoadEstimationAgent:
     def __init__(self, llm):
         self.llm = llm
-        self.chain = STUDY_LOAD_ESTIMATION_PROMPT_V3 | llm
+        self.chain = STUDY_LOAD_ESTIMATION_PROMPT_V4 | llm
         self.sem = asyncio.Semaphore(5)  # 병렬 실행 제한
 
     async def run(self, input_data: StudyLoadEstimationInput) -> StudyLoadEstimationOutput:
