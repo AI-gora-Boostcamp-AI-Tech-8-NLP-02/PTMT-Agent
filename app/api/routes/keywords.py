@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+from typing import Annotated
+from fastapi import APIRouter, Depends
+from app.api.deps import get_token
 from app.models.keyword import KeywordExtractRequest, KeywordExtractResponse
 from app.services.extract_paper_concept_service import extract_keywords
 from app.core.exceptions import (
@@ -11,12 +13,17 @@ router = APIRouter(prefix="/api/curr/keywords", tags=["keywords"])
 
 
 @router.post("/extract", response_model=KeywordExtractResponse)
-async def extract_keywords_endpoint(request: KeywordExtractRequest):
+async def extract_keywords_endpoint(
+    request: KeywordExtractRequest,
+    _token: Annotated[str, Depends(get_token)]
+):
     """
     API-CURR-KWORD-01: 키워드 추출 엔드포인트
-    
-    논문 파일(PDF를 텍스트로 변환한 값), 웹 링크, 또는 제목을 전송하여 핵심 키워드를 추출합니다.
-    pdf_text, weblink, paper_title 중 적어도 하나는 필수입니다.
+
+    메인 서버에서 전달한 아래 스키마를 기반으로 핵심 키워드를 추출합니다.
+    - paper_id: 논문 ID
+    - paper_content: title/author/abstract/body 구조화 데이터
+    - assigned_key_slot: 사용할 API 키 슬롯(선택)
     """
     try:
         if not request.paper_content:
