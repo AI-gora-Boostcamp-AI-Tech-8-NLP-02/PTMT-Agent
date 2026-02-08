@@ -9,7 +9,7 @@ from core.contracts.types.curriculum import KeywordNode, KeywordEdge
 from core.contracts.types.paper_info import PaperInfo
 # from core.prompts.paper_concept_alignment.v1 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V1
 from core.prompts.paper_concept_alignment.v2 import PAPER_CONCEPT_ALIGNMENT_PROMPT_V2
-
+from core.utils.timeout import async_timeout
 
 
 class PaperConceptAlignmentAgent:
@@ -25,6 +25,7 @@ class PaperConceptAlignmentAgent:
         self.chain = PAPER_CONCEPT_ALIGNMENT_PROMPT_V2 | llm
         self.max_body_chars = max_body_chars
 
+    @async_timeout(45)
     async def run(self, input_data: PaperConceptAlignmentInput) -> PaperConceptAlignmentOutput:
         """에이전트 실행
 
