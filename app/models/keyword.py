@@ -7,6 +7,7 @@ from app.models.curriculum import PaperContent
 class KeywordExtractRequest(BaseModel):
     paper_id: str
     paper_content: PaperContent
+    assigned_key_slot: Optional[int] = None
 
 
 class KeywordExtractResponse(BaseModel):
