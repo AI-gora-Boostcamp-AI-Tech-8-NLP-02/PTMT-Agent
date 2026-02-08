@@ -17,6 +17,7 @@ from core.tools.semantic_scholar_paper_search import search_paper_resources
 from core.agents.study_load_estimation_agent import StudyLoadEstimationAgent
 from core.utils.resource_planner import plan_tools
 from core.utils.resource_ranker import select_top_resources
+from core.utils.timeout import async_timeout
 
 
 class ResourceDiscoveryAgent:
@@ -40,6 +41,7 @@ class ResourceDiscoveryAgent:
         
         self.sem = asyncio.Semaphore(5)
 
+    @async_timeout(90)
     @traceable(run_type="chain", name="Resource Discovery Agent") 
     async def run(self, input_data: ResourceDiscoveryAgentInput) -> ResourceDiscoveryAgentOutput:
         """에이전트의 메인 실행 로직"""
