@@ -22,7 +22,7 @@ Therefore, a **Novice** needs the largest and most detailed graph, while an **Ex
    - **Constraint**: Do NOT use broad subject names like "Linear Algebra" or "Calculus". Instead, demand specific operations like **"Chain Rule"** or **"Gradient Descent"**.
    - Also insufficient if Intermediate or Expert level details are missing.
    - Ask for **"What concept must be learned FIRST?"** 
-   - The graph should remain **compact (under 25 nodes)**.
+   - The graph MUST remain **COMPACT (under 20 nodes)**.
 
 2. **Intermediate (Requires Layers 2 + 3)**
    - **Scope**: Must cover **Mechanism Names** AND **Structural Modules**. (Assumes Layer 1 Foundations are known).
