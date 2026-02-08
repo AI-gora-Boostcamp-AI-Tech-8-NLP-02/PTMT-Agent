@@ -10,7 +10,6 @@ from langchain_tavily import TavilySearch
 from core.contracts.concept_expansion import ConceptExpansionInput, ConceptExpansionOutput
 from core.contracts.types.curriculum import CurriculumGraph, KeywordNode
 from core.utils.get_message import get_last_ai_message
-from core.utils.timeout import async_timeout
 
 load_dotenv()
 
@@ -29,7 +28,6 @@ class ConceptExpansionAgent:
             tools=self.tools
         )
     
-    @async_timeout(45)
     async def run(self, input: ConceptExpansionInput) -> ConceptExpansionOutput:
         # Input 추출
         keyword_graph = self._extract_keyword_graph(input["curriculum"])

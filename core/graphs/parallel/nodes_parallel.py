@@ -96,17 +96,13 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
     user_info = state.get("user_info", {})
 
     # 에이전트 실행 
-    try:
-        result = await agent.run({
-            "paper_name":curriculum["graph_meta"]["title"],
-            "nodes": nodes_list,
-            "user_level": user_info.get("level"),
-            "purpose": user_info.get("purpose"),
-            "pref_types": user_info.get("resource_type_preference", [])
-        })
-    except Exception as e:
-        print(e)
-        result = {}
+    result = await agent.run({
+        "paper_name":curriculum["graph_meta"]["title"],
+        "nodes": nodes_list,
+        "user_level": user_info.get("level"),
+        "purpose": user_info.get("purpose"),
+        "pref_types": user_info.get("resource_type_preference", [])
+    })
 
     new_resources = result.get("evaluated_resources", [])
     resources_to_estimate = []
@@ -146,12 +142,7 @@ async def resource_discovery_agent_node(state: CreateCurriculumOverallState):
             }
 
             # 에이전트 실행
-            try:
-                estimation_result = await estimation_agent.run(estimation_input_data)
-            except Exception as e:
-                print(e)
-                estimation_result = {}
-
+            estimation_result = await estimation_agent.run(estimation_input_data)
             evaluated_updates = estimation_result.get("evaluated_resources", [])
 
             # 결과 반영 (원본 리스트 + 결과 리스트)
@@ -267,14 +258,7 @@ async def concept_expansion_node(state: CreateCurriculumOverallState):
         "user_info" : state["user_info"]
     }
     
-    try:
-        result = await agent.run(input)
-    except Exception as e:
-        print(e)
-        result = {
-            'curriculum': state['curriculum']
-        }
-
+    result= await agent.run(input)
     updated_full_curriculum = result["curriculum"]
     
     existing_node_ids = {n["keyword_id"] for n in state["curriculum"].get("nodes", [])}
@@ -305,11 +289,7 @@ async def paper_concept_alignment_node(state: CreateCurriculumOverallState):
         "curriculum": curriculum
     }
 
-    try:
-        result = await agent.run(agent_input)
-    except Exception as e:
-        print(e)
-        result = {}
+    result = await agent.run(agent_input)
     response = result.get("response", {})
 
     # 커리큘럼 노드에 설명 업데이트
