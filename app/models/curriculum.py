@@ -34,6 +34,7 @@ class CurriculumGenerateRequest(BaseModel):
     paper_summary: str
     paper_content: PaperContent
     user_traits: UserTraits = Field(alias="user_info")
+    assigned_key_slot: Optional[int] = None
     paper_title: Optional[str] = None # Deprecated, keep for compatibility or remove
     keywords: Optional[List[str]] = None # Deprecated
 
@@ -41,4 +42,3 @@ class CurriculumGenerateRequest(BaseModel):
 
 class CurriculumGenerateResponse(BaseModel):
     success: bool
-
