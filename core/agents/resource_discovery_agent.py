@@ -3,6 +3,7 @@
 import asyncio
 import json
 import re
+import time
 from typing import List, Dict, Any, Optional
 from langsmith import traceable
 
@@ -101,6 +102,8 @@ class ResourceDiscoveryAgent:
             keyword_id = node.get("keyword_id", "")
             description = node.get("description", "")
             search_direction = node.get("resource_reason") or ""
+
+            time.sleep(1)
 
             # web/video 공용 쿼리 생성
             web_query = await self._generate_web_query(
@@ -207,6 +210,46 @@ class ResourceDiscoveryAgent:
 
             return top3
 
+    @staticmethod
+    def _extract_first_json_object(text: str) -> Optional[str]:
+        """응답에서 첫 번째 완전한 JSON 객체만 추출 (JSON 뒤에 Explanation 등이 붙은 경우 대비)."""
+        if not text or "{" not in text:
+            return None
+        start = text.index("{")
+        depth = 0
+        in_string = False
+        escape = False
+        quote_char = None
+        i = start
+        while i < len(text):
+            c = text[i]
+            if escape:
+                escape = False
+                i += 1
+                continue
+            if c == "\\" and in_string:
+                escape = True
+                i += 1
+                continue
+            if in_string:
+                if c == quote_char:
+                    in_string = False
+                i += 1
+                continue
+            if c in ('"', "'"):
+                in_string = True
+                quote_char = c
+                i += 1
+                continue
+            if c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    return text[start : i + 1]
+            i += 1
+        return None
+
     async def _generate_web_query(
         self,
         paper_name: str,
@@ -227,12 +270,16 @@ class ResourceDiscoveryAgent:
         # v5 프롬프트: JSON {"query": "..."} 형식 파싱
         cleaned = re.sub(r"^```(?:json)?\s*", "", raw)
         cleaned = re.sub(r"\s*```\s*$", "", cleaned).strip()
+        # LLM이 JSON 뒤에 Explanation 등 부가 설명을 붙이는 경우 대비: 첫 번째 완전한 JSON 객체만 추출
+        json_str = self._extract_first_json_object(cleaned)
+        if json_str is None:
+            json_str = cleaned
         try:
-            data = json.loads(cleaned)
+            data = json.loads(json_str)
             if isinstance(data, dict) and data.get("query"):
                 return data["query"].strip() or keyword
         except (json.JSONDecodeError, TypeError):
-            print(f"⚠️ [ResourceDiscoveryAgent] JSON 파싱 실패: {cleaned}")
+            print(f"⚠️ [ResourceDiscoveryAgent] JSON 파싱 실패: {cleaned[:500]}")
             pass
         # JSON 파싱 실패 시 첫 줄에서 쿼리 추출 (폴백)
         lines = [ln.strip() for ln in raw.split("\n") if ln.strip()][:1]
